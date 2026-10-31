@@ -89,6 +89,67 @@ const shapes = {
     parts: '<rect x="192" y="152" width="216" height="52" rx="12" fill="#c8a165" stroke="#8a6a3a" stroke-width="2"/>',
     liquid: { y: 330, color: '#8d6e4a' },
   },
+  // Perfume & cosmetic packaging
+  perfume: {
+    hue: '#e0aaff',
+    glass: 'M205 230 Q205 210 225 210 L375 210 Q395 210 395 230 L395 465 Q395 488 372 488 L228 488 Q205 488 205 465 Z',
+    parts: '<rect x="222" y="430" width="156" height="50" rx="10" opacity=".55"/><rect x="282" y="178" width="36" height="34" rx="4"/><rect x="250" y="96" width="100" height="84" rx="14" fill="#d4af37" stroke="#8a6d1d" stroke-width="2"/>',
+    liquid: { y: 300, color: '#f3d1ff' },
+  },
+  bubble: {
+    hue: '#4cc9f0',
+    glass: 'M300 205 C390 205 430 280 430 350 C430 430 375 488 300 488 C225 488 170 430 170 350 C170 280 210 205 300 205 Z',
+    parts:
+      '<rect x="283" y="172" width="34" height="36" rx="4"/><path d="M262 100 L338 100 L330 176 L270 176 Z" fill="#c0c0c0" stroke="#666" stroke-width="2"/>' +
+      [[250, 300, 9], [330, 270, 6], [360, 380, 11], [230, 410, 7], [300, 440, 5], [270, 350, 4], [345, 330, 4], [205, 340, 5]]
+        .map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke-width="1.8" opacity=".9"/>`).join(''),
+    tint: '#9be7ff',
+  },
+  facet: {
+    hue: '#ffd166',
+    glass: 'M300 205 L405 270 L405 420 L300 488 L195 420 L195 270 Z',
+    parts:
+      '<path d="M300 205 L300 488 M195 270 L405 420 M405 270 L195 420" fill="none" stroke-width="1.5" opacity=".6"/>' +
+      '<rect x="284" y="170" width="32" height="36" rx="4"/><path d="M300 92 L352 132 L300 172 L248 132 Z" fill="#ffe9a8" stroke="#b8902a" stroke-width="2"/>',
+    tint: '#ffe08a',
+  },
+  spray: {
+    hue: '#f72585',
+    glass: 'M235 210 L365 210 Q400 210 400 245 L400 455 Q400 488 367 488 L233 488 Q200 488 200 455 L200 245 Q200 210 235 210 Z',
+    parts: '<rect x="283" y="178" width="34" height="34" rx="4"/><rect x="258" y="104" width="84" height="76" rx="38" fill="#111" stroke="#555" stroke-width="2"/>',
+    ombre: true,
+    tint: '#f72585',
+  },
+  dropper: {
+    hue: '#2ec4b6',
+    glass: 'M240 255 Q240 235 260 235 L340 235 Q360 235 360 255 L360 470 Q360 488 342 488 L258 488 Q240 488 240 470 Z',
+    parts: '<rect x="268" y="196" width="64" height="42" rx="6" fill="#d4af37" stroke="#8a6d1d" stroke-width="2"/><path d="M276 196 Q276 120 300 112 Q324 120 324 196 Z" fill="#222" stroke="#555" stroke-width="2"/><line x1="300" y1="238" x2="300" y2="430" stroke-width="5" opacity=".6"/>',
+    liquid: { y: 330, color: '#b7efe8' },
+    metal: false,
+    tint: '#cfeee9',
+  },
+  pump: {
+    hue: '#90be6d',
+    glass: 'M220 250 Q220 225 245 225 L355 225 Q380 225 380 250 L380 465 Q380 488 357 488 L243 488 Q220 488 220 465 Z',
+    parts: '<rect x="270" y="190" width="60" height="38" rx="6" fill="#e9e9e9" stroke="#888" stroke-width="2"/><rect x="292" y="132" width="16" height="60" fill="#e9e9e9" stroke="#888" stroke-width="2"/><path d="M280 122 L368 122 Q378 122 378 132 L378 140 L280 140 Z" fill="#e9e9e9" stroke="#888" stroke-width="2"/>',
+    ombre: true,
+    tint: '#90be6d',
+  },
+  creamjar: {
+    hue: '#cdb4db',
+    glass: 'M185 300 Q185 280 205 280 L395 280 Q415 280 415 300 L415 455 Q415 488 382 488 L218 488 Q185 488 185 455 Z',
+    parts: '<rect x="178" y="226" width="244" height="58" rx="12" fill="#d4af37" stroke="#8a6d1d" stroke-width="2"/><rect x="200" y="300" width="200" height="40" rx="8" opacity=".5"/>',
+    liquid: { y: 360, color: '#fbeff9' },
+    tint: '#e9d5ff',
+  },
+  diffuser: {
+    hue: '#a98467',
+    glass: 'M262 240 L338 240 L338 280 Q410 300 410 380 L410 455 Q410 488 377 488 L223 488 Q190 488 190 455 L190 380 Q190 300 262 280 Z',
+    parts:
+      '<rect x="270" y="215" width="60" height="28" rx="5" fill="#2b2b2b" stroke="#555" stroke-width="2"/>' +
+      [[-60, 70], [-30, 82], [0, 90], [28, 84], [58, 72]].map(([dx, h], i) => `<line x1="${300 + i * 4 - 8}" y1="230" x2="${300 + dx}" y2="${230 - h - 40}" stroke="#c9a66b" stroke-width="4" stroke-linecap="round"/>`).join(''),
+    liquid: { y: 360, color: '#d9a066' },
+  },
   bottle: {
     hue: '#06d6a0',
     glass: 'M265 130 L335 130 L335 175 Q392 195 392 255 L392 462 Q392 488 366 488 L234 488 Q208 488 208 462 L208 255 Q208 195 265 175 Z',

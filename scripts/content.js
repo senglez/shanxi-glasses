@@ -18,17 +18,37 @@ if (!['export', 'publish'].includes(cmd)) {
 }
 
 if (cmd === 'publish') {
-  // Pull code changes first so the push is not rejected. Only fast-forward: never creates merges.
+  // Bring in code/content changes from GitHub first so the push is not rejected.
+  // content/*.json is always regenerated from the local DB, so local copies of it can be discarded;
+  // uploaded images are never touched.
   try {
-    execFileSync('git', ['pull', '--ff-only'], { cwd: ROOT, stdio: 'inherit' });
+    execFileSync('git', ['fetch'], { cwd: ROOT, stdio: 'inherit' });
   } catch {
-    fail('从 GitHub 更新失败。可能原因：\n   1. 代理没开，或 Git 代理没设置（Failed to connect）\n   2. 本地有和 GitHub 冲突的修改（Not possible to fast-forward）\n   请把上面的英文报错发给技术人员处理。内容尚未发布。');
+    fail('连不上 GitHub（代理没开，或 Git 代理没设置）。内容尚未发布。');
+  }
+  const count = (range) => Number(git('rev-list', '--count', range));
+  const ahead = count('@{u}..HEAD');
+  const behind = count('HEAD..@{u}');
+  if (ahead && behind) {
+    const files = git('diff', '--name-only', '@{u}...HEAD').split('\n').filter(Boolean);
+    if (!files.every((f) => f.startsWith('content/') || f.startsWith('public/uploads/'))) {
+      fail('本地有未推送的代码修改，和 GitHub 上的更新冲突，无法自动处理。请联系技术人员。内容尚未发布。');
+    }
+    // Unpushed earlier publishes: move onto GitHub's version, keep the files (they are re-added below).
+    git('reset', '--mixed', '@{u}');
+    console.log(`合并了 ${ahead} 个之前没推送成功的内容提交。`);
+  }
+  if (git('status', '--porcelain', '--', 'content')) git('checkout', '--', 'content');
+  try {
+    if (behind) execFileSync('git', ['merge', '--ff-only', '@{u}'], { cwd: ROOT, stdio: 'inherit' });
+  } catch {
+    fail('从 GitHub 更新失败，可能是本地改过程序文件。请把上面的英文报错发给技术人员。内容尚未发布。');
   }
 }
 
-// Required after the pull, so the newest code is used for the export.
+// Required after the update, so the newest code is used for the export.
 const content = require('../src/lib/content');
-const counts = content.exportSnapshot();
+const counts = content.exportSnapshot(); // also merges new items from content/ first
 console.log('已导出网站内容到 content/：', counts);
 
 if (cmd === 'publish') {

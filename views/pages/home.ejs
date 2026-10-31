@@ -61,11 +61,18 @@
     <header class="sec-head reveal">
       <p class="eyebrow">Product range</p>
       <h2>What we source from Shanxi</h2>
-      <p class="muted">Seven core categories, thousands of existing molds, and custom development when you need something new.</p>
+      <p class="muted">From stemware to perfume bottles: <%= navCats.length %> product categories, thousands of existing molds, and custom development when you need something new.</p>
     </header>
     <div class="bento">
+      <%
+        // The first tile is 2x2. Stretch the last tile so the final row has no gaps
+        // on desktop (4 columns) and tablet (2 columns).
+        const slots = navCats.length + 3;
+        const r4 = slots % 4, r2 = slots % 2;
+        const lastCls = (r4 ? 'fill-d' + (5 - r4) : '') + (r2 ? ' fill-t2' : '');
+      %>
       <% navCats.forEach((c, i) => { %>
-        <a class="bento-item tilt reveal <%= i === 0 ? 'big' : '' %>" href="/products/<%= c.slug %>">
+        <a class="bento-item tilt reveal <%= i === 0 ? 'big' : '' %> <%= i > 0 && i === navCats.length - 1 ? lastCls : '' %>" href="/products/<%= c.slug %>">
           <img src="<%= c.image || '/img/glass/wine.webp' %>" alt="<%= c.name %>" width="600" height="600" loading="lazy" decoding="async">
           <div class="bento-cap">
             <h3><%= c.name %></h3>

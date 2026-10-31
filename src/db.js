@@ -132,6 +132,14 @@ CREATE INDEX IF NOT EXISTS idx_inquiries_status ON inquiries(status);
 CREATE INDEX IF NOT EXISTS idx_inquiries_created ON inquiries(created_at);
 CREATE INDEX IF NOT EXISTS idx_products_category ON products(category_id);
 
+-- Items deleted (or renamed) in the local admin, so merging content/ from Git never brings them back
+CREATE TABLE IF NOT EXISTS content_tombstones (
+  tbl TEXT NOT NULL,
+  key TEXT NOT NULL,
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (tbl, key)
+);
+
 CREATE TABLE IF NOT EXISTS redirects (
   id INTEGER PRIMARY KEY,
   from_path TEXT UNIQUE NOT NULL,

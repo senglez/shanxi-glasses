@@ -8,6 +8,7 @@ const { slugify, parseList, fmtDate } = require('../lib/util');
 const { productUrl } = require('../lib/seo');
 const { syncInquiries } = require('../lib/sync');
 const seoAuto = require('../lib/seo-auto');
+const content = require('../lib/content');
 const multer = require('multer');
 
 // Fill empty SEO fields and refresh automatic ones (e.g. after a brand rename). Manual values are kept.
@@ -489,6 +490,8 @@ router.post('/c/:res/:id', resource, upload.any(), verifyCsrf, async (req, res, 
       id = old.id;
       db.prepare(`UPDATE ${r.table} SET ${cols.map((c) => `${c}=@${c}`).join(',')}, updated_at=CURRENT_TIMESTAMP WHERE id=@id`).run({ ...data, id });
       if (r.url) {
+        const key = content.MERGE_KEYS[r.table];
+        if (key && old[key] !== data[key]) content.tombstone(r.table, old[key]); // renamed: don't re-add the old one
         const before = r.url(old);
         const after = r.url({ ...old, ...data });
         if (before !== after) addRedirect(before, after);
@@ -506,7 +509,13 @@ router.post('/c/:res/:id', resource, upload.any(), verifyCsrf, async (req, res, 
 });
 
 router.post('/c/:res/:id/delete', resource, form, verifyCsrf, (req, res) => {
-  db.prepare(`DELETE FROM ${req.resource.table} WHERE id = ?`).run(req.params.id);
+  const t = req.resource.table;
+  const key = content.MERGE_KEYS[t];
+  if (key) {
+    const gone = db.prepare(`SELECT ${key} k FROM ${t} WHERE id = ?`).get(req.params.id);
+    if (gone) content.tombstone(t, gone.k); // keep it deleted when content/ from Git is merged
+  }
+  db.prepare(`DELETE FROM ${t} WHERE id = ?`).run(req.params.id);
   flash(req, '已删除');
   res.redirect('/admin/c/' + req.params.res);
 });
