@@ -284,6 +284,17 @@ address { font-style: normal; font-size: .92rem; }
 /* Keep the floating buttons from covering the last lines of content on phones */
 @media (max-width: 600px) { body { padding-bottom: 76px; } .float-cta { right: 12px; bottom: 12px; } }
 
+/* Cookie consent */
+.cookie-bar { position: fixed; left: 18px; right: 18px; bottom: 18px; z-index: 60; max-width: 760px; margin: 0 auto; padding: 16px 20px;
+  display: flex; align-items: center; gap: 18px; background: rgba(11,16,32,.96); font-size: .9rem; }
+.cookie-bar[hidden] { display: none; }
+.cookie-bar p { margin: 0; color: #d4dbe6; }
+.cookie-actions { display: flex; gap: 8px; flex: none; }
+.cookie-open .float-cta { display: none; }
+.link-btn { background: none; border: 0; padding: 0; font: inherit; color: var(--amber2); cursor: pointer; text-align: left; }
+.f-list .link-btn { color: #c3ccd9; } .link-btn:hover { color: #fff; }
+@media (max-width: 600px) { .cookie-bar { flex-direction: column; align-items: stretch; left: 10px; right: 10px; bottom: 10px; } .cookie-actions .btn { flex: 1; justify-content: center; } }
+
 /* Reveal animation */
 .js .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
 .js .reveal.in { opacity: 1; transform: none; }

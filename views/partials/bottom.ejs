@@ -23,6 +23,7 @@
         <li><a href="/faq">FAQ</a></li>
         <li><a href="/contact">Contact</a></li>
         <li><a href="/privacy-policy">Privacy Policy</a></li>
+        <li><button type="button" class="link-btn" data-cookie-settings>Cookie settings</button></li>
       </ul>
     </div>
     <div>
@@ -41,6 +42,13 @@
 <div class="float-cta">
   <% if (s.whatsapp) { %><a class="fc wa" href="<%= waLink(typeof p !== 'undefined' && p && p.slug ? p : null) %>" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">WhatsApp</a><% } %>
   <a class="fc quote" href="/contact">Get a Quote</a>
+</div>
+<div class="cookie-bar glass-panel" role="dialog" aria-live="polite" aria-label="Cookie consent" hidden>
+  <p>We use cookies for anonymous visit statistics (Google Analytics) and to remember how you found us, so we can answer inquiries better. <a href="/privacy-policy">Privacy policy</a></p>
+  <div class="cookie-actions">
+    <button type="button" class="btn btn-ghost btn-sm" data-consent="denied">Reject</button>
+    <button type="button" class="btn btn-glow btn-sm" data-consent="granted">Accept</button>
+  </div>
 </div>
 <script src="/js/site.js" defer></script>
 </body>

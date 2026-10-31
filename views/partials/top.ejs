@@ -23,10 +23,7 @@
 <link rel="alternate" type="text/plain" title="LLM summary" href="/llms.txt">
 <link rel="stylesheet" href="/css/site.css">
 <script type="application/ld+json"><%- graph %></script>
-<% if (s.ga4_id) { %>
-<script async src="https://www.googletagmanager.com/gtag/js?id=<%= s.ga4_id %>" nonce="<%= nonce %>"></script>
-<script nonce="<%= nonce %>">window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','<%= s.ga4_id %>');</script>
-<% } %>
+<% if (s.ga4_id) { %><meta name="ga4-id" content="<%= s.ga4_id %>"><% } %>
 </head>
 <body class="<%= typeof bodyClass !== 'undefined' ? bodyClass : '' %>">
 <a class="skip" href="#main">Skip to content</a>
