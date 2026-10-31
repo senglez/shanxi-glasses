@@ -7,7 +7,10 @@
     <% g.items.forEach(([k, label]) => { %>
       <div class="field">
         <label for="s-<%= k %>"><%= label %></label>
-        <% if (k === 'home_description') { %>
+        <% if (['whatsapp_message', 'whatsapp_product_message'].includes(k)) { %>
+          <textarea id="s-<%= k %>" name="<%= k %>" rows="5"><%= s[k] %></textarea>
+          <small class="help">清空后保存会恢复默认文字。建议用英文，海外客户才看得懂。</small>
+        <% } else if (k === 'home_description') { %>
           <textarea id="s-<%= k %>" name="<%= k %>" rows="3" data-max="160"><%= s[k] %></textarea>
         <% } else { %>
           <input id="s-<%= k %>" name="<%= k %>" value="<%= s[k] %>" <%= k === 'home_title' ? 'data-max=65' : '' %>>

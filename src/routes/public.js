@@ -6,6 +6,7 @@ const { md, plain, parseSpecs, parseList, fmtDate } = require('../lib/util');
 const { sameOrigin } = require('../lib/security');
 const { notifyInquiry } = require('../lib/mailer');
 const seoAuto = require('../lib/seo-auto');
+const config = require('../config');
 
 const router = express.Router();
 
@@ -46,8 +47,25 @@ router.use((req, res, next) => {
   res.locals.productUrl = seo.productUrl;
   res.locals.catMap = Object.fromEntries(res.locals.navCats.map((c) => [c.id, c]));
   res.locals.baseGraph = [seo.organization(s), seo.website(s)];
+  res.locals.waLink = (product) => whatsappLink(s, req.path, product);
   next();
 });
+
+// wa.me link with a pre-filled message, so the visitor only has to press send.
+function whatsappLink(s, pagePath, product) {
+  if (!s.whatsapp) return '';
+  let url = seo.abs(pagePath);
+  if (config.STATIC_EXPORT && !url.endsWith('/') && !/\.[a-z0-9]{2,5}$/i.test(url)) url += '/'; // static pages live at /path/
+  const tpl = (product ? s.whatsapp_product_message : s.whatsapp_message) || '';
+  const text = tpl
+    .replace(/\{site\}/g, s.site_name)
+    .replace(/\{product\}/g, product ? product.name : '')
+    .replace(/\{url\}/g, url)
+    .replace(/\r\n/g, '\n')
+    .trim();
+  const q = encodeURIComponent(text).replace(/['()*!]/g, (c) => '%' + c.charCodeAt(0).toString(16).toUpperCase());
+  return `https://wa.me/${s.whatsapp}` + (text ? '?text=' + q : '');
+}
 
 const pick = (e) => ({ title: e.title, description: e.description });
 
