@@ -1,0 +1,21 @@
+<%- include('../partials/top') %>
+<%- include('../partials/crumbs') %>
+<section class="wrap section-tight cta-grid">
+  <div>
+    <h1>Request a quote</h1>
+    <p class="lead muted">Tell us what you need. We’ll reply within 24 hours on business days with factory options, prices, MOQs and sample timing.</p>
+    <ul class="checks">
+      <li>Free quotation, no obligation</li>
+      <li>Hand-blown and machine-made, all glass types</li>
+      <li>Samples before bulk orders</li>
+    </ul>
+    <div class="glass-panel pad contact-box">
+      <p><strong>Email</strong><br><a href="mailto:<%= s.contact_email %>"><%= s.contact_email %></a></p>
+      <p><strong>Phone</strong><br><%= s.phone %></p>
+      <% if (s.whatsapp) { %><p><strong>WhatsApp</strong><br><a href="https://wa.me/<%= s.whatsapp %>" target="_blank" rel="noopener">+<%= s.whatsapp %></a></p><% } %>
+      <p><strong>Office</strong><br><%= s.address %></p>
+    </div>
+  </div>
+  <%- include('../partials/inquiry-form') %>
+</section>
+<%- include('../partials/bottom') %>

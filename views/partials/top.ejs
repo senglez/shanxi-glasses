@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= meta.title %></title>
+<% if (meta.description) { %><meta name="description" content="<%= meta.description %>"><% } %>
+<% if (meta.canonical) { %><link rel="canonical" href="<%= meta.canonical %>"><% } %>
+<meta name="robots" content="<%= meta.noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1' %>">
+<meta property="og:type" content="<%= meta.type === 'article' ? 'article' : 'website' %>">
+<meta property="og:site_name" content="<%= s.site_name %>">
+<meta property="og:title" content="<%= meta.title %>">
+<% if (meta.description) { %><meta property="og:description" content="<%= meta.description %>"><% } %>
+<% if (meta.canonical) { %><meta property="og:url" content="<%= meta.canonical %>"><% } %>
+<meta property="og:image" content="<%= meta.image || (SITE_URL + s.og_image) %>">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#05070d">
+<% if (s.google_verification) { %><meta name="google-site-verification" content="<%= s.google_verification %>"><% } %>
+<% if (s.bing_verification) { %><meta name="msvalidate.01" content="<%= s.bing_verification %>"><% } %>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="alternate" type="application/rss+xml" title="<%= s.site_name %> Insights" href="/feed.xml">
+<link rel="alternate" type="text/plain" title="LLM summary" href="/llms.txt">
+<link rel="stylesheet" href="/css/site.css">
+<script type="application/ld+json"><%- graph %></script>
+<% if (s.ga4_id) { %>
+<script async src="https://www.googletagmanager.com/gtag/js?id=<%= s.ga4_id %>" nonce="<%= nonce %>"></script>
+<script nonce="<%= nonce %>">window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','<%= s.ga4_id %>');</script>
+<% } %>
+</head>
+<body class="<%= typeof bodyClass !== 'undefined' ? bodyClass : '' %>">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header" id="top">
+  <div class="wrap nav">
+    <a class="brand" href="/" aria-label="<%= s.site_name %> home">
+      <img src="/img/favicon.svg" width="34" height="34" alt="">
+      <span><%= s.site_name %></span>
+    </a>
+    <button class="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span><span></span></button>
+    <nav id="menu" aria-label="Main">
+      <div class="has-sub">
+        <a href="/products" class="<%= path.startsWith('/products') ? 'active' : '' %>">Products</a>
+        <div class="sub">
+          <% navCats.forEach(c => { %><a href="/products/<%= c.slug %>"><%= c.name %></a><% }) %>
+        </div>
+      </div>
+      <a href="/oem-custom-glassware" class="<%= path === '/oem-custom-glassware' ? 'active' : '' %>">OEM &amp; Custom</a>
+      <a href="/about" class="<%= path === '/about' ? 'active' : '' %>">Why Shanxi</a>
+      <a href="/blog" class="<%= path.startsWith('/blog') ? 'active' : '' %>">Insights</a>
+      <a href="/faq" class="<%= path === '/faq' ? 'active' : '' %>">FAQ</a>
+      <a href="/contact" class="btn btn-sm btn-glow">Get a Quote</a>
+    </nav>
+  </div>
+</header>
+<main id="main">

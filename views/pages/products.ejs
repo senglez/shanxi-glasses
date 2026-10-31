@@ -1,0 +1,31 @@
+<%- include('../partials/top') %>
+<%- include('../partials/crumbs') %>
+<section class="page-head wrap">
+  <h1><%= heading %></h1>
+  <% if (intro) { %><p class="lead muted"><%= intro %></p><% } %>
+  <form class="search" action="/products" method="get" role="search">
+    <input type="search" name="q" value="<%= term %>" placeholder="Search glassware, e.g. borosilicate, decanter…" aria-label="Search products" maxlength="80">
+    <button class="btn btn-glow" type="submit">Search</button>
+  </form>
+  <nav class="pills" aria-label="Categories">
+    <a href="/products" class="<%= !category && !term ? 'on' : '' %>">All</a>
+    <% navCats.forEach(c => { %><a href="/products/<%= c.slug %>" class="<%= category && category.id === c.id ? 'on' : '' %>"><%= c.name %></a><% }) %>
+  </nav>
+</section>
+<section class="wrap section-tight">
+  <% if (products.length) { %>
+    <div class="cards"><% products.forEach(p => { %><%- include('../partials/card', { p }) %><% }) %></div>
+  <% } else { %>
+    <p class="muted">No products found. <a href="/contact">Send us your requirement</a> and we will source it for you.</p>
+  <% } %>
+</section>
+<% if (category && category.description) { %>
+<section class="wrap section-tight"><div class="prose glass-panel pad"><%- md(category.description) %></div></section>
+<% } %>
+<section class="wrap section-tight">
+  <div class="banner glass-panel">
+    <div><h2>Can’t find the exact item?</h2><p class="muted">Most of our business is custom. Send a photo, drawing or link and we’ll match it with the right factory.</p></div>
+    <a href="/contact" class="btn btn-glow btn-lg">Send a Custom Request</a>
+  </div>
+</section>
+<%- include('../partials/bottom') %>

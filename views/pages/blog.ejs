@@ -1,0 +1,17 @@
+<%- include('../partials/top') %>
+<%- include('../partials/crumbs') %>
+<section class="page-head wrap">
+  <h1>Glassware buying guides &amp; insights</h1>
+  <p class="lead muted">Practical guides for importers: materials, processes, quality, costs and sourcing in Shanxi.</p>
+</section>
+<section class="wrap section-tight posts">
+  <% posts.forEach(p => { %>
+    <article class="post-card glass-panel">
+      <% if (p.cover) { %><img src="<%= p.cover %>" alt="" width="800" height="450" loading="lazy"><% } %>
+      <time datetime="<%= p.published_at %>"><%= fmtDate(p.published_at) %></time>
+      <h2 class="h3"><a href="/blog/<%= p.slug %>"><%= p.title %></a></h2>
+      <p><%= p.excerpt %></p>
+    </article>
+  <% }) %>
+</section>
+<%- include('../partials/bottom') %>

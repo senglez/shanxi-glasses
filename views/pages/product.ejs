@@ -1,0 +1,61 @@
+<%- include('../partials/top') %>
+<%- include('../partials/crumbs') %>
+<article class="wrap product">
+  <div class="gallery">
+    <div class="gallery-main glass-panel"><img id="gmain" src="<%= gallery[0] || '/img/glass/wine.webp' %>" alt="<%= p.name %>" width="800" height="800" fetchpriority="high"></div>
+    <% if (gallery.length > 1) { %>
+      <div class="thumbs"><% gallery.forEach((g, i) => { %><button type="button" data-src="<%= g %>" aria-label="Show image <%= i + 1 %>"><img src="<%= g %>" alt="" width="120" height="120" loading="lazy"></button><% }) %></div>
+    <% } %>
+  </div>
+  <div class="p-info">
+    <% if (cat) { %><a class="tag" href="/products/<%= cat.slug %>"><%= cat.name %></a><% } %>
+    <h1><%= p.name %></h1>
+    <p class="lead"><%= p.summary %></p>
+    <dl class="keyfacts glass-panel">
+      <% if (p.material) { %><div><dt>Material</dt><dd><%= p.material %></dd></div><% } %>
+      <% if (p.moq) { %><div><dt>MOQ</dt><dd><%= p.moq %></dd></div><% } %>
+      <% if (p.lead_time) { %><div><dt>Lead time</dt><dd><%= p.lead_time %></dd></div><% } %>
+      <div><dt>Origin</dt><dd>Shanxi, China</dd></div>
+      <div><dt>Customization</dt><dd>Logo, color, size, packaging</dd></div>
+    </dl>
+    <div class="hero-cta">
+      <a href="#inquiry" class="btn btn-glow btn-lg">Get a Quote for This Item</a>
+      <% if (s.whatsapp) { %><a class="btn btn-ghost btn-lg" href="https://wa.me/<%= s.whatsapp %>?text=<%= encodeURIComponent('Hi, I am interested in: ' + p.name) %>" target="_blank" rel="noopener">WhatsApp</a><% } %>
+    </div>
+  </div>
+</article>
+
+<section class="wrap p-detail">
+  <div class="prose glass-panel pad">
+    <h2>Product details</h2>
+    <%- md(p.description) %>
+  </div>
+  <% if (specs.length) { %>
+  <div class="glass-panel pad">
+    <h2>Specifications</h2>
+    <table class="specs"><tbody>
+      <% specs.forEach(sp => { %><tr><th scope="row"><%= sp.k %></th><td><%= sp.v %></td></tr><% }) %>
+    </tbody></table>
+    <p class="muted small">All specifications can be adjusted for OEM orders. Last updated <time datetime="<%= p.updated_at %>"><%= fmtDate(p.updated_at) %></time>.</p>
+  </div>
+  <% } %>
+</section>
+
+<section class="wrap section-tight" id="inquiry">
+  <div class="cta-grid">
+    <div>
+      <p class="eyebrow">Inquiry</p>
+      <h2>Request a quote for <%= p.name %></h2>
+      <p class="muted">Include quantity, customization and destination. We’ll come back with price, MOQ, sample time and shipping options.</p>
+    </div>
+    <%- include('../partials/inquiry-form', { product: p }) %>
+  </div>
+</section>
+
+<% if (related.length) { %>
+<section class="wrap section-tight">
+  <h2>Related products</h2>
+  <div class="cards"><% related.forEach(r => { %><%- include('../partials/card', { p: r }) %><% }) %></div>
+</section>
+<% } %>
+<%- include('../partials/bottom') %>

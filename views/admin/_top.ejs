@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title><%= typeof title !== 'undefined' ? title + ' - ' : '' %>后台管理</title>
+<link rel="icon" href="/img/favicon.svg">
+<link rel="stylesheet" href="/css/admin.css">
+<script src="/js/admin.js" defer></script>
+</head>
+<body>
+<% if (adminUser) { %>
+<aside class="side">
+  <a class="logo" href="/admin"><img src="/img/favicon.svg" width="28" height="28" alt=""> 外贸站后台</a>
+  <nav>
+    <a href="/admin" class="<%= path === '/' ? 'on' : '' %>">📊 数据看板</a>
+    <a href="/admin/inquiries" class="<%= path.startsWith('/inquiries') ? 'on' : '' %>">📨 询盘管理 <% if (newCount) { %><b class="badge"><%= newCount %></b><% } %></a>
+    <a href="/admin/c/factories" class="<%= path.startsWith('/c/factories') ? 'on' : '' %>">🏭 工厂资源库</a>
+    <hr>
+    <a href="/admin/c/products" class="<%= path.startsWith('/c/products') ? 'on' : '' %>">🍷 产品</a>
+    <a href="/admin/c/categories" class="<%= path.startsWith('/c/categories') ? 'on' : '' %>">🗂 产品分类</a>
+    <a href="/admin/c/posts" class="<%= path.startsWith('/c/posts') ? 'on' : '' %>">📝 文章 / 博客</a>
+    <a href="/admin/c/faqs" class="<%= path.startsWith('/c/faqs') ? 'on' : '' %>">❓ FAQ</a>
+    <hr>
+    <a href="/admin/settings" class="<%= path === '/settings' ? 'on' : '' %>">⚙️ 网站设置 / SEO</a>
+    <a href="/admin/c/redirects" class="<%= path.startsWith('/c/redirects') ? 'on' : '' %>">↪️ 301 跳转</a>
+    <a href="/admin/password" class="<%= path === '/password' ? 'on' : '' %>">🔑 修改密码</a>
+    <a href="/" target="_blank" rel="noopener">🌐 查看网站</a>
+  </nav>
+  <form method="post" action="/admin/logout" class="logout">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <span><%= adminUser %></span><button>退出</button>
+  </form>
+</aside>
+<% } %>
+<main class="<%= adminUser ? 'main' : 'main bare' %>">
+<% if (flash) { %><div class="flash"><%= flash %></div><% } %>

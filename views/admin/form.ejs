@@ -1,0 +1,48 @@
+<%- include('_top', { title: (isNew ? '新建' : '编辑') + R.title }) %>
+<p><a href="/admin/c/<%= resKey %>">← 返回<%= R.title %>列表</a></p>
+<div class="head-row">
+  <h1><%= isNew ? '新建' : '编辑' %><%= R.title %></h1>
+  <% if (!isNew && R.url) { %><a class="btn ghost" href="<%= R.url(row) %>" target="_blank">在网站上查看 ↗</a><% } %>
+</div>
+<% if (typeof errors !== 'undefined' && errors.length) { %><div class="err"><% errors.forEach(e => { %><div><%= e %></div><% }) %></div><% } %>
+<form class="card form" method="post" action="/admin/c/<%= resKey %>/<%= isNew ? 'new' : row.id %>" enctype="multipart/form-data">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  <% fields.forEach(f => { const v = row[f.name] ?? ''; %>
+    <div class="field <%= f.type %>">
+      <% if (f.type === 'checkbox') { %>
+        <label class="check"><input type="checkbox" name="<%= f.name %>" value="1" <%= v ? 'checked' : '' %>> <%= f.label %></label>
+      <% } else { %>
+        <label for="f-<%= f.name %>"><%= f.label %><%= f.required ? ' *' : '' %></label>
+        <% if (f.type === 'textarea' || f.type === 'markdown') { %>
+          <textarea id="f-<%= f.name %>" name="<%= f.name %>" rows="<%= f.rows || 4 %>" <%= f.max ? `data-max=${f.max}` : '' %> class="<%= f.type === 'markdown' ? 'mono' : '' %>"><%= v %></textarea>
+        <% } else if (f.type === 'select') { %>
+          <select id="f-<%= f.name %>" name="<%= f.name %>"><option value="">—</option><% f.options.forEach(o => { %><option value="<%= o.value %>" <%= Number(v) === o.value ? 'selected' : '' %>><%= o.label %></option><% }) %></select>
+        <% } else if (f.type === 'image') { %>
+          <div class="img-field">
+            <% if (v) { %><img src="<%= v %>" alt="" class="preview"><% } %>
+            <div>
+              <input type="file" name="<%= f.name %>" accept="image/jpeg,image/png,image/webp,image/avif,image/gif">
+              <input type="text" name="<%= f.name %>_url" value="<%= v %>" placeholder="或填写图片地址 /uploads/... 或 https://...">
+              <% if (v) { %><label class="check"><input type="checkbox" name="<%= f.name %>_remove" value="1"> 移除图片</label><% } %>
+            </div>
+          </div>
+        <% } else if (f.type === 'gallery') { const list = (typeof parseList === 'function' ? parseList(v) : []); %>
+          <div class="gallery-prev"><% list.forEach(u => { %><img src="<%= u %>" alt=""><% }) %></div>
+          <textarea name="<%= f.name %>" rows="3" placeholder="每行一个图片地址；删除某行即移除该图"><%= list.join('\n') %></textarea>
+          <input type="file" name="<%= f.name %>_files" accept="image/jpeg,image/png,image/webp,image/avif,image/gif" multiple>
+        <% } else { %>
+          <input id="f-<%= f.name %>" type="<%= f.type === 'number' ? 'number' : 'text' %>" name="<%= f.name %>" value="<%= v %>" <%= f.required ? 'required' : '' %> <%= f.max ? `data-max=${f.max}` : '' %>>
+        <% } %>
+      <% } %>
+      <% if (f.help) { %><small class="help"><%= f.help %></small><% } %>
+    </div>
+  <% }) %>
+  <div class="actions"><button class="btn">保存</button></div>
+</form>
+<% if (!isNew) { %>
+<form method="post" action="/admin/c/<%= resKey %>/<%= row.id %>/delete" data-confirm="确定删除？此操作不可撤销。" class="del">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  <button class="btn danger">删除</button>
+</form>
+<% } %>
+<%- include('_bottom') %>

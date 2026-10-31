@@ -1,0 +1,16 @@
+<article class="card tilt reveal">
+  <a href="<%= productUrl(p, catMap[p.category_id]) %>" class="card-link">
+    <div class="card-img">
+      <img src="<%= p.image || '/img/glass/wine.webp' %>" alt="<%= p.name %>" width="600" height="600" loading="lazy" decoding="async">
+    </div>
+    <div class="card-body">
+      <% if (catMap[p.category_id]) { %><span class="tag"><%= catMap[p.category_id].name %></span><% } %>
+      <h3><%= p.name %></h3>
+      <p><%= p.summary %></p>
+      <dl class="mini">
+        <% if (p.moq) { %><div><dt>MOQ</dt><dd><%= p.moq %></dd></div><% } %>
+        <% if (p.material) { %><div><dt>Material</dt><dd><%= p.material %></dd></div><% } %>
+      </dl>
+    </div>
+  </a>
+</article>

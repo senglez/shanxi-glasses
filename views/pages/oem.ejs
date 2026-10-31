@@ -1,0 +1,54 @@
+<%- include('../partials/top') %>
+<%- include('../partials/crumbs') %>
+<section class="page-head wrap">
+  <p class="eyebrow">OEM · ODM · Private label</p>
+  <h1>Custom glassware made to your design</h1>
+  <p class="lead muted">We turn your sketch, reference sample or brand guideline into production-ready glassware with Shanxi factories, then handle samples, QC and export.</p>
+</section>
+
+<section class="wrap section-tight">
+  <div class="steps">
+    <% [
+      ['Shape & size', 'New molds or modified existing molds. Capacity, height, thickness and weight to your spec.'],
+      ['Glass & color', 'Soda-lime, lead-free crystal or borosilicate. Solid color, spray color, ombre, frosted, iridescent.'],
+      ['Logo & decoration', 'Decal, screen printing, sandblasting, acid etching, laser engraving, gold/platinum rims, hand painting.'],
+      ['Packaging', 'Gift boxes, color boxes, PVC windows, inserts, export cartons with barcodes and shipping marks.'],
+      ['Compliance', 'FDA / LFGB / EU food-contact tests, dishwasher and thermal-shock tests through accredited labs.'],
+      ['Quality control', 'Golden sample approval, in-line checks, pre-shipment AQL inspection with photo report.'],
+    ].forEach(([t, d], i) => { %>
+      <div class="step glass-panel reveal"><span class="num"><%= String(i + 1).padStart(2, '0') %></span><h2 class="h3"><%= t %></h2><p><%= d %></p></div>
+    <% }) %>
+  </div>
+</section>
+
+<section class="wrap section-tight">
+  <div class="prose glass-panel pad">
+    <h2>Typical OEM timeline</h2>
+    <table>
+      <thead><tr><th>Stage</th><th>Time</th></tr></thead>
+      <tbody>
+        <tr><td>Quotation with factory options</td><td>1–3 working days</td></tr>
+        <tr><td>New mold (if needed)</td><td>10–20 days</td></tr>
+        <tr><td>Samples</td><td>7–15 days</td></tr>
+        <tr><td>Mass production</td><td>30–45 days</td></tr>
+        <tr><td>Inspection and loading</td><td>3–5 days</td></tr>
+      </tbody>
+    </table>
+    <h2>What to send us</h2>
+    <ul>
+      <li>Photos, drawings or a link to a reference product</li>
+      <li>Capacity and key dimensions</li>
+      <li>Quantity per design and per color</li>
+      <li>Logo file (AI/PDF/SVG) and decoration method if known</li>
+      <li>Packaging requirements and destination port</li>
+    </ul>
+  </div>
+</section>
+
+<section class="wrap section-tight" id="inquiry">
+  <div class="cta-grid">
+    <div><h2>Start your custom project</h2><p class="muted">We’ll review your brief and reply with feasibility, factory options and an estimate.</p></div>
+    <%- include('../partials/inquiry-form') %>
+  </div>
+</section>
+<%- include('../partials/bottom') %>

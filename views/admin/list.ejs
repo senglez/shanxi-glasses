@@ -1,0 +1,29 @@
+<%- include('_top', { title: R.title }) %>
+<div class="head-row">
+  <h1><%= R.title %> <small class="muted"><%= rows.length %> 条</small></h1>
+  <a class="btn" href="/admin/c/<%= resKey %>/new">＋ 新建</a>
+</div>
+<% if (resKey === 'factories') { %><p class="muted">工厂资源库只在后台可见，不会出现在前台网站。初始数据来自公开信息，合作前请实地核实。</p><% } %>
+<div class="card flush">
+<table class="tbl">
+  <thead><tr><% R.list.forEach(c => { %><th><%= c.label %></th><% }) %><th></th></tr></thead>
+  <tbody>
+  <% rows.forEach(r => { %>
+    <tr>
+      <% R.list.forEach((c, i) => { const v = r[c.name]; %>
+        <td>
+          <% if (c.type === 'image') { %><% if (v) { %><img class="thumb" src="<%= v %>" alt=""><% } %>
+          <% } else if (c.type === 'bool') { %><%= v ? '✅' : '—' %>
+          <% } else if (c.type === 'date') { %><span class="nowrap"><%= String(v || '').slice(0, 10) %></span>
+          <% } else if (i === 0 || (i === 1 && R.list[0].type === 'image')) { %><a href="/admin/c/<%= resKey %>/<%= r.id %>"><strong><%= v %></strong></a>
+          <% } else { %><%= v %><% } %>
+        </td>
+      <% }) %>
+      <td class="nowrap"><a href="/admin/c/<%= resKey %>/<%= r.id %>">编辑</a><% if (R.url) { %> · <a href="<%= R.url(r) %>" target="_blank">查看</a><% } %></td>
+    </tr>
+  <% }) %>
+  <% if (!rows.length) { %><tr><td colspan="<%= R.list.length + 1 %>" class="muted">暂无数据</td></tr><% } %>
+  </tbody>
+</table>
+</div>
+<%- include('_bottom') %>
