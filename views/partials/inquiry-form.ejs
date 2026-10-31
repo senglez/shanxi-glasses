@@ -3,8 +3,8 @@
   const errs = typeof errors !== 'undefined' ? errors : [];
   const prod = typeof product !== 'undefined' ? product : null;
   // Static hosting (GitHub Pages): Web3Forms sends the email, Google Apps Script keeps the record.
-  const w3f = isStatic && s.web3forms_key;
-  const record = isStatic && s.form_endpoint;
+  const w3f = isStatic && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(s.web3forms_key || '') && s.web3forms_key;
+  const record = isStatic && /^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(s.form_endpoint || '') && s.form_endpoint;
 %>
 <% if (!isStatic) { %>
 <form class="inquiry glass-panel" method="post" action="/inquiry" data-inquiry>

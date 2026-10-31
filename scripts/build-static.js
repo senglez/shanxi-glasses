@@ -26,7 +26,19 @@ const config = require('../src/config');
 const BASE = config.BASE_PATH; // "" or "/repo"
 const SITE = config.SITE_URL; // absolute, includes BASE
 const app = require('../src/server');
-const { db } = require('../src/db');
+const { db, getSettings } = require('../src/db');
+
+// Inquiry destinations are published in every page, so refuse to build with anything unexpected.
+{
+  const s = getSettings();
+  const bad = [];
+  if (s.form_endpoint && !/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(s.form_endpoint)) bad.push(`form_endpoint "${s.form_endpoint}" is not a Google Apps Script URL`);
+  if (s.web3forms_key && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(s.web3forms_key)) bad.push('web3forms_key is not a UUID');
+  if (bad.length) {
+    console.error('Refusing to build, check content/settings.json:\n  - ' + bad.join('\n  - '));
+    process.exit(1);
+  }
+}
 const { productUrl } = require('../src/lib/seo');
 
 const hasExt = (p) => /\.[a-z0-9]{2,5}$/i.test(p.split('/').pop());
