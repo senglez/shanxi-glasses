@@ -20,7 +20,7 @@
     </dl>
     <div class="hero-cta">
       <a href="#inquiry" class="btn btn-glow btn-lg">Get a Quote for This Item</a>
-      <% if (s.whatsapp) { %><a class="btn btn-ghost btn-lg" href="https://wa.me/<%= s.whatsapp %>?text=<%= encodeURIComponent('Hi, I am interested in: ' + p.name) %>" target="_blank" rel="noopener">WhatsApp</a><% } %>
+      <% if (s.whatsapp) { %><a class="btn btn-ghost btn-lg" href="<%= waLink(p) %>" target="_blank" rel="noopener">WhatsApp</a><% } %>
     </div>
   </div>
 </article>
