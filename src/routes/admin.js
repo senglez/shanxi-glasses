@@ -450,6 +450,7 @@ const SETTING_FIELDS = [
       ['web3forms_key', 'Web3Forms Access Key（负责邮件通知，形如 xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx）'],
       ['form_endpoint', 'Google Apps Script 网页应用地址（负责保存询盘记录，https://script.google.com/macros/s/.../exec）'],
       ['sync_token', '同步密钥 SYNC_TOKEN（与 Apps Script 中一致，不会发布到网站）'],
+      ['sync_proxy', '同步代理地址（在中国大陆需要填写，例如 Clash：http://127.0.0.1:7890，V2RayN：http://127.0.0.1:10809；不会发布到网站）'],
     ],
   },
   { group: '统计与站长工具', items: [['ga4_id', 'Google Analytics 4 衡量 ID（G-XXXX）'], ['google_verification', 'Google Search Console 验证码（content 值）'], ['bing_verification', 'Bing Webmaster 验证码（content 值）']] },

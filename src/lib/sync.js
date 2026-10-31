@@ -1,8 +1,39 @@
 // Pulls inquiries collected by the Google Apps Script endpoint (static site)
 // into the local admin database. Safe to run repeatedly: rows are de-duplicated by external_id.
+// Uses undici directly: Node's built-in fetch ignores system/VPN proxies, and Google is not
+// reachable from mainland China without one.
+const { fetch, ProxyAgent } = require('undici');
 const { db, getSettings, setSettings } = require('../db');
 
 const clip = (v, n) => String(v ?? '').trim().slice(0, n);
+
+// Admin setting first, then the usual environment variables.
+function resolveProxy(s) {
+  const p = (s.sync_proxy || process.env.HTTPS_PROXY || process.env.https_proxy || process.env.HTTP_PROXY || process.env.http_proxy || '').trim();
+  if (!p) return '';
+  if (/^[\w.-]+:\d+$/.test(p)) return resolveProxy({ sync_proxy: 'http://' + p }); // "127.0.0.1:7890"
+  let u;
+  try {
+    u = new URL(p);
+  } catch {
+    throw new Error(`代理地址 "${p}" 格式不对，应为 http://127.0.0.1:7890 这样的形式`);
+  }
+  if (!['http:', 'https:'].includes(u.protocol)) {
+    throw new Error(`只支持 HTTP 代理（http://...），不支持 ${u.protocol.replace(':', '')}。Clash、V2RayN 等软件都同时提供 HTTP 端口`);
+  }
+  return u.toString();
+}
+
+function explainNetworkError(e, proxy) {
+  const c = (e && e.cause) || {};
+  const code = c.code || e.name || '';
+  const detail = [code, c.message].filter(Boolean).join(' ');
+  if (proxy) {
+    if (code === 'ECONNREFUSED') return `连不上代理 ${proxy}（${detail}）。请确认代理软件已打开，端口号和软件里显示的一致`;
+    return `通过代理 ${proxy} 访问 Google 失败（${detail || e.message}）。请确认代理软件已打开，并且能访问 Google`;
+  }
+  return `连不上 script.google.com（${detail || e.message}）。在中国大陆需要通过代理访问：请在「网站设置 → 询盘接收」填写代理地址，例如 http://127.0.0.1:7890`;
+}
 
 async function syncInquiries() {
   const s = getSettings();
@@ -14,7 +45,17 @@ async function syncInquiries() {
   url.searchParams.set('action', 'export');
   url.searchParams.set('token', s.sync_token);
 
-  const res = await fetch(url, { redirect: 'follow', signal: AbortSignal.timeout(30000) });
+  const proxy = resolveProxy(s);
+  let res;
+  try {
+    res = await fetch(url, {
+      redirect: 'follow',
+      signal: AbortSignal.timeout(30000),
+      ...(proxy ? { dispatcher: new ProxyAgent(proxy) } : {}),
+    });
+  } catch (e) {
+    throw new Error(explainNetworkError(e, proxy));
+  }
   const text = await res.text();
   let data;
   try {
