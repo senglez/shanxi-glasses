@@ -72,7 +72,7 @@
         const lastCls = (r4 ? 'fill-d' + (5 - r4) : '') + (r2 ? ' fill-t2' : '');
       %>
       <% navCats.forEach((c, i) => { %>
-        <a class="bento-item tilt reveal <%= i === 0 ? 'big' : '' %> <%= i > 0 && i === navCats.length - 1 ? lastCls : '' %>" href="/products/<%= c.slug %>">
+        <a class="bento-item tilt reveal <%= isPhoto(c.image) ? 'photo' : '' %> <%= i === 0 ? 'big' : '' %> <%= i > 0 && i === navCats.length - 1 ? lastCls : '' %>" href="/products/<%= c.slug %>">
           <img src="<%= c.image || '/img/glass/wine.webp' %>" alt="<%= c.name %>" width="600" height="600" loading="lazy" decoding="async">
           <div class="bento-cap">
             <h3><%= c.name %></h3>

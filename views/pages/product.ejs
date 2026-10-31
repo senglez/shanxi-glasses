@@ -2,9 +2,9 @@
 <%- include('../partials/crumbs') %>
 <article class="wrap product">
   <div class="gallery">
-    <div class="gallery-main glass-panel"><img id="gmain" src="<%= gallery[0] || '/img/glass/wine.webp' %>" alt="<%= p.name %>" width="800" height="800" fetchpriority="high"></div>
+    <div class="gallery-main glass-panel<%= isPhoto(gallery[0]) ? ' photo' : '' %>"><img id="gmain" src="<%= gallery[0] || '/img/glass/wine.webp' %>" alt="<%= p.name %>" width="800" height="800" fetchpriority="high"></div>
     <% if (gallery.length > 1) { %>
-      <div class="thumbs"><% gallery.forEach((g, i) => { %><button type="button" data-src="<%= g %>" aria-label="Show image <%= i + 1 %>"><img src="<%= g %>" alt="" width="120" height="120" loading="lazy"></button><% }) %></div>
+      <div class="thumbs"><% gallery.forEach((g, i) => { %><button type="button" class="<%= isPhoto(g) ? 'photo' : '' %>" data-src="<%= g %>" aria-label="Show image <%= i + 1 %>"><img src="<%= g %>" alt="" width="120" height="120" loading="lazy"></button><% }) %></div>
     <% } %>
   </div>
   <div class="p-info">

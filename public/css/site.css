@@ -284,6 +284,29 @@ address { font-style: normal; font-size: .92rem; }
 /* Keep the floating buttons from covering the last lines of content on phones */
 @media (max-width: 600px) { body { padding-bottom: 76px; } .float-cta { right: 12px; bottom: 12px; } }
 
+/* Photo stage: real product photos on white backgrounds sit on a white "display stand",
+   shown whole (not cropped) so bottles, lids and reflections stay visible. */
+.card-img.photo, .gallery-main.photo, .thumbs button.photo { background: #fff; }
+.card-img.photo img, .gallery-main.photo img, .thumbs button.photo img { object-fit: contain; }
+.card-img.photo img { padding: 6%; }
+.gallery-main.photo { border-color: rgba(255,255,255,.25); }
+.gallery-main.photo img { padding: 4%; }
+.card:has(.card-img.photo) .card-body { border-top: 1px solid rgba(255,255,255,.06); }
+.bento-item.photo { background: #fff; }
+.bento-item.photo img { object-fit: contain; padding: 14px 14px 118px; }
+.bento-item.photo.big img { padding: 24px 24px 150px; }
+.bento-item.photo .bento-cap { background: rgba(8,11,22,.96); border-top: 1px solid rgba(255,255,255,.08); }
+.bento-item.photo:hover img { transform: scale(1.03); }
+/* Small tiles: short caption so the photo keeps most of the space */
+.bento-item.photo:not(.big) .bento-cap { padding: 12px 18px 14px; }
+.bento-item.photo:not(.big) .bento-cap p { display: none; }
+.bento-item.photo:not(.big) .bento-cap h3 { font-size: 1.02rem; margin-bottom: .2em; }
+.bento-item.photo:not(.big) img { padding: 12px 12px 76px; }
+@media (min-width: 1001px) {
+  .bento-item.photo.fill-d3 img, .bento-item.photo.fill-d4 img { padding: 16px; }
+  .bento-item.photo.fill-d3 .bento-cap, .bento-item.photo.fill-d4 .bento-cap { border-top: 0; }
+}
+
 /* Cookie consent */
 .cookie-bar { position: fixed; left: 18px; right: 18px; bottom: 18px; z-index: 60; max-width: 760px; margin: 0 auto; padding: 16px 20px;
   display: flex; align-items: center; gap: 18px; background: rgba(11,16,32,.96); font-size: .9rem; }

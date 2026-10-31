@@ -42,6 +42,8 @@ router.use((req, res, next) => {
   res.locals.navCats = q.cats.all();
   res.locals.path = req.path;
   res.locals.md = md;
+  // Real product photos (uploaded, usually white background) get a light 'photo stage'; drawn placeholders keep the dark look.
+  res.locals.isPhoto = (src) => !!src && !String(src).startsWith('/img/glass/');
   res.locals.plain = plain;
   res.locals.fmtDate = fmtDate;
   res.locals.productUrl = seo.productUrl;
