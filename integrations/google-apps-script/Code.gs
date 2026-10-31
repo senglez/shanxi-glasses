@@ -7,7 +7,7 @@
  * Script properties (Project Settings → Script properties):
  *   SYNC_TOKEN    long random string, also entered in admin「网站设置」
  *   NOTIFY_EMAIL  where notifications go (defaults to the script owner)
- *   SITE_URL      e.g. https://senglez.github.io/shanxi-glasses  (used for the thank-you link)
+ *   SITE_URL      e.g. https://www.shanxiglassworks.com  (used for the thank-you link)
  *   SEND_EMAIL    "false" to skip emails (when Web3Forms already sends them)
  */
 

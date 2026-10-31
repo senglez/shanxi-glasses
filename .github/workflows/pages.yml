@@ -1,6 +1,5 @@
 # Builds the static site from content/*.json and deploys it to GitHub Pages
-# on every push to main. Custom domain: set repository variables
-#   SITE_URL = https://www.your-domain.com   CNAME = www.your-domain.com
+# on every push to main. Custom domain: put it in the CUSTOM_DOMAIN file (e.g. www.example.com).
 name: Deploy to GitHub Pages
 
 on:
@@ -36,7 +35,13 @@ jobs:
           OWNER: ${{ github.repository_owner }}
           REPO: ${{ github.event.repository.name }}
         run: |
-          if [ -n "$CUSTOM_URL" ]; then
+          # The custom domain is set in the committed CUSTOM_DOMAIN file (or the SITE_URL repo variable).
+          if [ -s CUSTOM_DOMAIN ]; then
+            DOMAIN=$(tr -d '[:space:]' < CUSTOM_DOMAIN)
+            echo "SITE_URL=https://$DOMAIN" >> "$GITHUB_ENV"
+            echo "BASE_PATH=" >> "$GITHUB_ENV"
+            echo "CNAME=$DOMAIN" >> "$GITHUB_ENV"
+          elif [ -n "$CUSTOM_URL" ]; then
             echo "SITE_URL=${CUSTOM_URL%/}" >> "$GITHUB_ENV"
             echo "BASE_PATH=" >> "$GITHUB_ENV"
           else
@@ -45,8 +50,6 @@ jobs:
           fi
       - name: Build static site
         run: npm run build:static
-        env:
-          CNAME: ${{ vars.CNAME }}
       - name: Find changed pages for IndexNow
         id: changed
         run: node scripts/indexnow.js changed

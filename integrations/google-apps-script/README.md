@@ -33,7 +33,7 @@ GitHub Pages 上的网站没有服务器。客户点「Send Inquiry」后，询�
 | 属性 | 值 |
 |---|---|
 | `NOTIFY_EMAIL` | 接收询盘通知的邮箱（不填则发到你的 Google 账号邮箱） |
-| `SITE_URL` | `https://senglez.github.io/shanxi-glasses` |
+| `SITE_URL` | `https://www.shanxiglassworks.com` |
 | `SEND_EMAIL` | `false`（已经用 Web3Forms 发邮件时填这个，避免每条询盘收到两封邮件） |
 
 ## 4. 部署为网页应用

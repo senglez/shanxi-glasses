@@ -26,7 +26,7 @@ npm start                 # http://localhost:3000，后台 http://localhost:3000
 
 ## 2A. 当前部署方式：GitHub Pages（静态站，免费）
 
-网址：**https://senglez.github.io/shanxi-glasses/**
+网址：**https://www.shanxiglassworks.com/**（旧网址 senglez.github.io/shanxi-glasses 会自动 301 跳转到这里）
 
 GitHub Pages 只能托管静态文件，所以分成两部分：
 
@@ -47,7 +47,7 @@ GitHub Pages 只能托管静态文件，所以分成两部分：
 
 本地预览静态版本：`SITE_URL=http://localhost:8080 npm run build:static`，然后在 `dist/` 目录下起一个静态服务器。
 
-**绑定自己的域名**：在仓库 Settings → Secrets and variables → Actions → Variables 添加 `SITE_URL=https://www.你的域名.com` 和 `CNAME=www.你的域名.com`。然后在 DNS 加一条 CNAME 记录指向 `senglez.github.io`，在 Settings → Pages 填写域名并勾选 Enforce HTTPS。有了自己的域名后，robots.txt 和 llms.txt 才会位于网站根目录，被爬虫正常读取。
+**自定义域名**：写在仓库根目录的 `CUSTOM_DOMAIN` 文件里（当前是 `www.shanxiglassworks.com`）。DNS 由 Cloudflare 管理：根域名指向 GitHub Pages 的 4 个 A 记录，`www` 是指向 `senglez.github.io` 的 CNAME 记录，都设为「仅 DNS」（灰色云朵）。
 
 **以后迁移到服务器（方案 B）**：按下面 2B 部署，把本地的 `data/site.db` 和 `public/uploads/` 拷到服务器即可，询盘历史都在。静态站的网址末尾带 `/`，服务器版会 301 跳转到不带 `/` 的版本，搜索排名不受影响。
 
