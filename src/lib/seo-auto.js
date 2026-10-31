@@ -38,7 +38,7 @@ const product = {
     compose(p.summary || plain(p.description, 200), [
       p.moq ? `MOQ ${squash(p.moq).replace(/\.$/, '')}.` : '',
       'Custom logo & packaging, QC and export from Shanxi, China.',
-      'Factory-direct quotes in 24h.',
+      'Quotes from vetted factories in 24h.',
     ]),
 };
 
@@ -46,9 +46,9 @@ const category = {
   title: (c, site) =>
     fit(
       TITLE_MAX,
-      `${c.name} Manufacturer & Wholesale | ${site}`,
+      `${c.name} Supplier in China | ${site}`,
       `Wholesale ${c.name} from China | ${site}`,
-      `${c.name} Manufacturer & Wholesale Supplier`,
+      `${c.name} Supplier in China`,
       `Wholesale ${c.name} from China`,
       c.name
     ),
@@ -75,13 +75,54 @@ function effective(table, row, site) {
   };
 }
 
-// A stored value counts as "automatic" if it is empty or equals what the rules produce,
-// so it can be regenerated safely; anything else was written by hand and is kept.
+// Earlier versions of the rules. Values they produced still count as automatic, so they get
+// replaced by the current wording instead of being treated as hand-written.
+const LEGACY = {
+  products: {
+    title: () => null,
+    desc: (p) =>
+      compose(p.summary || plain(p.description, 200), [
+        p.moq ? `MOQ ${squash(p.moq).replace(/\.$/, '')}.` : '',
+        'Custom logo & packaging, QC and export from Shanxi, China.',
+        'Factory-direct quotes in 24h.',
+      ]),
+  },
+  categories: {
+    title: (c, site) =>
+      fit(TITLE_MAX, `${c.name} Manufacturer & Wholesale | ${site}`, `Wholesale ${c.name} from China | ${site}`, `${c.name} Manufacturer & Wholesale Supplier`, `Wholesale ${c.name} from China`, c.name),
+    desc: () => null,
+  },
+  posts: { title: () => null, desc: () => null },
+};
+
+// A stored value counts as "automatic" if it is empty or equals what the rules produce (now or
+// in an earlier version), so it can be regenerated safely; anything else was written by hand and is kept.
 function isAuto(table, field, row, site) {
   const v = row[field];
   if (!v) return true;
-  const g = BY_TABLE[table];
-  return v === (field === 'seo_title' ? g.title(row, site) : g.desc(row));
+  const key = field === 'seo_title' ? 'title' : 'desc';
+  const call = (g) => (key === 'title' ? g.title(row, site) : g.desc(row));
+  return v === call(BY_TABLE[table]) || v === call(LEGACY[table]);
 }
 
-module.exports = { product, category, post, BY_TABLE, effective, isAuto, TITLE_MAX, DESC_MAX };
+// Fill empty SEO fields and refresh automatic ones. Hand-written values are kept.
+// oldSite: previous site name, so titles generated with it are also refreshed after a rename.
+function regenerate(db, site, { oldSite } = {}) {
+  const counts = {};
+  for (const [table, g] of Object.entries(BY_TABLE)) {
+    const upd = db.prepare(`UPDATE ${table} SET seo_title = ?, seo_description = ? WHERE id = ?`);
+    let n = 0;
+    db.transaction(() => {
+      for (const row of db.prepare(`SELECT * FROM ${table}`).all()) {
+        const autoT = isAuto(table, 'seo_title', row, site) || (oldSite && isAuto(table, 'seo_title', row, oldSite));
+        const t = autoT ? g.title(row, site) : row.seo_title;
+        const d = isAuto(table, 'seo_description', row, site) ? g.desc(row) : row.seo_description;
+        if (t !== row.seo_title || d !== row.seo_description) (upd.run(t, d, row.id), n++);
+      }
+    })();
+    counts[table] = n;
+  }
+  return counts;
+}
+
+module.exports = { product, category, post, BY_TABLE, effective, isAuto, regenerate, TITLE_MAX, DESC_MAX };

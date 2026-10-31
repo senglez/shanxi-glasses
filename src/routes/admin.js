@@ -13,24 +13,7 @@ const multer = require('multer');
 
 // Fill empty SEO fields and refresh automatic ones (e.g. after a brand rename). Manual values are kept.
 function regenerateSeo({ oldSite } = {}) {
-  const site = getSettings().site_name;
-  const counts = {};
-  for (const [table, g] of Object.entries(seoAuto.BY_TABLE)) {
-    const rows = db.prepare(`SELECT * FROM ${table}`).all();
-    const upd = db.prepare(`UPDATE ${table} SET seo_title = ?, seo_description = ? WHERE id = ?`);
-    let n = 0;
-    db.transaction(() => {
-      for (const row of rows) {
-        const autoT = seoAuto.isAuto(table, 'seo_title', row, site) || (oldSite && seoAuto.isAuto(table, 'seo_title', row, oldSite));
-        const autoD = seoAuto.isAuto(table, 'seo_description', row, site);
-        const t = autoT ? g.title(row, site) : row.seo_title;
-        const d = autoD ? g.desc(row) : row.seo_description;
-        if (t !== row.seo_title || d !== row.seo_description) (upd.run(t, d, row.id), n++);
-      }
-    })();
-    counts[table] = n;
-  }
-  return counts;
+  return seoAuto.regenerate(db, getSettings().site_name, { oldSite });
 }
 
 // Lists pages whose effective title/description is too long, too short or duplicated.
