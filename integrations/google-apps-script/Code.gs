@@ -8,6 +8,7 @@
  *   SYNC_TOKEN    long random string, also entered in admin「网站设置」
  *   NOTIFY_EMAIL  where notifications go (defaults to the script owner)
  *   SITE_URL      e.g. https://senglez.github.io/shanxi-glasses  (used for the thank-you link)
+ *   SEND_EMAIL    "false" to skip emails (when Web3Forms already sends them)
  */
 
 var SHEET_NAME = 'Inquiries';
@@ -75,6 +76,8 @@ function doPost(e) {
     lock.releaseLock();
   }
 
+  // Set SEND_EMAIL=false when Web3Forms already sends the notification email.
+  if (props().getProperty('SEND_EMAIL') === 'false') return reply(true);
   try {
     var to = props().getProperty('NOTIFY_EMAIL') || Session.getEffectiveUser().getEmail();
     MailApp.sendEmail({

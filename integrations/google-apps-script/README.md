@@ -1,6 +1,18 @@
-# 询盘接收：Google 表格 + Apps Script（约 10 分钟）
+# 询盘接收：Web3Forms 邮件 + Google 表格记录
 
-GitHub Pages 上的网站没有服务器。客户提交的询盘会发到你自己的 Google 表格，每条一行，同时发邮件通知你。本地后台点「同步询盘」就能把表格里的询盘导入询盘管理。
+GitHub Pages 上的网站没有服务器。客户点「Send Inquiry」后，询盘会同时发到两个地方：
+
+| | 作用 | 设置 |
+|---|---|---|
+| **Web3Forms** | 把询盘发到你的邮箱 | 后台「网站设置」填 Access Key 即可 |
+| **Google 表格** | 每条询盘存一行；后台点「同步询盘」导入询盘管理 | 按下面步骤配置（约 10 分钟） |
+
+两者互为备份，只要有一个成功，客户就会看到感谢页面。Web3Forms 免费版每月 250 条，后台不提供询盘接口，所以长期记录要靠 Google 表格。
+
+## Web3Forms
+后台「网站设置 → 询盘接收」填 Access Key，保存后运行 `npm run publish`。Access Key 本来就写在网页表单里，公开没有关系。建议在 Web3Forms 控制台把允许的域名限制为 `senglez.github.io`（需要 Pro 版）。
+
+## Google 表格（保存询盘记录）
 
 ## 1. 新建表格并粘贴脚本
 1. 打开 [Google 表格](https://sheets.google.com)，新建一个空白表格，命名为 “Website Inquiries”。
@@ -19,6 +31,7 @@ GitHub Pages 上的网站没有服务器。客户提交的询盘会发到你自�
 |---|---|
 | `NOTIFY_EMAIL` | 接收询盘通知的邮箱（不填则发到你的 Google 账号邮箱） |
 | `SITE_URL` | `https://senglez.github.io/shanxi-glasses` |
+| `SEND_EMAIL` | `false`（已经用 Web3Forms 发邮件时填这个，避免每条询盘收到两封邮件） |
 
 ## 4. 部署为网页应用
 1. 右上角「部署 → 新建部署」，类型选「网页应用」。

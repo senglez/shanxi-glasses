@@ -2,11 +2,21 @@
   const f = typeof form !== 'undefined' ? form : {};
   const errs = typeof errors !== 'undefined' ? errors : [];
   const prod = typeof product !== 'undefined' ? product : null;
+  // Static hosting (GitHub Pages): Web3Forms sends the email, Google Apps Script keeps the record.
+  const w3f = isStatic && s.web3forms_key;
+  const record = isStatic && s.form_endpoint;
 %>
 <% if (!isStatic) { %>
 <form class="inquiry glass-panel" method="post" action="/inquiry" data-inquiry>
-<% } else if (s.form_endpoint) { %>
-<form class="inquiry glass-panel" method="post" action="<%= s.form_endpoint %>" data-inquiry data-endpoint="<%= s.form_endpoint %>" data-thanks="/thank-you" data-fallback="<%= s.contact_email %>">
+<% } else if (w3f) { %>
+<form class="inquiry glass-panel" method="post" action="https://api.web3forms.com/submit" data-inquiry data-w3f="1" data-record="<%= record || '' %>" data-thanks="/thank-you" data-fallback="<%= s.contact_email %>">
+  <input type="hidden" name="access_key" value="<%= s.web3forms_key %>">
+  <input type="hidden" name="from_name" value="<%= s.site_name %> website">
+  <input type="hidden" name="subject" value="[Inquiry] <%= prod ? prod.name : 'Website inquiry' %>">
+  <input type="hidden" name="redirect" value="<%= SITE_URL %>/thank-you">
+  <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+<% } else if (record) { %>
+<form class="inquiry glass-panel" method="post" action="<%= record %>" data-inquiry data-record="<%= record %>" data-thanks="/thank-you" data-fallback="<%= s.contact_email %>">
 <% } else { %>
 <form class="inquiry glass-panel" method="post" action="mailto:<%= s.contact_email %>?subject=Glassware%20inquiry" enctype="text/plain" data-inquiry>
 <% } %>

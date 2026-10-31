@@ -34,7 +34,7 @@ GitHub Pages 只能托管静态文件，所以分成两部分：
 |---|---|---|
 | 前台网站 | GitHub Pages | 每次推送到 `main`，GitHub Actions（`.github/workflows/pages.yml`）会自动从 `content/*.json` 生成静态页面并发布 |
 | 后台 | 你自己电脑上 `npm start` | 改产品、文章、FAQ、设置；管理询盘和工厂库 |
-| 询盘 | 你的 Google 表格 | 客户提交 → 表格记录一行 + 邮件通知 → 后台点「同步询盘」导入。配置方法见 [`integrations/google-apps-script/README.md`](integrations/google-apps-script/README.md) |
+| 询盘 | Web3Forms + 你的 Google 表格 | 客户提交后，Web3Forms 发邮件给你，Google 表格同时记录一行；后台点「同步询盘」导入。配置方法见 [`integrations/google-apps-script/README.md`](integrations/google-apps-script/README.md) |
 
 **更新网站内容的流程**
 1. 本地 `npm start`，在后台修改内容或上传图片
