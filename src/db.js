@@ -148,7 +148,7 @@ if (!inqCols.includes('external_id')) db.exec('ALTER TABLE inquiries ADD COLUMN 
 db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_inquiries_external ON inquiries(external_id) WHERE external_id IS NOT NULL');
 
 // Settings that must never be written to the public repo / static site
-const PRIVATE_SETTINGS = ['sync_token', 'notify_email', 'last_sync_at'];
+const PRIVATE_SETTINGS = ['sync_token', 'sync_proxy', 'notify_email', 'last_sync_at'];
 
 const DEFAULT_SETTINGS = {
   site_name: 'Shanxi Glass Source',
@@ -174,6 +174,7 @@ const DEFAULT_SETTINGS = {
   web3forms_key: '', // public by design: it is embedded in the form HTML
   form_endpoint: '',
   sync_token: '',
+  sync_proxy: '', // local HTTP proxy for reaching Google from mainland China, e.g. http://127.0.0.1:7890
   last_sync_at: '',
 };
 

@@ -35,4 +35,4 @@
 </aside>
 <% } %>
 <main class="<%= adminUser ? 'main' : 'main bare' %>">
-<% if (flash) { %><div class="flash"><%= flash %></div><% } %>
+<% if (flash) { %><div class="<%= /失败|不对|错误/.test(flash) ? 'err' : 'flash' %>"><%= flash %></div><% } %>
