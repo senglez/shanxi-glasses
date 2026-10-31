@@ -142,6 +142,14 @@ CREATE TABLE IF NOT EXISTS redirects (
 );
 `);
 
+// Lightweight migrations for databases created by earlier versions
+const inqCols = db.prepare('PRAGMA table_info(inquiries)').all().map((c) => c.name);
+if (!inqCols.includes('external_id')) db.exec('ALTER TABLE inquiries ADD COLUMN external_id TEXT');
+db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_inquiries_external ON inquiries(external_id) WHERE external_id IS NOT NULL');
+
+// Settings that must never be written to the public repo / static site
+const PRIVATE_SETTINGS = ['sync_token', 'notify_email', 'last_sync_at'];
+
 const DEFAULT_SETTINGS = {
   site_name: 'Shanxi Glass Source',
   tagline: 'Glassware sourced direct from Qixian, China’s glassware capital',
@@ -162,6 +170,10 @@ const DEFAULT_SETTINGS = {
   google_verification: '',
   bing_verification: '',
   og_image: '/img/og-default.png',
+  // Static site inquiry endpoint (Google Apps Script web app URL) and its private sync token
+  form_endpoint: '',
+  sync_token: '',
+  last_sync_at: '',
 };
 
 function getSettings() {
@@ -181,4 +193,4 @@ function setSettings(obj) {
   tx(Object.entries(obj));
 }
 
-module.exports = { db, getSettings, setSettings, DEFAULT_SETTINGS };
+module.exports = { db, getSettings, setSettings, DEFAULT_SETTINGS, PRIVATE_SETTINGS };

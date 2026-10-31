@@ -64,6 +64,23 @@
     });
   }
 
+  /* Static hosting: product search runs in the browser over the full catalog */
+  var searchForm = document.querySelector('form.search');
+  var term = new URLSearchParams(location.search).get('q');
+  if (doc.dataset.static && searchForm && term) {
+    var words = term.toLowerCase().split(/\s+/).filter(Boolean);
+    var shown = 0;
+    document.querySelectorAll('.cards .card').forEach(function (c) {
+      var hay = (c.dataset.search || c.textContent).toLowerCase();
+      var hit = words.every(function (w) { return hay.indexOf(w) !== -1; });
+      c.hidden = !hit;
+      if (hit) shown++;
+    });
+    var h1 = document.querySelector('.page-head h1');
+    if (h1) h1.textContent = 'Results for “' + term + '” (' + shown + ')';
+    if (searchForm.elements.q) searchForm.elements.q.value = term;
+  }
+
   /* Product gallery thumbnails */
   var gmain = document.getElementById('gmain');
   document.querySelectorAll('.thumbs button').forEach(function (b) {
@@ -97,9 +114,20 @@
     set('utm_source', stored && stored.utm_source);
     set('utm_medium', stored && stored.utm_medium);
     set('utm_campaign', stored && stored.utm_campaign);
-    f.addEventListener('submit', function () {
-      var b = f.querySelector('button[type=submit]');
+    var b = f.querySelector('button[type=submit]');
+    f.addEventListener('submit', function (e) {
       if (b) { b.disabled = true; b.textContent = 'Sending…'; }
+      // Static hosting: send to the Google Apps Script endpoint in the background, then show the thank-you page.
+      if (!f.dataset.endpoint) return;
+      e.preventDefault();
+      set('user_agent', navigator.userAgent);
+      var body = new URLSearchParams(new FormData(f));
+      fetch(f.dataset.endpoint, { method: 'POST', mode: 'no-cors', body: body })
+        .then(function () { location.href = f.dataset.thanks; })
+        .catch(function () {
+          if (b) { b.disabled = false; b.textContent = 'Send Inquiry'; }
+          alert('Sorry, the form could not be sent. Please email us at ' + f.dataset.fallback);
+        });
     });
   });
 

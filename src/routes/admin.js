@@ -6,6 +6,7 @@ const { ensureCsrf, verifyCsrf, requireAuth } = require('../lib/security');
 const { upload, saveImage } = require('../lib/images');
 const { slugify, parseList, fmtDate } = require('../lib/util');
 const { productUrl } = require('../lib/seo');
+const { syncInquiries } = require('../lib/sync');
 
 const router = express.Router();
 const form = express.urlencoded({ extended: false, limit: '2mb' });
@@ -121,7 +122,21 @@ router.get('/inquiries', (req, res) => {
       `SELECT i.*, f.name factory_name FROM inquiries i LEFT JOIN factories f ON f.id = i.factory_id ${w} ORDER BY i.id DESC LIMIT 30 OFFSET ${(page - 1) * 30}`
     )
     .all(params);
-  res.render('admin/inquiries', { rows, total, page, pages: Math.ceil(total / 30), status, term, STATUSES });
+  const s = getSettings();
+  res.render('admin/inquiries', {
+    rows, total, page, pages: Math.ceil(total / 30), status, term, STATUSES,
+    syncReady: !!(s.form_endpoint && s.sync_token), lastSync: s.last_sync_at,
+  });
+});
+
+router.post('/inquiries/sync', form, verifyCsrf, async (req, res) => {
+  try {
+    const r = await syncInquiries();
+    flash(req, `同步完成：表格中共 ${r.total} 条，新导入 ${r.added} 条`);
+  } catch (e) {
+    flash(req, '同步失败：' + e.message);
+  }
+  res.redirect('/admin/inquiries');
 });
 
 router.get('/inquiries.csv', (req, res) => {
@@ -429,6 +444,13 @@ const SETTING_FIELDS = [
   { group: '首页 SEO', items: [['home_title', '首页标题 Title'], ['home_description', '首页描述 Description'], ['og_image', '默认分享图 URL（1200×630 JPG/PNG）']] },
   { group: '联系方式', items: [['contact_email', '对外邮箱'], ['notify_email', '询盘通知邮箱（留空用对外邮箱）'], ['phone', '电话'], ['whatsapp', 'WhatsApp 号码（含国家码，仅数字，如 8613800000000）'], ['address', '地址']] },
   { group: '社交媒体', items: [['linkedin', 'LinkedIn URL'], ['facebook', 'Facebook URL'], ['instagram', 'Instagram URL'], ['youtube', 'YouTube URL']] },
+  {
+    group: '询盘接收（GitHub Pages 静态站用）',
+    items: [
+      ['form_endpoint', 'Google Apps Script 网页应用地址（https://script.google.com/macros/s/.../exec）'],
+      ['sync_token', '同步密钥 SYNC_TOKEN（与 Apps Script 中一致，不会发布到网站）'],
+    ],
+  },
   { group: '统计与站长工具', items: [['ga4_id', 'Google Analytics 4 衡量 ID（G-XXXX）'], ['google_verification', 'Google Search Console 验证码（content 值）'], ['bing_verification', 'Bing Webmaster 验证码（content 值）']] },
 ];
 
@@ -440,6 +462,12 @@ router.post('/settings', upload.single('og_upload'), verifyCsrf, async (req, res
     for (const key of Object.keys(DEFAULT_SETTINGS)) if (key in req.body) out[key] = String(req.body[key]).trim().slice(0, 2000);
     if (out.ga4_id && !/^G-[A-Z0-9]+$/i.test(out.ga4_id)) out.ga4_id = '';
     out.whatsapp = (out.whatsapp || '').replace(/\D/g, '');
+    if (out.form_endpoint && !/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(out.form_endpoint)) {
+      flash(req, '询盘接收地址格式不对，应为 https://script.google.com/macros/s/.../exec，已忽略该项');
+      delete out.form_endpoint;
+      setSettings(out);
+      return res.redirect('/admin/settings');
+    }
     if (req.file) out.og_image = await saveImage(req.file, 'og');
     setSettings(out);
     flash(req, '设置已保存');

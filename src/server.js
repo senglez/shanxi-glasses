@@ -11,8 +11,8 @@ const { db, getSettings } = require('./db');
 const seo = require('./lib/seo');
 
 /* ---------- First-run bootstrap ---------- */
-if (!db.prepare('SELECT COUNT(*) n FROM categories').get().n) require('./seed').run();
-if (!db.prepare('SELECT COUNT(*) n FROM admins').get().n) {
+if (!db.prepare('SELECT COUNT(*) n FROM categories').get().n) require('./seed').runFromContentOrDefaults();
+if (!config.STATIC_EXPORT && !db.prepare('SELECT COUNT(*) n FROM admins').get().n) {
   const pw = config.ADMIN_PASSWORD || crypto.randomBytes(9).toString('base64url');
   db.prepare('INSERT INTO admins(username, password_hash) VALUES(?, ?)').run(config.ADMIN_USER, bcrypt.hashSync(pw, 12));
   console.log(`[setup] Admin account created: ${config.ADMIN_USER}` + (config.ADMIN_PASSWORD ? '' : ` / ${pw}  (change it after first login)`));
@@ -32,6 +32,7 @@ app.use((req, res, next) => {
   res.locals.nonce = crypto.randomBytes(16).toString('base64');
   res.locals.SITE_URL = config.SITE_URL;
   res.locals.jsonld = seo.jsonld;
+  res.locals.isStatic = config.STATIC_EXPORT;
   next();
 });
 app.use(
@@ -117,4 +118,8 @@ app.use((err, req, res, _next) => {
   res.status(500).send('Something went wrong. Please try again later.');
 });
 
-app.listen(config.PORT, () => console.log(`Site running at http://localhost:${config.PORT}  (admin: /admin)`));
+module.exports = app;
+
+if (require.main === module) {
+  app.listen(config.PORT, () => console.log(`Site running at http://localhost:${config.PORT}  (admin: /admin)`));
+}

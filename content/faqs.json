@@ -1,0 +1,101 @@
+[
+  {
+    "id": 1,
+    "question": "What is your minimum order quantity (MOQ)?",
+    "answer": "Hand-blown items usually start from **300–600 pieces per design**; machine-made items from **1,000–3,000 pieces**. Stock designs with your own logo or packaging can start lower. Tell us your quantity and we will find a factory that fits.",
+    "sort": 0,
+    "published": 1,
+    "created_at": "2026-10-31 11:21:59",
+    "updated_at": "2026-10-31 11:21:59"
+  },
+  {
+    "id": 2,
+    "question": "Can I get samples before ordering?",
+    "answer": "Yes. Existing designs ship as samples in **3–7 days**; new custom designs take **7–15 days** for sampling. Sample fees are usually refunded once the bulk order is placed. Express shipping is paid by the buyer.",
+    "sort": 1,
+    "published": 1,
+    "created_at": "2026-10-31 11:21:59",
+    "updated_at": "2026-10-31 11:21:59"
+  },
+  {
+    "id": 3,
+    "question": "What is the typical production lead time?",
+    "answer": "Most orders take **30–45 days** after sample approval and deposit. Hand-blown, colored or decorated items and peak season (August–November) may take longer. We give a confirmed schedule with the proforma invoice.",
+    "sort": 2,
+    "published": 1,
+    "created_at": "2026-10-31 11:21:59",
+    "updated_at": "2026-10-31 11:21:59"
+  },
+  {
+    "id": 4,
+    "question": "Are you a factory or a trading company?",
+    "answer": "We are a sourcing and export company based in Qixian, Shanxi, the center of China’s hand-blown glassware industry. We work with a network of vetted local factories and match each product to the factory best suited for it, then manage samples, production follow-up, quality inspection and shipping for you.",
+    "sort": 3,
+    "published": 1,
+    "created_at": "2026-10-31 11:21:59",
+    "updated_at": "2026-10-31 11:21:59"
+  },
+  {
+    "id": 5,
+    "question": "Where are the products made?",
+    "answer": "Mainly in **Qixian County, Jinzhong, Shanxi Province**, which produces more than 60% of China’s hand-blown glassware and exports over 70% of its output to 80+ countries (Xinhua, 2026). Some machine-made and borosilicate lines come from other Shanxi factories.",
+    "sort": 4,
+    "published": 1,
+    "created_at": "2026-10-31 11:21:59",
+    "updated_at": "2026-10-31 11:21:59"
+  },
+  {
+    "id": 6,
+    "question": "Can you customize logo, color and packaging?",
+    "answer": "Yes. Logos by decal, screen printing, sandblasting, etching or laser engraving; any Pantone color by spray coating or solid colored glass; gold/platinum rims; and custom gift boxes, color boxes, PVC boxes or export cartons with your barcode.",
+    "sort": 5,
+    "published": 1,
+    "created_at": "2026-10-31 11:21:59",
+    "updated_at": "2026-10-31 11:21:59"
+  },
+  {
+    "id": 7,
+    "question": "How do you control quality?",
+    "answer": "We inspect at three stages: raw glass and first articles, in-line during production, and pre-shipment (AQL 2.5 / 4.0 by default). We check dimensions, capacity, bubbles, stones, cords, thickness, decoration and packing. Photos and videos are sent before shipping. Third-party inspection (SGS, BV, Intertek) is welcome.",
+    "sort": 6,
+    "published": 1,
+    "created_at": "2026-10-31 11:21:59",
+    "updated_at": "2026-10-31 11:21:59"
+  },
+  {
+    "id": 8,
+    "question": "Are your glasses food safe and lead-free?",
+    "answer": "Our soda-lime, borosilicate and crystal glass ranges are lead-free. We can arrange food-contact testing to **FDA, LFGB or EU 1935/2004** requirements, and dishwasher or thermal-shock tests, through accredited labs.",
+    "sort": 7,
+    "published": 1,
+    "created_at": "2026-10-31 11:21:59",
+    "updated_at": "2026-10-31 11:21:59"
+  },
+  {
+    "id": 9,
+    "question": "What payment terms do you accept?",
+    "answer": "Standard terms are **30% deposit by T/T and 70% before shipment** (against copy of B/L for established customers). L/C at sight and PayPal for samples are also accepted.",
+    "sort": 8,
+    "published": 1,
+    "created_at": "2026-10-31 11:21:59",
+    "updated_at": "2026-10-31 11:21:59"
+  },
+  {
+    "id": 10,
+    "question": "How do you pack glass to avoid breakage?",
+    "answer": "Each piece is wrapped or separated by paper dividers, packed in inner boxes, then in 5-ply export cartons that pass drop tests. Fragile items can be palletized. Breakage within agreed tolerance is compensated or replaced in the next order.",
+    "sort": 9,
+    "published": 1,
+    "created_at": "2026-10-31 11:21:59",
+    "updated_at": "2026-10-31 11:21:59"
+  },
+  {
+    "id": 11,
+    "question": "Which shipping terms and ports do you use?",
+    "answer": "We quote **EXW, FOB Tianjin/Qingdao, CIF/CFR** or **DDP** to many countries. Sea freight is most common for full or LCL loads; air and express for urgent or small orders.",
+    "sort": 10,
+    "published": 1,
+    "created_at": "2026-10-31 11:21:59",
+    "updated_at": "2026-10-31 11:21:59"
+  }
+]
