@@ -100,7 +100,7 @@ router.get('/products', (req, res) => {
     meta: meta(req, {
       title: term ? `Search: ${term} | ${res.locals.s.site_name}` : `Glassware Products Catalog | Wholesale & OEM | ${res.locals.s.site_name}`,
       description:
-        'Browse wholesale glassware from Shanxi factories: stemware, tumblers, borosilicate, vases, candle holders, bottles and jars. OEM/ODM with custom logo and packaging.',
+        "Wholesale glassware and glass packaging from Shanxi factories: stemware, tumblers, vases, candle jars, perfume and skincare bottles. OEM logo and packaging.",
       canonical: '/products',
       noindex: !!term,
     }),
@@ -170,16 +170,16 @@ router.get('/products/:cat/:slug', (req, res, next) => {
 const staticPages = {
   '/oem-custom-glassware': {
     view: 'pages/oem',
-    title: 'OEM/ODM Custom Glassware Manufacturing | Logo, Color, Packaging',
+    title: "OEM & Custom Glassware: Logo, Color, Box",
     description:
-      'Custom glassware from Shanxi factories: your design, logo printing, decal, etching, color, gift boxes. Sampling in 7–15 days, QC inspection and FOB/CIF shipping.',
+      "Custom glassware and glass bottles from Shanxi factories: your design, logo, color and gift box. Samples in 7–15 days, QC inspection and FOB/CIF shipping.",
     name: 'OEM & Custom',
   },
   '/about': {
     view: 'pages/about',
-    title: 'About Us | Your Glassware Sourcing Partner in Qixian, Shanxi',
+    title: "About Us: Glass Sourcing in Qixian, Shanxi",
     description:
-      'We connect overseas buyers with vetted glassware factories in Qixian, Shanxi, a county producing over 60% of China’s hand-blown glassware. Factory matching, QC and export.',
+      "We connect overseas buyers with vetted glass factories in Qixian, Shanxi, which makes over 60% of China’s hand-blown glassware. Factory matching, QC, export.",
     name: 'About',
   },
   '/privacy-policy': {
@@ -207,7 +207,7 @@ router.get('/faq', (req, res) => {
   const crumbs = [{ name: 'Home', url: '/' }, { name: 'FAQ', url: '/faq' }];
   res.render('pages/faq', {
     meta: meta(req, {
-      title: `Glassware Sourcing FAQ: MOQ, Samples, Lead Time, Shipping | ${res.locals.s.site_name}`,
+      title: `FAQ: MOQ, Samples, Lead Time & Shipping | ${res.locals.s.site_name}`,
       description: 'Answers on MOQ, samples, lead time, packaging, quality control, payment terms and shipping for glassware from China.',
     }),
     faqs,

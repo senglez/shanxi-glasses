@@ -281,6 +281,8 @@ address { font-style: normal; font-size: .92rem; }
 .fc.quote { background: linear-gradient(120deg, var(--amber2), var(--amber)); color: #1a0d00; }
 .home .float-cta { opacity: 0; transform: translateY(20px); transition: .4s; pointer-events: none; }
 .home.past-hero .float-cta { opacity: 1; transform: none; pointer-events: auto; }
+/* Keep the floating buttons from covering the last lines of content on phones */
+@media (max-width: 600px) { body { padding-bottom: 76px; } .float-cta { right: 12px; bottom: 12px; } }
 
 /* Reveal animation */
 .js .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }

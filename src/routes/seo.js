@@ -26,6 +26,7 @@ router.get('/robots.txt', (req, res) => {
     'Disallow: /admin',
     'Disallow: /thank-you',
     'Disallow: /products?q=',
+    'Disallow: /products/?q=',
     '',
     ...aiBots.flatMap((b) => [`User-agent: ${b}`, 'Allow: /', 'Disallow: /admin', '']),
     `Sitemap: ${config.SITE_URL}/sitemap.xml`,
@@ -46,6 +47,7 @@ router.get('/sitemap.xml', (req, res) => {
     { loc: '/faq', pri: '0.7' },
     { loc: '/blog', lastmod: now, pri: '0.7' },
     { loc: '/contact', pri: '0.8' },
+    { loc: '/privacy-policy', pri: '0.2' },
     ...cats.map((c) => ({ loc: '/products/' + c.slug, lastmod: isoDate(c.updated_at), pri: '0.8' })),
     ...all.products().map((p) => ({
       loc: productUrl(p, byId[p.category_id]),
