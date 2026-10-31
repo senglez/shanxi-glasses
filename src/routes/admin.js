@@ -7,6 +7,53 @@ const { upload, saveImage } = require('../lib/images');
 const { slugify, parseList, fmtDate } = require('../lib/util');
 const { productUrl } = require('../lib/seo');
 const { syncInquiries } = require('../lib/sync');
+const seoAuto = require('../lib/seo-auto');
+const multer = require('multer');
+
+// Fill empty SEO fields and refresh automatic ones (e.g. after a brand rename). Manual values are kept.
+function regenerateSeo({ oldSite } = {}) {
+  const site = getSettings().site_name;
+  const counts = {};
+  for (const [table, g] of Object.entries(seoAuto.BY_TABLE)) {
+    const rows = db.prepare(`SELECT * FROM ${table}`).all();
+    const upd = db.prepare(`UPDATE ${table} SET seo_title = ?, seo_description = ? WHERE id = ?`);
+    let n = 0;
+    db.transaction(() => {
+      for (const row of rows) {
+        const autoT = seoAuto.isAuto(table, 'seo_title', row, site) || (oldSite && seoAuto.isAuto(table, 'seo_title', row, oldSite));
+        const autoD = seoAuto.isAuto(table, 'seo_description', row, site);
+        const t = autoT ? g.title(row, site) : row.seo_title;
+        const d = autoD ? g.desc(row) : row.seo_description;
+        if (t !== row.seo_title || d !== row.seo_description) (upd.run(t, d, row.id), n++);
+      }
+    })();
+    counts[table] = n;
+  }
+  return counts;
+}
+
+// Lists pages whose effective title/description is too long, too short or duplicated.
+function seoAudit() {
+  const site = getSettings().site_name;
+  const issues = [];
+  const seen = {};
+  const labels = { products: '产品', categories: '分类', posts: '文章' };
+  for (const table of Object.keys(seoAuto.BY_TABLE)) {
+    for (const row of db.prepare(`SELECT * FROM ${table} WHERE published = 1`).all()) {
+      const e = seoAuto.effective(table, row, site);
+      const name = row.name || row.title;
+      const link = `/admin/c/${table}/${row.id}`;
+      const add = (msg) => issues.push({ type: labels[table], name, link, msg });
+      if (e.title.length > seoAuto.TITLE_MAX) add(`标题 ${e.title.length} 字符，超过 ${seoAuto.TITLE_MAX}，搜索结果里会被截断`);
+      if (e.description.length > 160) add(`描述 ${e.description.length} 字符，超过 160`);
+      if (e.description.length < 70) add(`描述只有 ${e.description.length} 字符，建议 120–160`);
+      const key = e.title.toLowerCase();
+      if (seen[key]) add(`标题与「${seen[key]}」重复`);
+      else seen[key] = name;
+    }
+  }
+  return issues;
+}
 
 const router = express.Router();
 const form = express.urlencoded({ extended: false, limit: '2mb' });
@@ -91,7 +138,19 @@ router.get('/', (req, res) => {
     thinProducts: db
       .prepare("SELECT id, name FROM products WHERE length(COALESCE(description,'')) < 400 OR image IS NULL OR image = '' LIMIT 10")
       .all(),
+    seoIssues: seoAudit(),
+    seoEmpty: Object.keys(seoAuto.BY_TABLE).reduce(
+      (n, t) => n + db.prepare(`SELECT COUNT(*) n FROM ${t} WHERE COALESCE(seo_title,'') = '' OR COALESCE(seo_description,'') = ''`).get().n,
+      0
+    ),
   });
+});
+
+router.post('/seo/regenerate', form, verifyCsrf, (req, res) => {
+  const c = regenerateSeo();
+  const total = Object.values(c).reduce((a, b) => a + b, 0);
+  flash(req, total ? `SEO 已更新：产品 ${c.products} 个、分类 ${c.categories} 个、文章 ${c.posts} 篇（手动填写的内容不会被覆盖）` : 'SEO 已是最新，没有需要更新的内容');
+  res.redirect(req.get('referer') && /\/admin/.test(req.get('referer')) ? req.get('referer') : '/admin');
 });
 
 /* ---------------- Inquiries (CRM) ---------------- */
@@ -400,6 +459,20 @@ router.post('/c/:res/:id', resource, upload.any(), verifyCsrf, async (req, res, 
     }
 
     if (r.slugFrom) data.slug = uniqueSlug(r.table, slugify(data.slug || data[r.slugFrom]), old && old.id);
+
+    // SEO fields: blank = generate; unchanged automatic value = regenerate from the new content;
+    // anything typed by hand is kept.
+    if (seoAuto.BY_TABLE[r.table]) {
+      const site = getSettings().site_name;
+      const merged = { ...(old || {}), ...data };
+      for (const field of ['seo_title', 'seo_description']) {
+        const untouched = old && data[field] === old[field];
+        if (!data[field] || (untouched && seoAuto.isAuto(r.table, field, old, site))) {
+          const g = seoAuto.BY_TABLE[r.table];
+          data[field] = field === 'seo_title' ? g.title(merged, site) : g.desc(merged);
+        }
+      }
+    }
     if (r.table === 'posts' && !data.published_at) data.published_at = new Date().toISOString().slice(0, 19).replace('T', ' ');
     if (r.table === 'redirects' && !String(data.from_path).startsWith('/')) errors.push('旧路径必须以 / 开头');
 
@@ -436,6 +509,86 @@ router.post('/c/:res/:id/delete', resource, form, verifyCsrf, (req, res) => {
   db.prepare(`DELETE FROM ${req.resource.table} WHERE id = ?`).run(req.params.id);
   flash(req, '已删除');
   res.redirect('/admin/c/' + req.params.res);
+});
+
+/* ---------------- Factory import / export ---------------- */
+const FACTORY_COLS = ['name', 'name_en', 'location', 'products', 'capability', 'contact_person', 'phone', 'wechat', 'email', 'rating', 'source', 'notes'];
+const factoryHeader = () => {
+  // Accept both field names and the Chinese labels used in the admin form / CSV export.
+  const map = {};
+  for (const f of RESOURCES.factories.fields()) (map[f.name] = f.name), (map[f.label] = f.name);
+  return map;
+};
+const fileUpload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 2 * 1024 * 1024, files: 1 } });
+
+function parseCsv(text) {
+  const rows = [];
+  let row = [], cell = '', q = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (q) {
+      if (ch === '"' && text[i + 1] === '"') (cell += '"'), i++;
+      else if (ch === '"') q = false;
+      else cell += ch;
+    } else if (ch === '"') q = true;
+    else if (ch === ',') row.push(cell), (cell = '');
+    else if (ch === '\n' || ch === '\r') {
+      if (ch === '\r' && text[i + 1] === '\n') i++;
+      row.push(cell), rows.push(row), (row = []), (cell = '');
+    } else cell += ch;
+  }
+  if (cell || row.length) row.push(cell), rows.push(row);
+  return rows.filter((r) => r.some((c) => c.trim()));
+}
+
+router.get('/factories.csv', (req, res) => {
+  const fields = RESOURCES.factories.fields();
+  const rows = db.prepare('SELECT * FROM factories ORDER BY rating DESC, name').all();
+  const cell = (v) => {
+    let t = String(v ?? '');
+    if (/^[=+\-@\t\r]/.test(t)) t = "'" + t;
+    return '"' + t.replace(/"/g, '""') + '"';
+  };
+  const csv = '\ufeff' + [fields.map((f) => cell(f.label)).join(','), ...rows.map((r) => fields.map((f) => cell(r[f.name])).join(','))].join('\r\n');
+  res.set('Content-Disposition', `attachment; filename="factories-${new Date().toISOString().slice(0, 10)}.csv"`);
+  res.type('text/csv').send(csv);
+});
+
+router.post('/factories/import', fileUpload.single('file'), verifyCsrf, (req, res) => {
+  try {
+    if (!req.file) throw new Error('请选择文件');
+    const text = req.file.buffer.toString('utf8').replace(/^\ufeff/, '');
+    let items;
+    if (/\.json$/i.test(req.file.originalname) || /^\s*\[/.test(text)) {
+      items = JSON.parse(text);
+      if (!Array.isArray(items)) throw new Error('JSON 必须是数组');
+    } else {
+      const [head, ...body] = parseCsv(text);
+      const map = factoryHeader();
+      const keys = (head || []).map((h) => map[h.trim()] || null);
+      if (!keys.includes('name')) throw new Error('CSV 第一行必须有「工厂名称」或 name 列');
+      items = body.map((r) => Object.fromEntries(keys.map((k, i) => [k, r[i]]).filter(([k]) => k)));
+    }
+    const exists = new Set(db.prepare('SELECT name FROM factories').all().map((r) => r.name.trim()));
+    const ins = db.prepare(`INSERT INTO factories (${FACTORY_COLS.join(',')}) VALUES (${FACTORY_COLS.map((c) => '@' + c).join(',')})`);
+    let added = 0, skipped = 0;
+    db.transaction(() => {
+      for (const it of items) {
+        const name = String((it && it.name) || '').trim().replace(/^'/, '');
+        if (!name || exists.has(name)) { skipped++; continue; }
+        const row = Object.fromEntries(FACTORY_COLS.map((c) => [c, String(it[c] ?? '').trim().replace(/^'/, '').slice(0, 5000)]));
+        row.name = name;
+        row.rating = Math.max(0, Math.min(5, Number(row.rating) || 0));
+        ins.run(row);
+        exists.add(name);
+        added++;
+      }
+    })();
+    flash(req, `导入完成：新增 ${added} 家，跳过 ${skipped} 家（名称已存在或为空）`);
+  } catch (e) {
+    flash(req, '导入失败：' + e.message);
+  }
+  res.redirect('/admin/c/factories');
 });
 
 /* ---------------- Settings ---------------- */
@@ -477,7 +630,13 @@ router.post('/settings', upload.single('og_upload'), verifyCsrf, async (req, res
       return res.redirect('/admin/settings');
     }
     if (req.file) out.og_image = await saveImage(req.file, 'og');
+    const oldSite = getSettings().site_name;
     setSettings(out);
+    if (out.site_name && out.site_name !== oldSite) {
+      const c = regenerateSeo({ oldSite });
+      flash(req, `设置已保存。网站名称已更改，自动生成的 SEO 标题已同步更新（产品 ${c.products}、分类 ${c.categories}、文章 ${c.posts}）`);
+      return res.redirect('/admin/settings');
+    }
     flash(req, '设置已保存');
     res.redirect('/admin/settings');
   } catch (e) {

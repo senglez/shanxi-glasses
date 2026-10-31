@@ -392,12 +392,16 @@ function run() {
     const day = (n) => new Date(Date.now() - n * 86400000).toISOString().slice(0, 19).replace('T', ' ');
     insertAll('posts', posts.map((p, i) => ({ ...p, cover: '', published_at: day(i * 7 + 1) })));
   }
-  if (isEmpty('factories')) {
-    const rows = loadPrivateFactories();
-    insertAll('factories', rows);
-    if (rows.length) console.log(`[seed] imported ${rows.length} factories from private/factories.json`);
-  }
+  importPrivateFactoriesIfEmpty();
   console.log('[seed] content ready');
+}
+
+function importPrivateFactoriesIfEmpty() {
+  if (!isEmpty('factories')) return 0;
+  const rows = loadPrivateFactories();
+  insertAll('factories', rows);
+  if (rows.length) console.log(`[seed] imported ${rows.length} factories from private/factories.json`);
+  return rows.length;
 }
 
 // Prefer the committed content snapshot (content/*.json) over the built-in defaults.
@@ -409,5 +413,5 @@ function runFromContentOrDefaults() {
   } else run();
 }
 
-module.exports = { run, runFromContentOrDefaults };
+module.exports = { run, runFromContentOrDefaults, importPrivateFactoriesIfEmpty };
 if (require.main === module) runFromContentOrDefaults();

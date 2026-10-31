@@ -34,6 +34,24 @@
   </table>
 </div>
 
+<div class="card <%= seoIssues.length || seoEmpty ? 'warn' : '' %>">
+  <div class="head-row">
+    <h2>SEO 检查</h2>
+    <form method="post" action="/admin/seo/regenerate">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <button class="btn">⚡ 一键生成 SEO 标题和描述</button>
+    </form>
+  </div>
+  <% if (seoEmpty) { %><p><%= seoEmpty %> 个产品、分类或文章的 SEO 字段是空的。网站上会临时使用自动生成的内容；点上面的按钮可以填进后台，方便查看和修改。</p><% } %>
+  <% if (seoIssues.length) { %>
+    <table class="tbl"><thead><tr><th>类型</th><th>名称</th><th>问题</th></tr></thead><tbody>
+      <% seoIssues.slice(0, 20).forEach(i => { %><tr><td><%= i.type %></td><td><a href="<%= i.link %>"><%= i.name %></a></td><td><%= i.msg %></td></tr><% }) %>
+    </tbody></table>
+    <% if (seoIssues.length > 20) { %><p class="muted">还有 <%= seoIssues.length - 20 %> 项未显示</p><% } %>
+  <% } else { %><p class="muted">所有已发布页面的标题和描述长度合适，没有重复。</p><% } %>
+  <p class="muted small">规则：标题不超过 65 个字符，描述 120–160 个字符。手动修改过的内容不会被一键生成覆盖。</p>
+</div>
+
 <% if (thinProducts.length) { %>
 <div class="card warn">
   <h2>SEO 待优化：内容偏少或缺图的产品</h2>

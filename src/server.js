@@ -12,6 +12,8 @@ const seo = require('./lib/seo');
 
 /* ---------- First-run bootstrap ---------- */
 if (!db.prepare('SELECT COUNT(*) n FROM categories').get().n) require('./seed').runFromContentOrDefaults();
+// Picks up private/factories.json added after the first start (the file is never in Git).
+if (!config.STATIC_EXPORT) require('./seed').importPrivateFactoriesIfEmpty();
 if (!config.STATIC_EXPORT && !db.prepare('SELECT COUNT(*) n FROM admins').get().n) {
   const pw = config.ADMIN_PASSWORD || crypto.randomBytes(9).toString('base64url');
   db.prepare('INSERT INTO admins(username, password_hash) VALUES(?, ?)').run(config.ADMIN_USER, bcrypt.hashSync(pw, 12));
