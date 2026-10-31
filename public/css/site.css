@@ -10,6 +10,7 @@
   --amber2: #ffcf8a;
   --cyan: #3ee0ff;
   --rose: #ff5f7e;
+  --stage: #e6e4df; /* light warm grey "display stand" for real product photos */
   --radius: 20px;
   --wrap: 1200px;
   --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -284,15 +285,17 @@ address { font-style: normal; font-size: .92rem; }
 /* Keep the floating buttons from covering the last lines of content on phones */
 @media (max-width: 600px) { body { padding-bottom: 76px; } .float-cta { right: 12px; bottom: 12px; } }
 
-/* Photo stage: real product photos on white backgrounds sit on a white "display stand",
+/* Photo stage: real product photos on white backgrounds sit on a light warm-grey "display stand",
    shown whole (not cropped) so bottles, lids and reflections stay visible. */
-.card-img.photo, .gallery-main.photo, .thumbs button.photo { background: #fff; }
-.card-img.photo img, .gallery-main.photo img, .thumbs button.photo img { object-fit: contain; }
+.card-img.photo, .gallery-main.photo, .thumbs button.photo { background: var(--stage); }
+/* multiply turns the photo's white background into the stage color, so there is no visible white box */
+.card-img.photo img, .gallery-main.photo img, .thumbs button.photo img { object-fit: contain; mix-blend-mode: multiply; }
 .card-img.photo img { padding: 6%; }
-.gallery-main.photo { border-color: rgba(255,255,255,.25); }
+.gallery-main.photo { border-color: rgba(255,255,255,.12); }
 .gallery-main.photo img { padding: 4%; }
 .card:has(.card-img.photo) .card-body { border-top: 1px solid rgba(255,255,255,.06); }
-.bento-item.photo { background: #fff; }
+.bento-item.photo { background: var(--stage); }
+.bento-item.photo img { mix-blend-mode: multiply; }
 .bento-item.photo img { object-fit: contain; padding: 14px 14px 118px; }
 .bento-item.photo.big img { padding: 24px 24px 150px; }
 .bento-item.photo .bento-cap { background: rgba(8,11,22,.96); border-top: 1px solid rgba(255,255,255,.08); }
