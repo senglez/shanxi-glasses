@@ -87,24 +87,88 @@
     b.addEventListener('click', function () { if (gmain) gmain.src = b.dataset.src; });
   });
 
-  /* First-touch attribution (UTM + referrer) stored for inquiry forms */
-  try {
-    var params = new URLSearchParams(location.search);
-    var stored = JSON.parse(localStorage.getItem('sgs_attr') || 'null');
-    if (!stored || params.get('utm_source')) {
-      stored = {
-        utm_source: params.get('utm_source') || '',
-        utm_medium: params.get('utm_medium') || '',
-        utm_campaign: params.get('utm_campaign') || '',
-        referrer: document.referrer && document.referrer.indexOf(location.host) === -1 ? document.referrer : '',
-        landing: location.pathname
-      };
-      if (!stored.utm_source && stored.referrer) {
-        try { stored.utm_source = new URL(stored.referrer).hostname; stored.utm_medium = 'referral'; } catch (e) {}
-      }
-      localStorage.setItem('sgs_attr', JSON.stringify(stored));
-    }
-  } catch (e) { stored = {}; }
+  /* Cookie consent. Nothing optional is stored and GA4 is not loaded until the visitor accepts.
+     Only the choice itself is remembered (strictly necessary). */
+  var CONSENT_KEY = 'sgs_consent';
+  var getConsent = function () { try { return localStorage.getItem(CONSENT_KEY); } catch (e) { return null; } };
+  var consent = getConsent();
+
+  // Attribution (UTM + referrer) for the current visit; kept across pages only with consent.
+  var params = new URLSearchParams(location.search);
+  var current = {
+    utm_source: params.get('utm_source') || '',
+    utm_medium: params.get('utm_medium') || '',
+    utm_campaign: params.get('utm_campaign') || '',
+    referrer: document.referrer && document.referrer.indexOf(location.host) === -1 ? document.referrer : '',
+    landing: location.pathname
+  };
+  if (!current.utm_source && current.referrer) {
+    try { current.utm_source = new URL(current.referrer).hostname; current.utm_medium = 'referral'; } catch (e) {}
+  }
+  var stored = current;
+  function persistAttribution() {
+    try {
+      var prev = JSON.parse(localStorage.getItem('sgs_attr') || 'null');
+      if (prev && !current.utm_source) stored = prev; // keep first touch unless a new campaign arrives
+      else localStorage.setItem('sgs_attr', JSON.stringify(current));
+    } catch (e) {}
+  }
+
+  var gaLoaded = false;
+  function loadAnalytics() {
+    var meta = document.querySelector('meta[name="ga4-id"]');
+    if (gaLoaded || !meta || !/^G-[A-Z0-9]+$/i.test(meta.content)) return;
+    gaLoaded = true;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    gtag('js', new Date());
+    gtag('config', meta.content);
+    if (document.querySelector('[data-generate-lead]')) gtag('event', 'generate_lead');
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(meta.content);
+    document.head.appendChild(s);
+  }
+
+  function clearOptional() {
+    try { localStorage.removeItem('sgs_attr'); } catch (e) {}
+    // Remove Google Analytics cookies (_ga, _ga_XXXX) on this host and the parent domain
+    var host = location.hostname, parts = host.split('.');
+    var domains = ['', host, '.' + host];
+    if (parts.length > 2) domains.push('.' + parts.slice(-2).join('.'));
+    document.cookie.split(';').forEach(function (c) {
+      var name = c.split('=')[0].trim();
+      if (!/^_ga/.test(name)) return;
+      domains.forEach(function (d) {
+        document.cookie = name + '=; Max-Age=0; path=/' + (d ? '; domain=' + d : '');
+      });
+    });
+  }
+
+  var bar = document.querySelector('.cookie-bar');
+  function showBar(show) {
+    if (!bar) return;
+    bar.hidden = !show;
+    document.body.classList.toggle('cookie-open', show);
+  }
+  function setConsent(value) {
+    try { localStorage.setItem(CONSENT_KEY, value); } catch (e) {}
+    var wasGranted = consent === 'granted';
+    consent = value;
+    showBar(false);
+    if (value === 'granted') { persistAttribution(); loadAnalytics(); }
+    else { clearOptional(); if (wasGranted && gaLoaded) location.reload(); } // stop the already-running GA script
+  }
+  if (bar) bar.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-consent]');
+    if (b) setConsent(b.dataset.consent);
+  });
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('[data-cookie-settings]')) showBar(true);
+  });
+
+  if (consent === 'granted') { persistAttribution(); loadAnalytics(); }
+  else if (consent !== 'denied') showBar(true);
 
   document.querySelectorAll('form[data-inquiry]').forEach(function (f) {
     var set = function (n, v) { if (f.elements[n]) f.elements[n].value = v || ''; };
