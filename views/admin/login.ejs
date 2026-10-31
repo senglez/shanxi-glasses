@@ -1,0 +1,11 @@
+<%- include('_top', { title: '登录' }) %>
+<form class="login card" method="post" action="/admin/login">
+  <h1>后台登录</h1>
+  <% if (error) { %><p class="err"><%= error %></p><% } %>
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  <input type="hidden" name="next" value="<%= next %>">
+  <label>用户名<input name="username" autocomplete="username" required autofocus></label>
+  <label>密码<input name="password" type="password" autocomplete="current-password" required></label>
+  <button class="btn">登录</button>
+</form>
+<%- include('_bottom') %>

@@ -1,0 +1,15 @@
+<%- include('../partials/top') %>
+<%- include('../partials/crumbs') %>
+<section class="page-head wrap">
+  <h1>Glassware sourcing FAQ</h1>
+  <p class="lead muted">MOQ, samples, lead time, quality control, payment and shipping for glassware from Shanxi, China.</p>
+</section>
+<section class="wrap section-tight faq-list">
+  <% faqs.forEach((f, i) => { %>
+    <details class="faq glass-panel" <%= i < 3 ? 'open' : '' %>><summary><h2 class="h3"><%= f.question %></h2></summary><div class="prose"><%- md(f.answer) %></div></details>
+  <% }) %>
+</section>
+<section class="wrap section-tight">
+  <div class="banner glass-panel"><div><h2>Still have a question?</h2><p class="muted">Ask us directly. A sourcing specialist replies within 24 hours.</p></div><a class="btn btn-glow btn-lg" href="/contact">Contact Us</a></div>
+</section>
+<%- include('../partials/bottom') %>

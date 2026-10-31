@@ -1,0 +1,47 @@
+</main>
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <a class="brand" href="/"><img src="/img/favicon.svg" width="30" height="30" alt=""><span><%= s.site_name %></span></a>
+      <p class="muted"><%= s.tagline %></p>
+      <address class="muted">
+        <%= s.address %><br>
+        <a href="mailto:<%= s.contact_email %>"><%= s.contact_email %></a><br>
+        <%= s.phone %>
+      </address>
+    </div>
+    <div>
+      <h2 class="f-h">Products</h2>
+      <ul class="f-list"><% navCats.forEach(c => { %><li><a href="/products/<%= c.slug %>"><%= c.name %></a></li><% }) %></ul>
+    </div>
+    <div>
+      <h2 class="f-h">Company</h2>
+      <ul class="f-list">
+        <li><a href="/about">Why Shanxi</a></li>
+        <li><a href="/oem-custom-glassware">OEM &amp; Custom</a></li>
+        <li><a href="/blog">Insights</a></li>
+        <li><a href="/faq">FAQ</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/privacy-policy">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="f-h">Start sourcing</h2>
+      <p class="muted">Tell us the product, quantity and target market. We reply within 24 hours on business days.</p>
+      <a href="/contact" class="btn btn-glow">Request a Quote</a>
+      <p class="social">
+        <% [['LinkedIn', s.linkedin], ['Facebook', s.facebook], ['Instagram', s.instagram], ['YouTube', s.youtube]].filter(x => x[1]).forEach(([n, u]) => { %>
+          <a href="<%= u %>" rel="noopener" target="_blank"><%= n %></a>
+        <% }) %>
+      </p>
+    </div>
+  </div>
+  <div class="wrap copy muted">© <%= new Date().getFullYear() %> <%= s.site_name %>. Glassware sourcing and export from Shanxi, China.</div>
+</footer>
+<div class="float-cta">
+  <% if (s.whatsapp) { %><a class="fc wa" href="https://wa.me/<%= s.whatsapp %>" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">WhatsApp</a><% } %>
+  <a class="fc quote" href="/contact">Get a Quote</a>
+</div>
+<script src="/js/site.js" defer></script>
+</body>
+</html>

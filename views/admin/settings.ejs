@@ -1,0 +1,21 @@
+<%- include('_top', { title: '网站设置' }) %>
+<h1>网站设置 / SEO</h1>
+<form class="card form" method="post" action="/admin/settings" enctype="multipart/form-data">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  <% groups.forEach(g => { %>
+    <h2><%= g.group %></h2>
+    <% g.items.forEach(([k, label]) => { %>
+      <div class="field">
+        <label for="s-<%= k %>"><%= label %></label>
+        <% if (k === 'home_description') { %>
+          <textarea id="s-<%= k %>" name="<%= k %>" rows="3" data-max="160"><%= s[k] %></textarea>
+        <% } else { %>
+          <input id="s-<%= k %>" name="<%= k %>" value="<%= s[k] %>" <%= k === 'home_title' ? 'data-max=65' : '' %>>
+        <% } %>
+        <% if (k === 'og_image') { %><input type="file" name="og_upload" accept="image/jpeg,image/png,image/webp"><% } %>
+      </div>
+    <% }) %>
+  <% }) %>
+  <div class="actions"><button class="btn">保存设置</button></div>
+</form>
+<%- include('_bottom') %>

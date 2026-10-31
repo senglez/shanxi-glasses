@@ -1,0 +1,34 @@
+<%
+  const f = typeof form !== 'undefined' ? form : {};
+  const errs = typeof errors !== 'undefined' ? errors : [];
+  const prod = typeof product !== 'undefined' ? product : null;
+%>
+<form class="inquiry glass-panel" method="post" action="/inquiry" data-inquiry>
+  <% if (errs.length) { %>
+    <div class="alert" role="alert"><ul><% errs.forEach(e => { %><li><%= e %></li><% }) %></ul></div>
+  <% } %>
+  <% if (prod) { %>
+    <p class="inq-product">Inquiry for: <strong><%= prod.name %></strong></p>
+    <input type="hidden" name="product_id" value="<%= prod.id %>">
+  <% } %>
+  <div class="grid-2">
+    <label>Your name *<input name="name" required maxlength="100" autocomplete="name" value="<%= f.name || '' %>"></label>
+    <label>Business email *<input name="email" type="email" required maxlength="160" autocomplete="email" value="<%= f.email || '' %>"></label>
+    <label>Company<input name="company" maxlength="160" autocomplete="organization" value="<%= f.company || '' %>"></label>
+    <label>Country<input name="country" maxlength="80" autocomplete="country-name" value="<%= f.country || '' %>"></label>
+    <label>Phone / WhatsApp<input name="phone" maxlength="60" autocomplete="tel" value="<%= f.phone || '' %>"></label>
+    <label>Estimated quantity<input name="quantity" maxlength="80" placeholder="e.g. 3,000 pcs" value="<%= f.quantity || '' %>"></label>
+  </div>
+  <label>Your requirements *
+    <textarea name="message" required minlength="10" maxlength="5000" rows="5" placeholder="Product, size/capacity, glass type, customization (logo, color, packaging), target price, destination port..."><%= f.message || '' %></textarea>
+  </label>
+  <div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+  <input type="hidden" name="ts" value="">
+  <input type="hidden" name="source_page" value="">
+  <input type="hidden" name="referrer" value="">
+  <input type="hidden" name="utm_source" value="">
+  <input type="hidden" name="utm_medium" value="">
+  <input type="hidden" name="utm_campaign" value="">
+  <button class="btn btn-glow btn-lg" type="submit">Send Inquiry</button>
+  <p class="form-note">We reply within 24 hours on business days. Your details are used only to answer your inquiry. <a href="/privacy-policy">Privacy policy</a>.</p>
+</form>

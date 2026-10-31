@@ -1,0 +1,59 @@
+<%- include('_top', { title: '数据看板' }) %>
+<h1>数据看板</h1>
+<div class="stats">
+  <a class="stat" href="/admin/inquiries?status=new"><b><%= stats.new %></b><span>待处理询盘</span></a>
+  <div class="stat"><b><%= stats.last30 %></b><span>近 30 天询盘</span></div>
+  <div class="stat"><b><%= stats.total %></b><span>询盘总数</span></div>
+  <div class="stat"><b><%= stats.won %></b><span>已成交</span></div>
+  <div class="stat"><b><%= stats.products %></b><span>产品</span></div>
+  <div class="stat"><b><%= stats.posts %></b><span>文章</span></div>
+  <div class="stat"><b><%= stats.factories %></b><span>工厂资源</span></div>
+</div>
+
+<div class="card">
+  <h2>近 30 天询盘趋势</h2>
+  <% if (daily.length) { const max = Math.max(...daily.map(d => d.n)); %>
+    <div class="bars"><% daily.forEach(d => { %><div title="<%= d.d %>: <%= d.n %>"><i style="height:<%= Math.round(d.n / max * 100) %>%"></i><small><%= d.d.slice(5) %></small></div><% }) %></div>
+  <% } else { %><p class="muted">暂无数据。网站上线后，询盘会出现在这里。</p><% } %>
+</div>
+
+<div class="grid2">
+  <% [['询盘来源国家', byCountry], ['询盘产品', byProduct], ['流量来源 (utm_source / 引荐网站)', bySource], ['询盘提交页面', byPage]].forEach(([t, rows]) => { %>
+    <div class="card"><h2><%= t %></h2>
+      <% if (rows.length) { %><table class="tbl"><% rows.forEach(r => { %><tr><td><%= r.k %></td><td class="num"><%= r.n %></td></tr><% }) %></table>
+      <% } else { %><p class="muted">暂无数据</p><% } %>
+    </div>
+  <% }) %>
+</div>
+
+<div class="card">
+  <h2>最新询盘</h2>
+  <table class="tbl">
+    <thead><tr><th>#</th><th>时间</th><th>客户</th><th>国家</th><th>产品</th><th>状态</th></tr></thead>
+    <tbody><% recent.forEach(r => { %><tr><td><a href="/admin/inquiries/<%= r.id %>"><%= r.id %></a></td><td><%= r.created_at %></td><td><a href="/admin/inquiries/<%= r.id %>"><%= r.name %></a> <span class="muted"><%= r.email %></span></td><td><%= r.country %></td><td><%= r.product_name %></td><td><span class="st st-<%= r.status %>"><%= r.status %></span></td></tr><% }) %></tbody>
+  </table>
+</div>
+
+<% if (thinProducts.length) { %>
+<div class="card warn">
+  <h2>SEO 待优化：内容偏少或缺图的产品</h2>
+  <p class="muted">描述少于 400 字符或没有主图的产品，在 Google 和 AI 搜索中很难排名。建议补充真实图片、用途、工艺、包装和认证信息。</p>
+  <ul><% thinProducts.forEach(p => { %><li><a href="/admin/c/products/<%= p.id %>"><%= p.name %></a></li><% }) %></ul>
+</div>
+<% } %>
+
+<div class="card">
+  <h2>运营快捷入口</h2>
+  <p>
+    <a class="btn ghost" href="/sitemap.xml" target="_blank">sitemap.xml</a>
+    <a class="btn ghost" href="/robots.txt" target="_blank">robots.txt</a>
+    <a class="btn ghost" href="/llms.txt" target="_blank">llms.txt</a>
+    <a class="btn ghost" href="/llms-full.txt" target="_blank">llms-full.txt</a>
+    <a class="btn ghost" href="/feed.xml" target="_blank">RSS</a>
+    <a class="btn ghost" href="https://search.google.com/search-console" target="_blank" rel="noopener">Google Search Console</a>
+    <a class="btn ghost" href="https://www.bing.com/webmasters" target="_blank" rel="noopener">Bing Webmaster</a>
+    <a class="btn ghost" href="https://pagespeed.web.dev/" target="_blank" rel="noopener">PageSpeed</a>
+    <a class="btn ghost" href="https://search.google.com/test/rich-results" target="_blank" rel="noopener">结构化数据测试</a>
+  </p>
+</div>
+<%- include('_bottom') %>

@@ -1,0 +1,57 @@
+<%- include('_top', { title: '询盘 #' + row.id }) %>
+<p><a href="/admin/inquiries">← 返回询盘列表</a></p>
+<h1>询盘 #<%= row.id %>：<%= row.name %></h1>
+<div class="grid2 wide-left">
+  <div class="card">
+    <h2>客户信息</h2>
+    <table class="tbl kv">
+      <tr><th>姓名</th><td><%= row.name %></td></tr>
+      <tr><th>邮箱</th><td><a href="mailto:<%= row.email %>?subject=<%= encodeURIComponent('Re: Your glassware inquiry' + (row.product_name ? ' - ' + row.product_name : '')) %>"><%= row.email %></a></td></tr>
+      <tr><th>公司</th><td><%= row.company %></td></tr>
+      <tr><th>国家</th><td><%= row.country %></td></tr>
+      <tr><th>电话 / WhatsApp</th><td><%= row.phone %>
+        <% const digits = String(row.phone || '').replace(/\D/g, ''); if (digits.length > 6) { %> <a href="https://wa.me/<%= digits %>" target="_blank" rel="noopener">WhatsApp 联系</a><% } %></td></tr>
+      <tr><th>产品</th><td><%= row.product_name || '—' %><% if (row.product_id) { %> <a href="/admin/c/products/<%= row.product_id %>">(查看)</a><% } %></td></tr>
+      <tr><th>数量</th><td><%= row.quantity %></td></tr>
+      <tr><th>时间</th><td><%= row.created_at %> (UTC)</td></tr>
+    </table>
+    <h2>需求内容</h2>
+    <div class="msg"><%= row.message %></div>
+    <h2>来源追踪</h2>
+    <table class="tbl kv">
+      <tr><th>提交页面</th><td><%= row.source_page %></td></tr>
+      <tr><th>引荐网址</th><td class="break"><%= row.referrer %></td></tr>
+      <tr><th>UTM</th><td><%= [row.utm_source, row.utm_medium, row.utm_campaign].filter(Boolean).join(' / ') || '—' %></td></tr>
+      <tr><th>IP</th><td><%= row.ip %></td></tr>
+      <tr><th>浏览器</th><td class="break muted"><%= row.user_agent %></td></tr>
+    </table>
+    <% if (others.length) { %>
+      <h2>该客户的其他询盘</h2>
+      <ul><% others.forEach(o => { %><li><a href="/admin/inquiries/<%= o.id %>">#<%= o.id %></a> <%= o.created_at %> · <%= o.product_name || '—' %> · <%= STATUSES[o.status] %></li><% }) %></ul>
+    <% } %>
+  </div>
+  <div>
+    <form class="card" method="post" action="/admin/inquiries/<%= row.id %>">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <h2>跟进处理</h2>
+      <label>状态
+        <select name="status"><% Object.entries(STATUSES).forEach(([k, v]) => { %><option value="<%= k %>" <%= row.status === k ? 'selected' : '' %>><%= v %></option><% }) %></select>
+      </label>
+      <label>对接工厂
+        <select name="factory_id">
+          <option value="">— 未分配 —</option>
+          <% factories.forEach(f => { %><option value="<%= f.id %>" <%= row.factory_id === f.id ? 'selected' : '' %>><%= f.name %><%= f.products ? '（' + f.products.slice(0, 20) + '）' : '' %></option><% }) %>
+        </select>
+      </label>
+      <label>跟进备注（报价、工厂价、利润、样品单号等，仅内部可见）
+        <textarea name="notes" rows="10"><%= row.notes %></textarea>
+      </label>
+      <button class="btn">保存</button>
+    </form>
+    <form class="card" method="post" action="/admin/inquiries/<%= row.id %>/delete" data-confirm="确定删除这条询盘？">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <button class="btn danger">删除询盘</button>
+    </form>
+  </div>
+</div>
+<%- include('_bottom') %>

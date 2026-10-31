@@ -1,0 +1,33 @@
+{
+  "name": "shanxi-glass-source",
+  "version": "1.0.0",
+  "description": "Glassware B2B export website with inquiry CRM and CMS",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "seed": "node src/seed.js",
+    "gen:images": "node scripts/gen-images.js"
+  },
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^13.0.3",
+    "better-sqlite3-session-store": "^0.1.0",
+    "compression": "^1.8.2",
+    "dotenv": "^18.0.9",
+    "ejs": "^7.0.2",
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.2",
+    "express-session": "^1.19.0",
+    "helmet": "^8.3.0",
+    "marked": "^18.1.2",
+    "multer": "^2.5.0",
+    "nodemailer": "^10.3.1",
+    "sharp": "^0.35.5"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  }
+}

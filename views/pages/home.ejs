@@ -1,0 +1,204 @@
+<%- include('../partials/top', { bodyClass: 'home' }) %>
+
+<section class="hero">
+  <canvas id="molten" aria-hidden="true"></canvas>
+  <div class="hero-noise" aria-hidden="true"></div>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow reveal"><span class="dot"></span> Direct from Qixian · China’s glassware capital</p>
+      <h1 class="reveal">
+        Glassware <span class="shimmer">sourced at the furnace</span>,<br>delivered to your market.
+      </h1>
+      <p class="lead reveal">
+        Hand-blown and machine-made glassware from vetted factories in Shanxi, China. We match your order to the right factory, manage samples, production, QC and export, so you deal with one English-speaking partner.
+      </p>
+      <div class="hero-cta reveal">
+        <a href="/contact" class="btn btn-glow btn-lg">Request a Quote</a>
+        <a href="/products" class="btn btn-ghost btn-lg">Browse Catalog →</a>
+      </div>
+      <ul class="hero-stats reveal" aria-label="Qixian glassware cluster in numbers">
+        <li><b data-count="60" data-suffix="%+">60%+</b><span>of China’s hand-blown glassware made in Qixian*</span></li>
+        <li><b data-count="80" data-suffix="+">80+</b><span>countries buy Qixian glass*</span></li>
+        <li><b data-count="62">62</b><span>local glassware manufacturers*</span></li>
+      </ul>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="orb"></div>
+      <svg class="hero-glass" viewBox="0 0 400 520">
+        <defs>
+          <linearGradient id="hg" x1="0" x2="1"><stop offset="0" stop-color="#bff6ff" stop-opacity=".35"/><stop offset=".4" stop-color="#fff" stop-opacity=".05"/><stop offset="1" stop-color="#ffd8a8" stop-opacity=".35"/></linearGradient>
+          <linearGradient id="wine" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7a59"/><stop offset="1" stop-color="#9b1030"/></linearGradient>
+          <clipPath id="bowl"><path d="M90 40 C80 200 120 270 200 290 C280 270 320 200 310 40 Z"/></clipPath>
+        </defs>
+        <g clip-path="url(#bowl)">
+          <path class="wave" d="M0 170 Q 50 155 100 170 T 200 170 T 300 170 T 400 170 T 500 170 T 600 170 V 400 H 0 Z" fill="url(#wine)"/>
+        </g>
+        <path d="M90 40 C80 200 120 270 200 290 C280 270 320 200 310 40 Z" fill="url(#hg)" stroke="#fff" stroke-opacity=".8" stroke-width="2"/>
+        <rect x="194" y="288" width="12" height="170" rx="5" fill="url(#hg)" stroke="#fff" stroke-opacity=".7" stroke-width="2"/>
+        <ellipse cx="200" cy="466" rx="96" ry="14" fill="url(#hg)" stroke="#fff" stroke-opacity=".7" stroke-width="2"/>
+        <path d="M110 70 C105 160 120 210 150 240" stroke="#fff" stroke-opacity=".6" stroke-width="5" fill="none" stroke-linecap="round"/>
+      </svg>
+      <div class="chip c1 glass-panel">Lead-free crystal</div>
+      <div class="chip c2 glass-panel">Borosilicate 3.3</div>
+      <div class="chip c3 glass-panel">OEM · Your logo</div>
+    </div>
+  </div>
+  <a href="#categories" class="scroll-hint" aria-label="Scroll to product categories"><span></span></a>
+</section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <% for (let k = 0; k < 2; k++) { %>
+      <span>Hand-blown stemware</span><i>✦</i><span>Lead-free crystal</span><i>✦</i><span>Borosilicate teaware</span><i>✦</i>
+      <span>Colored &amp; ombre glass</span><i>✦</i><span>Candle jars</span><i>✦</i><span>Decal &amp; laser logo</span><i>✦</i>
+      <span>Gift box packaging</span><i>✦</i><span>AQL inspection</span><i>✦</i><span>FOB · CIF · DDP</span><i>✦</i>
+    <% } %>
+  </div>
+</div>
+
+<section class="section" id="categories">
+  <div class="wrap">
+    <header class="sec-head reveal">
+      <p class="eyebrow">Product range</p>
+      <h2>What we source from Shanxi</h2>
+      <p class="muted">Seven core categories, thousands of existing molds, and custom development when you need something new.</p>
+    </header>
+    <div class="bento">
+      <% navCats.forEach((c, i) => { %>
+        <a class="bento-item tilt reveal <%= i === 0 ? 'big' : '' %>" href="/products/<%= c.slug %>">
+          <img src="<%= c.image || '/img/glass/wine.webp' %>" alt="<%= c.name %>" width="600" height="600" loading="lazy" decoding="async">
+          <div class="bento-cap">
+            <h3><%= c.name %></h3>
+            <p><%= c.summary %></p>
+            <span class="arrow">Explore →</span>
+          </div>
+        </a>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section facts-sec">
+  <div class="wrap facts-grid">
+    <div class="reveal">
+      <p class="eyebrow">Why source from Qixian, Shanxi</p>
+      <h2>The densest hand-blown glass cluster in China</h2>
+      <p class="muted">Glass-blowing reached Qixian through Shanxi merchants trading along the Ming–Qing “tea road”. Today the county has a full supply chain, from raw materials and molds to decoration, packaging and export.</p>
+      <a href="/blog/qixian-shanxi-china-hand-blown-glassware-capital" class="btn btn-ghost">Read the buyer’s guide →</a>
+    </div>
+    <dl class="facts reveal">
+      <div><dt>Over 60%</dt><dd>of China’s hand-blown glassware output</dd></div>
+      <div><dt>Over 70%</dt><dd>of Qixian’s production is exported</dd></div>
+      <div><dt>230+</dt><dd>upstream and downstream supporting companies</dd></div>
+      <div><dt>30,000</dt><dd>local people work in glass-blowing</dd></div>
+    </dl>
+  </div>
+  <p class="wrap source muted">* Source: Xinhua, “Glass-blowing craft thrives in China's ancient county”, 21 February 2026.</p>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <header class="sec-head reveal">
+      <p class="eyebrow">How it works</p>
+      <h2>From inquiry to container in six steps</h2>
+    </header>
+    <ol class="steps">
+      <% [
+        ['Send your inquiry', 'Product, quantity, target price and market. Photos or drawings help.'],
+        ['Factory matching', 'We shortlist factories with the right process and compare quotes within 1–3 days.'],
+        ['Sampling', 'Existing samples in 3–7 days, custom samples in 7–15 days.'],
+        ['Production follow-up', 'Deposit, mass production in 30–45 days with weekly photo updates.'],
+        ['Quality inspection', 'Pre-shipment AQL inspection, drop-tested export cartons, report with photos.'],
+        ['Shipping & documents', 'FOB/CIF/DDP, Form E/CO, invoices and packing lists handled.'],
+      ].forEach(([t, d], i) => { %>
+        <li class="step glass-panel reveal"><span class="num"><%= String(i + 1).padStart(2, '0') %></span><h3><%= t %></h3><p><%= d %></p></li>
+      <% }) %>
+    </ol>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <header class="sec-head row reveal">
+      <div><p class="eyebrow">Featured</p><h2>Best-selling glassware</h2></div>
+      <a href="/products" class="btn btn-ghost">View all products →</a>
+    </header>
+    <div class="cards">
+      <% featured.forEach(p => { %><%- include('../partials/card', { p }) %><% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section compare-sec">
+  <div class="wrap">
+    <header class="sec-head reveal">
+      <p class="eyebrow">Choose the right process</p>
+      <h2>Hand-blown or machine-made?</h2>
+    </header>
+    <div class="table-wrap reveal">
+      <table class="compare">
+        <thead><tr><th scope="col">Factor</th><th scope="col">Hand-blown</th><th scope="col">Machine-made</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Typical MOQ</th><td>300–1,000 pcs</td><td>3,000–10,000+ pcs</td></tr>
+          <tr><th scope="row">Rim</th><td>Very thin, cut &amp; polished</td><td>Thicker, rolled or fire-polished</td></tr>
+          <tr><th scope="row">Consistency</th><td>Small natural variations</td><td>Very consistent</td></tr>
+          <tr><th scope="row">Design changes</th><td>Fast and cheap</td><td>Need new molds</td></tr>
+          <tr><th scope="row">Best for</th><td>Premium stemware, decanters, decor</td><td>Retail chains, hotels, promotions</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap faq-wrap">
+    <header class="sec-head reveal">
+      <p class="eyebrow">FAQ</p>
+      <h2>Questions buyers ask first</h2>
+      <a href="/faq" class="btn btn-ghost">All questions →</a>
+    </header>
+    <div class="faq-list">
+      <% faqs.forEach(f => { %>
+        <details class="faq glass-panel reveal"><summary><%= f.question %></summary><div class="prose"><%- md(f.answer) %></div></details>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<% if (posts.length) { %>
+<section class="section">
+  <div class="wrap">
+    <header class="sec-head row reveal">
+      <div><p class="eyebrow">Insights</p><h2>Guides for glassware importers</h2></div>
+      <a href="/blog" class="btn btn-ghost">All articles →</a>
+    </header>
+    <div class="posts">
+      <% posts.forEach(p => { %>
+        <article class="post-card glass-panel reveal">
+          <time datetime="<%= p.published_at %>"><%= fmtDate(p.published_at) %></time>
+          <h3><a href="/blog/<%= p.slug %>"><%= p.title %></a></h3>
+          <p><%= p.excerpt %></p>
+        </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<section class="section cta-sec" id="quote">
+  <div class="wrap cta-grid">
+    <div class="reveal">
+      <p class="eyebrow">Get a quotation</p>
+      <h2>Tell us what you need.<br><span class="shimmer">We’ll find the furnace.</span></h2>
+      <ul class="checks">
+        <li>Reply within 24 hours on business days</li>
+        <li>2–3 factory options with prices and MOQs</li>
+        <li>Samples before you commit</li>
+        <li>No fee for quotations</li>
+      </ul>
+    </div>
+    <div class="reveal"><%- include('../partials/inquiry-form') %></div>
+  </div>
+</section>
+
+<%- include('../partials/bottom') %>
