@@ -24,7 +24,32 @@ npm start                 # http://localhost:3000，后台 http://localhost:3000
 
 产品图目前是程序生成的占位图（`npm run gen:images` 可重新生成）。**上线前请在后台换成真实照片。**
 
-## 2. 部署上线（以 Ubuntu 服务器 + Nginx 为例）
+## 2A. 当前部署方式：GitHub Pages（静态站，免费）
+
+网址：**https://senglez.github.io/shanxi-glasses/**
+
+GitHub Pages 只能托管静态文件，所以分成两部分：
+
+| | 在哪里 | 说明 |
+|---|---|---|
+| 前台网站 | GitHub Pages | 每次推送到 `main`，GitHub Actions（`.github/workflows/pages.yml`）会自动从 `content/*.json` 生成静态页面并发布 |
+| 后台 | 你自己电脑上 `npm start` | 改产品、文章、FAQ、设置；管理询盘和工厂库 |
+| 询盘 | 你的 Google 表格 | 客户提交 → 表格记录一行 + 邮件通知 → 后台点「同步询盘」导入。配置方法见 [`integrations/google-apps-script/README.md`](integrations/google-apps-script/README.md) |
+
+**更新网站内容的流程**
+1. 本地 `npm start`，在后台修改内容或上传图片
+2. 运行 `npm run publish`：把公开内容导出到 `content/`，然后提交并推送
+3. 1–2 分钟后网站自动更新（可在仓库的 Actions 页面查看进度）
+
+> 询盘、工厂库、管理员账号和同步密钥只保存在本地数据库 `data/site.db`，不会导出或推送。**请定期备份这个文件。**
+
+本地预览静态版本：`SITE_URL=http://localhost:8080 npm run build:static`，然后在 `dist/` 目录下起一个静态服务器。
+
+**绑定自己的域名**：在仓库 Settings → Secrets and variables → Actions → Variables 添加 `SITE_URL=https://www.你的域名.com` 和 `CNAME=www.你的域名.com`。然后在 DNS 加一条 CNAME 记录指向 `senglez.github.io`，在 Settings → Pages 填写域名并勾选 Enforce HTTPS。有了自己的域名后，robots.txt 和 llms.txt 才会位于网站根目录，被爬虫正常读取。
+
+**以后迁移到服务器（方案 B）**：按下面 2B 部署，把本地的 `data/site.db` 和 `public/uploads/` 拷到服务器即可，询盘历史都在。静态站的网址末尾带 `/`，服务器版会 301 跳转到不带 `/` 的版本，搜索排名不受影响。
+
+## 2B. 部署到服务器（以 Ubuntu 服务器 + Nginx 为例）
 
 1. 服务器装 Node.js 22+，上传代码后执行 `npm ci --omit=dev`
 2. 配置 `.env`：`NODE_ENV=production`，`SITE_URL=https://你的域名`，`SESSION_SECRET` 填一个长随机串（生产环境不填会拒绝启动）
@@ -107,7 +132,12 @@ src/
   routes/public.js   前台页面与询盘提交
   routes/seo.js      robots / sitemap / llms.txt / RSS
   routes/admin.js    后台（询盘 CRM、通用内容管理、设置）
-  lib/               SEO 结构化数据、图片处理、邮件、安全
+  lib/               SEO 结构化数据、图片处理、邮件、安全、内容快照、询盘同步
+scripts/build-static.js  生成 GitHub Pages 静态站到 dist/
+scripts/content.js       导出内容 / 一键发布
+content/                 网站公开内容快照（构建静态站用）
+integrations/google-apps-script/  询盘接收脚本和配置说明
+.github/workflows/pages.yml       自动部署
 views/pages          前台模板（英文）
 views/admin          后台模板（中文）
 public/              CSS、JS、图片、上传文件

@@ -7,7 +7,11 @@
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "seed": "node src/seed.js",
-    "gen:images": "node scripts/gen-images.js"
+    "gen:images": "node scripts/gen-images.js",
+    "build:static": "node scripts/build-static.js",
+    "content:export": "node scripts/content.js export",
+    "publish": "node scripts/content.js publish",
+    "sync:inquiries": "node src/lib/sync.js"
   },
   "type": "commonjs",
   "dependencies": {

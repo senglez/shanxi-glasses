@@ -24,4 +24,8 @@ module.exports = {
     from: process.env.SMTP_FROM || '',
   },
   TRUST_PROXY: process.env.TRUST_PROXY || 'loopback',
+  // Static export for GitHub Pages: no server-side forms or admin.
+  STATIC_EXPORT: process.env.STATIC_EXPORT === '1',
+  // Sub-path when hosted at https://user.github.io/repo (e.g. "/shanxi-glasses"); empty for a custom domain.
+  BASE_PATH: (process.env.BASE_PATH || '').replace(/\/+$/, ''),
 };

@@ -1,8 +1,21 @@
 <%- include('_top', { title: '询盘管理' }) %>
 <div class="head-row">
   <h1>询盘管理 <small class="muted">共 <%= total %> 条</small></h1>
-  <a class="btn ghost" href="/admin/inquiries.csv">导出 CSV</a>
+  <div>
+    <% if (syncReady) { %>
+      <form method="post" action="/admin/inquiries/sync" style="display:inline">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <button class="btn">⟳ 从 Google 表格同步询盘</button>
+      </form>
+    <% } %>
+    <a class="btn ghost" href="/admin/inquiries.csv">导出 CSV</a>
+  </div>
 </div>
+<% if (syncReady) { %>
+  <p class="muted">GitHub Pages 网站的询盘先保存在 Google 表格，点击同步后导入这里。上次同步：<%= lastSync || '从未' %> (UTC)</p>
+<% } else { %>
+  <p class="muted">网站部署在 GitHub Pages 时，请先在 <a href="/admin/settings">网站设置</a> 填写 Apps Script 地址和同步密钥，这里会出现「同步询盘」按钮。</p>
+<% } %>
 <form class="filters" method="get">
   <select name="status">
     <option value="">全部状态</option>

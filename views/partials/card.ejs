@@ -1,4 +1,4 @@
-<article class="card tilt reveal">
+<article class="card tilt reveal" data-search="<%= [p.name, p.summary, p.material, catMap[p.category_id] && catMap[p.category_id].name].filter(Boolean).join(' ') %>">
   <a href="<%= productUrl(p, catMap[p.category_id]) %>" class="card-link">
     <div class="card-img">
       <img src="<%= p.image || '/img/glass/wine.webp' %>" alt="<%= p.name %>" width="600" height="600" loading="lazy" decoding="async">

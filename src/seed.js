@@ -413,5 +413,16 @@ function run() {
   console.log('[seed] content ready');
 }
 
-module.exports = { run };
-if (require.main === module) run();
+// Prefer the committed content snapshot (content/*.json) over the built-in defaults.
+function runFromContentOrDefaults() {
+  const content = require('./lib/content');
+  if (content.hasSnapshot()) {
+    content.importSnapshot();
+    if (isEmpty('factories')) run(); // factories are internal and never in the snapshot
+  } else run();
+}
+
+
+
+module.exports = { run, runFromContentOrDefaults };
+if (require.main === module) runFromContentOrDefaults();
