@@ -357,24 +357,14 @@ Modern crystal replaces lead oxide with barium, zinc or titanium oxides. It give
   },
 ];
 
-const factories = [
-  ['山西祁县红海玻璃有限公司', 'Shanxi Qixian County Honghai Glass Co., Ltd.', '山西省晋中市祁县', '人工吹制玻璃器皿，彩色、叠色、花杆工艺；中东风格产品', '叠色工艺获国家专利；运营3A级文化产业园和非遗展馆', '新华社 2026-02-21 报道'],
-  ['喜尊玻璃', 'Xizun Glass', '山西省晋中市祁县', '高端手工吹制高脚杯、酒具', '500+ 名吹制工人；手工高脚杯在欧美售价 2000–3000 元/只', '新华社 2026-02-21 报道（中文全称待核实）'],
-  ['希福莱玻璃器皿有限公司（中文名待核实）', 'Xifulai Glassware Co., Ltd.', '山西省晋中市祁县', '高硼硅玻璃器皿', '山西首条高硼硅智能生产线；3 条线日产 7 万件以上；销往美欧中东日韩', '新华社 2026-02-21 报道'],
-  ['山西宏芸玻璃器皿（全称待核实）', '', '山西省晋中市祁县', '玻璃器皿', '新华社 2025-06 报道祁县数字化转型时提及', '新华社日文版 2025-06-26'],
-  ['祁县美之丽玻璃器皿有限公司（中文名待核实）', 'Qixian Elegant Glassware Co., Ltd.', '山西省晋中市祁县', '酒杯、醒酒器、盘碗、烛台；透明和彩色', '2008年成立；20条加工线、8座窑炉、2万平米；擅长激光雕刻和烤花；出口美英澳加韩', 'cooig.com 企业介绍'],
-  ['Shanxi Midas Industrial Co., Ltd.', 'Shanxi Midas Industrial Co., Ltd.', '山西省晋中市祁县', '手工和机制玻璃器皿', '', 'Alibaba 店铺 cnmidas'],
-  ['祁县宏晓玻璃器皿商贸有限公司（中文名待核实）', 'Qixian Hongxiao Glassware Business Co., Ltd.', '山西省晋中市祁县', '中高档玻璃器皿', '日产 1 万件以上，库存 30 万件以上', 'Alibaba 店铺 honglasses'],
-  ['祁县宏杰玻璃器皿厂（中文名待核实）', 'Qixian HongJie Glassware Manufacturer', '山西省晋中市祁县', '玻璃器皿', '', 'Alibaba 店铺 sxglassware'],
-  ['Glitter Enterprise Co., Ltd.', 'Glitter Enterprise Co., Ltd.', '山西省晋中市祁县', '高脚杯、玻璃花瓶等手工吹制器皿', '', 'Made-in-China 店铺 glitterenterprise'],
-  ['Sandu Glass（中文名待核实）', '', '山西省晋中市祁县', '无铅水晶酒杯、玻璃杯', '100+ 工人，25 年以上经验', 'Made-in-China 店铺 sanduglass'],
-  ['祁县一先玻璃厂', '', '山西省晋中市祁县温曲工业园区', '玻璃器皿、玻璃浇花器、玻璃原料', '2002 年建厂', '一比多 ebdoor.com'],
-  ['山西诚联对外经济贸易有限公司（中文名待核实）', 'Shanxi Chenglian Foreign Trade & Economic Relations Co., Ltd.', '山西省', '手工吹制高脚杯、啤酒杯、花瓶、烛台、碗盘', '外贸公司（非工厂），可作为同行/备选渠道', 'Made-in-China 店铺 glasswarechenglian'],
-  ['晋中莫鑫玻璃器皿有限公司', 'Jinzhong Moxin Glassware Co., Ltd.', '山西省晋中市祁县', '玻璃器皿及餐具销售', '2016-05-06 成立；以销售为主', 'motxj.com 网站信息'],
-  ['山西冀恒玻璃器皿有限公司 / 山西晋龙云玻璃器皿进出口有限公司', '', '山西省', '玻璃器皿进出口', '', 'jihengglass.com'],
-  ['运城闻喜凹底镇玻璃器皿厂（名称待核实）', '', '山西省运城市闻喜县凹底镇', '酒店玻璃器具、玻璃器皿', '职工约 380 人，年产 4000 吨（自述）', '一比多 ebdoor.com'],
-  ['SanzoHome Glass', 'SanzoHome Glass', '山西省晋中市祁县', '手工吹制玻璃器皿 OEM/ODM', '设计、开发、生产、出口一体（自述）', 'sanzohome.com'],
-];
+// Internal supplier list. Kept out of Git: put it in private/factories.json (see README).
+function loadPrivateFactories() {
+  const file = require('path').join(__dirname, '..', 'private', 'factories.json');
+  if (!require('fs').existsSync(file)) return [];
+  const rows = JSON.parse(require('fs').readFileSync(file, 'utf8'));
+  const cols = ['name', 'name_en', 'location', 'products', 'capability', 'contact_person', 'phone', 'wechat', 'email', 'rating', 'source', 'notes'];
+  return rows.filter((r) => r && r.name).map((r) => Object.fromEntries(cols.map((c) => [c, r[c] ?? (c === 'rating' ? 0 : '')])));
+}
 
 function insertAll(table, rows) {
   if (!rows.length) return;
@@ -402,14 +392,11 @@ function run() {
     const day = (n) => new Date(Date.now() - n * 86400000).toISOString().slice(0, 19).replace('T', ' ');
     insertAll('posts', posts.map((p, i) => ({ ...p, cover: '', published_at: day(i * 7 + 1) })));
   }
-  if (isEmpty('factories'))
-    insertAll(
-      'factories',
-      factories.map(([name, name_en, location, products, capability, source]) => ({
-        name, name_en, location, products, capability, source, rating: 0,
-        notes: '公开信息整理，未经实地核实。合作前请验厂：营业执照、出口资质、窑炉与产线、质检流程、样品。',
-      }))
-    );
+  if (isEmpty('factories')) {
+    const rows = loadPrivateFactories();
+    insertAll('factories', rows);
+    if (rows.length) console.log(`[seed] imported ${rows.length} factories from private/factories.json`);
+  }
   console.log('[seed] content ready');
 }
 
@@ -421,8 +408,6 @@ function runFromContentOrDefaults() {
     if (isEmpty('factories')) run(); // factories are internal and never in the snapshot
   } else run();
 }
-
-
 
 module.exports = { run, runFromContentOrDefaults };
 if (require.main === module) runFromContentOrDefaults();

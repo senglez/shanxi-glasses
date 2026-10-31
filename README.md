@@ -19,7 +19,7 @@ npm start                 # http://localhost:3000，后台 http://localhost:3000
 ```
 
 第一次启动时会自动：
-- 建库（`data/site.db`），写入 7 个分类、14 个产品、11 条 FAQ、3 篇文章和 16 条工厂线索
+- 建库（`data/site.db`），写入 7 个分类、14 个产品、11 条 FAQ 和 3 篇文章；如果存在 `private/factories.json`，同时导入工厂资源库
 - 创建管理员账号。如果 `.env` 没填 `ADMIN_PASSWORD`，会在控制台打印一个随机密码
 
 产品图目前是程序生成的占位图（`npm run gen:images` 可重新生成）。**上线前请在后台换成真实照片。**
@@ -121,14 +121,23 @@ server {
 - 在线样品申请、产品 PDF 目录下载换邮箱
 - 接入 WhatsApp Business API 或企业微信，把询盘推送到手机
 
-## 6. 目录结构
+## 6. 工厂资料（保密）
+
+工厂线索和调研文档不放在仓库里，因为仓库是公开的。放在本地的 `private/` 目录，这个目录已在 `.gitignore` 中排除：
+
+- `private/factories.json`：工厂列表。全新安装第一次启动时，会自动导入后台「工厂资源库」
+- `private/山西玻璃工厂调研.md`：调研文档
+
+日常请直接在后台「工厂资源库」维护工厂信息，数据保存在 `data/site.db`，不会被导出或发布。
+
+## 7. 目录结构
 
 ```
 src/
   server.js          入口：安全头、静态资源、301、路由
   config.js          环境变量
   db.js              SQLite 表结构与设置
-  seed.js            初始内容（产品、FAQ、文章、工厂线索）
+  seed.js            初始内容（产品、FAQ、文章）
   routes/public.js   前台页面与询盘提交
   routes/seo.js      robots / sitemap / llms.txt / RSS
   routes/admin.js    后台（询盘 CRM、通用内容管理、设置）
@@ -141,5 +150,5 @@ integrations/google-apps-script/  询盘接收脚本和配置说明
 views/pages          前台模板（英文）
 views/admin          后台模板（中文）
 public/              CSS、JS、图片、上传文件
-docs/                山西玻璃工厂调研
+private/              工厂资料（不提交到 Git，见第 6 节）
 ```
