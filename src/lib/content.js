@@ -17,6 +17,7 @@ function exportSnapshot() {
   // Never drop items that were added to content/ in Git but are not in this DB yet.
   const added = mergeSnapshot();
   if (Object.keys(added).length) console.log('已加入 GitHub 上新增的内容：' + describeMerge(added));
+  require('./seo-auto').regenerate(db, getSettings().site_name); // refresh automatic SEO text before publishing
   fs.mkdirSync(DIR, { recursive: true });
   const counts = {};
   for (const t of TABLES) {

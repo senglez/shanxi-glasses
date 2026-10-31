@@ -161,9 +161,9 @@ const PRIVATE_SETTINGS = ['sync_token', 'sync_proxy', 'notify_email', 'last_sync
 const DEFAULT_SETTINGS = {
   site_name: 'Shanxi Glassworks',
   tagline: 'Glassware sourced direct from Qixian, China’s glassware capital',
-  home_title: 'Glassware Manufacturer & Sourcing Agent in Shanxi, China | Shanxi Glassworks',
+  home_title: 'China Glassware & Perfume Bottle Sourcing | Shanxi Glassworks',
   home_description:
-    'Source hand-blown and machine-made glassware direct from vetted factories in Qixian, Shanxi: wine glasses, tumblers, borosilicate, vases, candle holders. OEM/ODM, low MOQ, QC and export handled.',
+    'We source glassware, perfume bottles and glass packaging from vetted factories in Shanxi, China. One English-speaking contact for quotes, samples, QC, export.',
   contact_email: 'sales@example.com',
   notify_email: '',
   phone: '+86 000 0000 0000',

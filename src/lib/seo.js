@@ -90,7 +90,7 @@ function product(p, cat, specs) {
     category: cat ? cat.name : undefined,
     material: p.material || undefined,
     brand: { '@type': 'Brand', name: 'OEM / Private Label' },
-    manufacturer: { '@id': config.SITE_URL + '/#organization' },
+    // We source from partner factories, so we are the seller/brand contact, not the manufacturer.
     countryOfOrigin: { '@type': 'Country', name: 'China' },
     additionalProperty: specs.map((s) => ({ '@type': 'PropertyValue', name: s.k, value: s.v })),
   };

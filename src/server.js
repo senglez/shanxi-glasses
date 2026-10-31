@@ -12,6 +12,8 @@ const seo = require('./lib/seo');
 
 /* ---------- First-run bootstrap ---------- */
 if (!db.prepare('SELECT COUNT(*) n FROM categories').get().n) require('./seed').runFromContentOrDefaults();
+// Keep automatically generated SEO titles/descriptions in line with the current wording rules.
+require('./lib/seo-auto').regenerate(db, getSettings().site_name);
 // Picks up private/factories.json added after the first start (the file is never in Git).
 if (!config.STATIC_EXPORT) {
   require('./seed').importPrivateFactoriesIfEmpty();
