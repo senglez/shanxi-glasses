@@ -39,7 +39,7 @@
   <div class="wrap copy muted">© <%= new Date().getFullYear() %> <%= s.site_name %>. Glassware sourcing and export from Shanxi, China.</div>
 </footer>
 <div class="float-cta">
-  <% if (s.whatsapp) { %><a class="fc wa" href="https://wa.me/<%= s.whatsapp %>" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">WhatsApp</a><% } %>
+  <% if (s.whatsapp) { %><a class="fc wa" href="<%= waLink(typeof p !== 'undefined' && p && p.slug ? p : null) %>" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">WhatsApp</a><% } %>
   <a class="fc quote" href="/contact">Get a Quote</a>
 </div>
 <script src="/js/site.js" defer></script>

@@ -595,7 +595,9 @@ router.post('/factories/import', fileUpload.single('file'), verifyCsrf, (req, re
 const SETTING_FIELDS = [
   { group: '品牌', items: [['site_name', '网站名称'], ['tagline', '一句话标语'], ['founding_year', '成立年份']] },
   { group: '首页 SEO', items: [['home_title', '首页标题 Title'], ['home_description', '首页描述 Description'], ['og_image', '默认分享图 URL（1200×630 JPG/PNG）']] },
-  { group: '联系方式', items: [['contact_email', '对外邮箱'], ['notify_email', '询盘通知邮箱（留空用对外邮箱）'], ['phone', '电话'], ['whatsapp', 'WhatsApp 号码（含国家码，仅数字，如 8613800000000）'], ['address', '地址']] },
+  { group: '联系方式', items: [['contact_email', '对外邮箱'], ['notify_email', '询盘通知邮箱（留空用对外邮箱）'], ['phone', '电话'], ['whatsapp', 'WhatsApp 号码（含国家码，仅数字，如 8613800000000）'],
+      ['whatsapp_message', 'WhatsApp 默认消息（访客点击后自动填好的文字；可用 {site} 网站名、{url} 当前页面网址）'],
+      ['whatsapp_product_message', 'WhatsApp 产品页消息（在产品页点击时使用；可用 {site}、{product} 产品名、{url}）'], ['address', '地址']] },
   { group: '社交媒体', items: [['linkedin', 'LinkedIn URL'], ['facebook', 'Facebook URL'], ['instagram', 'Instagram URL'], ['youtube', 'YouTube URL']] },
   {
     group: '询盘接收（GitHub Pages 静态站用）',

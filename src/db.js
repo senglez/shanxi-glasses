@@ -160,6 +160,11 @@ const DEFAULT_SETTINGS = {
   notify_email: '',
   phone: '+86 000 0000 0000',
   whatsapp: '',
+  // Pre-filled WhatsApp text. Placeholders: {site} {product} {url}
+  whatsapp_message:
+    "Hello {site} team! I found your website and I'm interested in sourcing glassware from China. Could you please send me your catalog with MOQ and prices?\n\nPage: {url}",
+  whatsapp_product_message:
+    "Hello {site} team! I'm interested in this product:\n{product}\n\nCould you please send me the price, MOQ and lead time?\n\n{url}",
   address: 'Qixian County, Jinzhong, Shanxi Province, China',
   founding_year: '',
   linkedin: '',
