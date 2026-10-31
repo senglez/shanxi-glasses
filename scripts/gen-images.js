@@ -206,7 +206,7 @@ async function main() {
     <rect width="1200" height="630" fill="url(#g)"/><rect width="1200" height="630" fill="url(#a)"/><rect width="1200" height="630" fill="url(#b)"/>
     <text x="80" y="250" font-family="Helvetica, Arial, sans-serif" font-size="68" font-weight="700" fill="#fff">Glassware from Shanxi, China</text>
     <text x="80" y="330" font-family="Helvetica, Arial, sans-serif" font-size="34" fill="#cfd8e3">Hand-blown &amp; machine-made · OEM/ODM · QC &amp; export</text>
-    <text x="80" y="520" font-family="Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="#ffb86b">SHANXI GLASS SOURCE</text>
+    <text x="80" y="520" font-family="Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="#ffb86b">SHANXI GLASSWORKS</text>
   </svg>`;
   await sharp(Buffer.from(og)).png().toFile(path.join(OUT, 'og-default.png'));
 

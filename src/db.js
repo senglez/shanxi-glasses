@@ -159,9 +159,9 @@ db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_inquiries_external ON inquiries(e
 const PRIVATE_SETTINGS = ['sync_token', 'sync_proxy', 'notify_email', 'last_sync_at'];
 
 const DEFAULT_SETTINGS = {
-  site_name: 'Shanxi Glass Source',
+  site_name: 'Shanxi Glassworks',
   tagline: 'Glassware sourced direct from Qixian, China’s glassware capital',
-  home_title: 'Glassware Manufacturer & Sourcing Agent in Shanxi, China | Shanxi Glass Source',
+  home_title: 'Glassware Manufacturer & Sourcing Agent in Shanxi, China | Shanxi Glassworks',
   home_description:
     'Source hand-blown and machine-made glassware direct from vetted factories in Qixian, Shanxi: wine glasses, tumblers, borosilicate, vases, candle holders. OEM/ODM, low MOQ, QC and export handled.',
   contact_email: 'sales@example.com',
