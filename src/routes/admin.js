@@ -447,7 +447,8 @@ const SETTING_FIELDS = [
   {
     group: '询盘接收（GitHub Pages 静态站用）',
     items: [
-      ['form_endpoint', 'Google Apps Script 网页应用地址（https://script.google.com/macros/s/.../exec）'],
+      ['web3forms_key', 'Web3Forms Access Key（负责邮件通知，形如 xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx）'],
+      ['form_endpoint', 'Google Apps Script 网页应用地址（负责保存询盘记录，https://script.google.com/macros/s/.../exec）'],
       ['sync_token', '同步密钥 SYNC_TOKEN（与 Apps Script 中一致，不会发布到网站）'],
     ],
   },
@@ -462,6 +463,12 @@ router.post('/settings', upload.single('og_upload'), verifyCsrf, async (req, res
     for (const key of Object.keys(DEFAULT_SETTINGS)) if (key in req.body) out[key] = String(req.body[key]).trim().slice(0, 2000);
     if (out.ga4_id && !/^G-[A-Z0-9]+$/i.test(out.ga4_id)) out.ga4_id = '';
     out.whatsapp = (out.whatsapp || '').replace(/\D/g, '');
+    if (out.web3forms_key && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(out.web3forms_key)) {
+      flash(req, 'Web3Forms Access Key 格式不对（应为 36 位 UUID），已忽略该项');
+      delete out.web3forms_key;
+      setSettings(out);
+      return res.redirect('/admin/settings');
+    }
     if (out.form_endpoint && !/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(out.form_endpoint)) {
       flash(req, '询盘接收地址格式不对，应为 https://script.google.com/macros/s/.../exec，已忽略该项');
       delete out.form_endpoint;
