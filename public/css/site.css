@@ -310,6 +310,27 @@ address { font-style: normal; font-size: .92rem; }
   .bento-item.photo.fill-d3 .bento-cap, .bento-item.photo.fill-d4 .bento-cap { border-top: 0; }
 }
 
+/* Spotlight on product cards: the photo's light background becomes a pool of light
+   in the middle that fades into the dark card, like the drawn placeholders.
+   Hover fades the vignette out to show the whole photo, and back in on leave. */
+.card-img.photo { position: relative; isolation: isolate; }
+.card-img.photo::before, .card-img.photo::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  transition: opacity .6s ease; }
+/* dark vignette around the lit centre */
+.card-img.photo::after {
+  background: radial-gradient(ellipse 58% 64% at 50% 47%, rgba(70,46,22,.16) 0%, rgba(62,42,24,.26) 26%, rgba(34,26,26,.56) 50%, rgba(12,15,26,.85) 72%, rgba(10,13,24,.97) 88%, #0a0d18 100%);
+}
+/* soft warm beam of light falling from above */
+.card-img.photo::before {
+  background: radial-gradient(ellipse 34% 44% at 50% 46%, rgba(255,196,130,.20), rgba(255,196,130,0) 100%),
+              radial-gradient(ellipse 18% 55% at 50% -4%, rgba(255,222,180,.16), rgba(255,222,180,0) 80%);
+  mix-blend-mode: soft-light; z-index: 2;
+}
+.card:hover .card-img.photo::after, .card:focus-within .card-img.photo::after { opacity: 0; }
+.card:hover .card-img.photo::before, .card:focus-within .card-img.photo::before { opacity: 0; }
+.card:hover .card-img.photo img { transform: scale(1.03); }
+@media (prefers-reduced-motion: reduce) { .card-img.photo::before, .card-img.photo::after { transition: none; } }
+
 /* Cookie consent */
 .cookie-bar { position: fixed; left: 18px; right: 18px; bottom: 18px; z-index: 60; max-width: 760px; margin: 0 auto; padding: 16px 20px;
   display: flex; align-items: center; gap: 18px; background: rgba(11,16,32,.96); font-size: .9rem; }
