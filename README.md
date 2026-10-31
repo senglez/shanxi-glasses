@@ -19,7 +19,7 @@ npm start                 # http://localhost:3000，后台 http://localhost:3000
 ```
 
 第一次启动时会自动：
-- 建库（`data/site.db`），写入 7 个分类、14 个产品、11 条 FAQ 和 3 篇文章；如果存在 `private/factories.json`，同时导入工厂资源库
+- 建库（`data/site.db`），写入 10 个分类、27 个产品、12 条 FAQ 和 3 篇文章；如果存在 `private/factories.json`，同时导入工厂资源库
 - 创建管理员账号。如果 `.env` 没填 `ADMIN_PASSWORD`，会在控制台打印一个随机密码
 
 产品图目前是程序生成的占位图（`npm run gen:images` 可重新生成）。**上线前请在后台换成真实照片。**
@@ -35,6 +35,8 @@ GitHub Pages 只能托管静态文件，所以分成两部分：
 | 前台网站 | GitHub Pages | 每次推送到 `main`，GitHub Actions（`.github/workflows/pages.yml`）会自动从 `content/*.json` 生成静态页面并发布 |
 | 后台 | 你自己电脑上 `npm start` | 改产品、文章、FAQ、设置；管理询盘和工厂库 |
 | 询盘 | Web3Forms + 你的 Google 表格 | 客户提交后，Web3Forms 发邮件给你，Google 表格同时记录一行；后台点「同步询盘」导入。配置方法见 [`integrations/google-apps-script/README.md`](integrations/google-apps-script/README.md) |
+
+**GitHub 上新增的内容会自动加进本地后台**：比如新的分类和产品，在 `npm start` 或 `npm run publish` 时自动加入。不会覆盖你在后台改过的内容，在后台删除或改名的条目也不会被加回来。
 
 **更新网站内容的流程**
 1. 本地 `npm start`，在后台修改内容或上传图片
