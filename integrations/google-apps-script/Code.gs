@@ -36,7 +36,9 @@ function setup() {
   if (!props().getProperty('SYNC_TOKEN')) {
     props().setProperty('SYNC_TOKEN', Utilities.getUuid() + Utilities.getUuid().replace(/-/g, ''));
   }
-  Logger.log('SYNC_TOKEN = ' + props().getProperty('SYNC_TOKEN'));
+  // Shown in the editor's "Execution log" panel; also stored in Project Settings → Script properties.
+  console.log('SYNC_TOKEN = ' + props().getProperty('SYNC_TOKEN'));
+  console.log('Sheet "' + SHEET_NAME + '" is ready. Setup complete.');
 }
 
 // Values starting with = + - @ would be treated as formulas by Sheets.
