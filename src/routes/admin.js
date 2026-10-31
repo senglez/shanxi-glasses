@@ -628,6 +628,12 @@ router.post('/settings', upload.single('og_upload'), verifyCsrf, async (req, res
     for (const key of Object.keys(DEFAULT_SETTINGS)) if (key in req.body) out[key] = String(req.body[key]).trim().slice(0, 2000);
     if (out.ga4_id && !/^G-[A-Z0-9]+$/i.test(out.ga4_id)) out.ga4_id = '';
     out.whatsapp = (out.whatsapp || '').replace(/\D/g, '');
+    // Accept the whole <meta ... content="CODE"> tag as pasted from Google/Bing; keep only the code.
+    for (const k of ['google_verification', 'bing_verification']) {
+      if (!(k in out)) continue;
+      const m = out[k].match(/content\s*=\s*["']([^"']+)["']/i);
+      out[k] = (m ? m[1] : out[k]).replace(/[^A-Za-z0-9_\-]/g, '');
+    }
     if (out.web3forms_key && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(out.web3forms_key)) {
       flash(req, 'Web3Forms Access Key 格式不对（应为 36 位 UUID），已忽略该项');
       delete out.web3forms_key;
