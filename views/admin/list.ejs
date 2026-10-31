@@ -3,7 +3,24 @@
   <h1><%= R.title %> <small class="muted"><%= rows.length %> 条</small></h1>
   <a class="btn" href="/admin/c/<%= resKey %>/new">＋ 新建</a>
 </div>
-<% if (resKey === 'factories') { %><p class="muted">工厂资源库只在后台可见，不会出现在前台网站。初始数据来自公开信息，合作前请实地核实。</p><% } %>
+<% if (resKey === 'factories') { %>
+  <p class="muted">工厂资源库只在后台可见，不会出现在前台网站，也不会发布到 GitHub。</p>
+  <form class="card filters" method="post" action="/admin/factories/import" enctype="multipart/form-data">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <strong>批量导入：</strong>
+    <input type="file" name="file" accept=".json,.csv,application/json,text/csv" required>
+    <button class="btn">导入</button>
+    <a class="btn ghost" href="/admin/factories.csv">导出 CSV</a>
+    <small class="help">支持 <code>factories.json</code>，或用 Excel 编辑后另存为 CSV（UTF-8）；可以先导出一份当模板。名称已存在的工厂会跳过。</small>
+  </form>
+<% } %>
+<% if (['products', 'categories', 'posts'].includes(resKey)) { %>
+  <form class="filters" method="post" action="/admin/seo/regenerate">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <button class="btn ghost">⚡ 一键生成 SEO 标题和描述</button>
+    <small class="help">自动填写空白项，并更新自动生成的内容；手动填写的不会被覆盖。保存单个条目时也会自动生成。</small>
+  </form>
+<% } %>
 <div class="card flush">
 <table class="tbl">
   <thead><tr><% R.list.forEach(c => { %><th><%= c.label %></th><% }) %><th></th></tr></thead>

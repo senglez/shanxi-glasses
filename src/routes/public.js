@@ -5,6 +5,7 @@ const seo = require('../lib/seo');
 const { md, plain, parseSpecs, parseList, fmtDate } = require('../lib/util');
 const { sameOrigin } = require('../lib/security');
 const { notifyInquiry } = require('../lib/mailer');
+const seoAuto = require('../lib/seo-auto');
 
 const router = express.Router();
 
@@ -48,10 +49,7 @@ router.use((req, res, next) => {
   next();
 });
 
-// Picks the longest candidate title that still fits Google's ~65 char display.
-function fitTitle(...candidates) {
-  return candidates.find((t) => t.length <= 65) || candidates[candidates.length - 1];
-}
+const pick = (e) => ({ title: e.title, description: e.description });
 
 function meta(req, o) {
   return {
@@ -109,16 +107,7 @@ router.get('/products/:cat', (req, res, next) => {
   ];
   res.render('pages/products', {
     meta: meta(req, {
-      title:
-        cat.seo_title ||
-        fitTitle(
-          `${cat.name} Manufacturer & Wholesale | ${res.locals.s.site_name}`,
-          `Wholesale ${cat.name} from China | ${res.locals.s.site_name}`,
-          `${cat.name} Manufacturer & Wholesale Supplier`,
-          `Wholesale ${cat.name} from China`,
-          cat.name
-        ),
-      description: cat.seo_description || cat.summary || plain(cat.description),
+      ...pick(seoAuto.effective('categories', cat, res.locals.s.site_name)),
       image: cat.image,
     }),
     heading: cat.name,
@@ -146,10 +135,7 @@ router.get('/products/:cat/:slug', (req, res, next) => {
   ];
   res.render('pages/product', {
     meta: meta(req, {
-      title:
-        p.seo_title ||
-        fitTitle(`${p.name} - Wholesale & OEM | ${res.locals.s.site_name}`, `${p.name} | ${res.locals.s.site_name}`, `${p.name} - Wholesale & OEM`, p.name),
-      description: p.seo_description || p.summary || plain(p.description),
+      ...pick(seoAuto.effective('products', p, res.locals.s.site_name)),
       image: p.image,
       type: 'product',
     }),
@@ -236,8 +222,7 @@ router.get('/blog/:slug', (req, res, next) => {
   ];
   res.render('pages/post', {
     meta: meta(req, {
-      title: post.seo_title || `${post.title} | ${res.locals.s.site_name}`,
-      description: post.seo_description || post.excerpt || plain(post.body),
+      ...pick(seoAuto.effective('posts', post, res.locals.s.site_name)),
       image: post.cover,
       type: 'article',
     }),
