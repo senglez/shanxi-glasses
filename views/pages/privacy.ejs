@@ -13,7 +13,9 @@
     <h2>Your rights</h2>
     <p>You can ask us to access, correct or delete your data by emailing <a href="mailto:<%= s.contact_email %>"><%= s.contact_email %></a>.</p>
     <h2>Cookies</h2>
-    <p>The public website does not set cookies of its own. Analytics cookies are set only if Google Analytics is enabled.</p>
+    <p>The website does not set advertising cookies. It uses <strong>Google Analytics</strong> cookies to measure visits<% if (!s.ga4_id) { %> (currently disabled)<% } %>, and stores in your browser&rsquo;s local storage the page and campaign through which you first arrived, so we know where an inquiry came from. You can clear this at any time in your browser settings.</p>
+    <h2>Third-party services</h2>
+    <p>Inquiry forms are delivered by Web3Forms (email) and stored in Google Sheets. WhatsApp links open WhatsApp, which is governed by its own privacy policy.</p>
   </div>
 </section>
 <%- include('../partials/bottom') %>
