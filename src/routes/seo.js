@@ -2,7 +2,7 @@ const express = require('express');
 const config = require('../config');
 const { db, getSettings } = require('../db');
 const { productUrl } = require('../lib/seo');
-const { isoDate, xmlEscape, plain, parseSpecs } = require('../lib/util');
+const { isoDate, xmlEscape, plain, parseSpecs, priceRange } = require('../lib/util');
 
 const router = express.Router();
 
@@ -140,6 +140,8 @@ router.get('/llms-full.txt', (req, res) => {
     if (p.material) out.push(`Material: ${p.material}`);
     if (p.moq) out.push(`MOQ: ${p.moq}`);
     if (p.lead_time) out.push(`Lead time: ${p.lead_time}`);
+    const pr = priceRange(p);
+    if (pr) out.push(`Reference price: ${pr.text} (FOB, depends on quantity and customization)`);
     for (const sp of parseSpecs(p.specs)) out.push(`${sp.k}: ${sp.v}`);
     out.push('', p.description || p.summary || '', '');
   }

@@ -1,5 +1,5 @@
 const config = require('../config');
-const { plain, isoDate, parseList } = require('./util');
+const { plain, isoDate, parseList, priceRange } = require('./util');
 
 const abs = (p) => (!p ? '' : /^https?:\/\//.test(p) ? p : config.SITE_URL + (p.startsWith('/') ? p : '/' + p));
 
@@ -78,7 +78,12 @@ function breadcrumb(items) {
   };
 }
 
+// Google requires offers, review or aggregateRating on Product markup. We only emit Product when an
+// indicative price is set (shown on the page), instead of inventing prices or ratings.
 function product(p, cat, specs) {
+  const price = priceRange(p);
+  if (!price) return null;
+  const url = abs(productUrl(p, cat));
   const images = [p.image, ...parseList(p.gallery)].filter(Boolean).map(abs);
   return {
     '@type': 'Product',
@@ -93,6 +98,16 @@ function product(p, cat, specs) {
     // We source from partner factories, so we are the seller/brand contact, not the manufacturer.
     countryOfOrigin: { '@type': 'Country', name: 'China' },
     additionalProperty: specs.map((s) => ({ '@type': 'PropertyValue', name: s.k, value: s.v })),
+    offers: {
+      '@type': 'AggregateOffer',
+      priceCurrency: 'USD',
+      lowPrice: price.low,
+      highPrice: price.high,
+      offerCount: 1,
+      url,
+      seller: { '@id': config.SITE_URL + '/#organization' },
+      ...(p.moq ? { eligibleQuantity: { '@type': 'QuantitativeValue', description: 'MOQ ' + p.moq } } : {}),
+    },
   };
 }
 
