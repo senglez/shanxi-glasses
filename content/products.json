@@ -18,7 +18,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 11:21:59",
-    "updated_at": "2026-10-31 11:21:59"
+    "updated_at": "2026-10-31 11:21:59",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 2,
@@ -39,7 +41,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 11:21:59",
-    "updated_at": "2026-10-31 11:21:59"
+    "updated_at": "2026-10-31 11:21:59",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 3,
@@ -60,7 +64,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 11:21:59",
-    "updated_at": "2026-10-31 11:21:59"
+    "updated_at": "2026-10-31 11:21:59",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 4,
@@ -81,7 +87,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 11:21:59",
-    "updated_at": "2026-10-31 11:21:59"
+    "updated_at": "2026-10-31 11:21:59",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 5,
@@ -102,7 +110,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 11:21:59",
-    "updated_at": "2026-10-31 11:21:59"
+    "updated_at": "2026-10-31 11:21:59",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 6,
@@ -123,7 +133,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 11:21:59",
-    "updated_at": "2026-10-31 11:21:59"
+    "updated_at": "2026-10-31 11:21:59",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 7,
@@ -144,7 +156,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 11:21:59",
-    "updated_at": "2026-10-31 11:21:59"
+    "updated_at": "2026-10-31 11:21:59",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 8,
@@ -165,7 +179,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 11:21:59",
-    "updated_at": "2026-10-31 11:21:59"
+    "updated_at": "2026-10-31 11:21:59",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 9,
@@ -186,7 +202,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 11:21:59",
-    "updated_at": "2026-10-31 11:21:59"
+    "updated_at": "2026-10-31 11:21:59",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 10,
@@ -207,7 +225,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 11:21:59",
-    "updated_at": "2026-10-31 11:21:59"
+    "updated_at": "2026-10-31 11:21:59",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 11,
@@ -228,7 +248,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 11:21:59",
-    "updated_at": "2026-10-31 11:21:59"
+    "updated_at": "2026-10-31 11:21:59",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 12,
@@ -249,7 +271,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 11:21:59",
-    "updated_at": "2026-10-31 11:21:59"
+    "updated_at": "2026-10-31 11:21:59",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 13,
@@ -270,7 +294,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 11:21:59",
-    "updated_at": "2026-10-31 11:21:59"
+    "updated_at": "2026-10-31 11:21:59",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 14,
@@ -291,7 +317,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 11:21:59",
-    "updated_at": "2026-10-31 11:21:59"
+    "updated_at": "2026-10-31 11:21:59",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 15,
@@ -312,7 +340,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 13:55:21",
-    "updated_at": "2026-10-31 13:55:21"
+    "updated_at": "2026-10-31 13:55:21",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 16,
@@ -333,7 +363,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 13:55:21",
-    "updated_at": "2026-10-31 13:55:21"
+    "updated_at": "2026-10-31 13:55:21",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 17,
@@ -354,7 +386,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 13:55:21",
-    "updated_at": "2026-10-31 13:55:21"
+    "updated_at": "2026-10-31 13:55:21",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 18,
@@ -375,7 +409,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 13:55:21",
-    "updated_at": "2026-10-31 13:55:21"
+    "updated_at": "2026-10-31 13:55:21",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 19,
@@ -396,7 +432,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 13:55:21",
-    "updated_at": "2026-10-31 13:55:21"
+    "updated_at": "2026-10-31 13:55:21",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 20,
@@ -417,7 +455,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 13:55:21",
-    "updated_at": "2026-10-31 13:55:21"
+    "updated_at": "2026-10-31 13:55:21",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 21,
@@ -438,7 +478,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 13:55:21",
-    "updated_at": "2026-10-31 13:55:21"
+    "updated_at": "2026-10-31 13:55:21",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 22,
@@ -459,7 +501,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 13:55:21",
-    "updated_at": "2026-10-31 13:55:21"
+    "updated_at": "2026-10-31 13:55:21",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 23,
@@ -480,7 +524,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 13:55:21",
-    "updated_at": "2026-10-31 13:55:21"
+    "updated_at": "2026-10-31 13:55:21",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 24,
@@ -501,7 +547,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 13:55:21",
-    "updated_at": "2026-10-31 13:55:21"
+    "updated_at": "2026-10-31 13:55:21",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 25,
@@ -522,7 +570,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 13:55:21",
-    "updated_at": "2026-10-31 13:55:21"
+    "updated_at": "2026-10-31 13:55:21",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 26,
@@ -543,7 +593,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 13:55:21",
-    "updated_at": "2026-10-31 13:55:21"
+    "updated_at": "2026-10-31 13:55:21",
+    "price_min": null,
+    "price_max": null
   },
   {
     "id": 27,
@@ -552,7 +604,7 @@
     "name": "Round Aroma Diffuser Bottle 100 ml",
     "summary": "Round glass bottle for room fragrance and reed diffusers, in clear or spray-colored glass with matching cap.",
     "description": "A versatile round bottle for home-fragrance ranges and gift boxes, available in many colors from one stock mold.",
-    "specs": "Capacity: about 100–110 ml\nGlass weight: about 180–240 g\nFinish: clear, frosted, spray color\nClosure: screw cap or stopper",
+    "specs": "Capacity: about 100–110 ml\r\nGlass weight: about 180–240 g\r\nFinish: clear, frosted, spray color\r\nClosure: screw cap or stopper",
     "material": "Flint glass",
     "moq": "3,000 pcs",
     "lead_time": "25–35 days",
@@ -564,7 +616,9 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 13:55:21",
-    "updated_at": "2026-10-31 13:55:21"
+    "updated_at": "2026-11-08 13:51:01",
+    "price_min": "1.12",
+    "price_max": "2.1"
   },
   {
     "id": 28,
@@ -585,6 +639,8 @@
     "published": 1,
     "sort": 0,
     "created_at": "2026-10-31 20:03:23",
-    "updated_at": "2026-10-31 20:16:06"
+    "updated_at": "2026-10-31 20:16:06",
+    "price_min": null,
+    "price_max": null
   }
 ]
