@@ -13,6 +13,7 @@
     <p class="lead"><%= p.summary %></p>
     <dl class="keyfacts glass-panel">
       <% if (p.material) { %><div><dt>Material</dt><dd><%= p.material %></dd></div><% } %>
+      <% if (price) { %><div><dt>Reference price</dt><dd><%= price.text %> <small class="muted">FOB, depends on quantity &amp; customization</small></dd></div><% } %>
       <% if (p.moq) { %><div><dt>MOQ</dt><dd><%= p.moq %></dd></div><% } %>
       <% if (p.lead_time) { %><div><dt>Lead time</dt><dd><%= p.lead_time %></dd></div><% } %>
       <div><dt>Origin</dt><dd>Shanxi, China</dd></div>

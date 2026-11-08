@@ -65,4 +65,13 @@ function xmlEscape(s) {
   return String(s ?? '').replace(/[<>&'"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' })[c]);
 }
 
-module.exports = { slugify, md, stripHtml, plain, parseSpecs, parseList, isoDate, fmtDate, xmlEscape };
+// Indicative price range from optional price_min / price_max (strings). Returns null if none.
+function priceRange(p) {
+  const lo = Number(p && p.price_min), hi = Number(p && p.price_max);
+  if (!(lo > 0)) return null;
+  const max = hi > lo ? hi : lo;
+  const f = (n) => (n < 10 ? n.toFixed(2) : String(Math.round(n * 100) / 100));
+  return { low: lo, high: max, text: 'USD ' + f(lo) + (max > lo ? '–' + f(max) : '') + ' / pc' };
+}
+
+module.exports = { priceRange, slugify, md, stripHtml, plain, parseSpecs, parseList, isoDate, fmtDate, xmlEscape };

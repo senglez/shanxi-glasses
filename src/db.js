@@ -153,6 +153,10 @@ CREATE TABLE IF NOT EXISTS redirects (
 // Lightweight migrations for databases created by earlier versions
 const inqCols = db.prepare('PRAGMA table_info(inquiries)').all().map((c) => c.name);
 if (!inqCols.includes('external_id')) db.exec('ALTER TABLE inquiries ADD COLUMN external_id TEXT');
+const prodCols = db.prepare('PRAGMA table_info(products)').all().map((c) => c.name);
+// Optional indicative FOB price range in USD per piece (shown on the page and used for Product offers schema)
+if (!prodCols.includes('price_min')) db.exec('ALTER TABLE products ADD COLUMN price_min TEXT');
+if (!prodCols.includes('price_max')) db.exec('ALTER TABLE products ADD COLUMN price_max TEXT');
 db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_inquiries_external ON inquiries(external_id) WHERE external_id IS NOT NULL');
 
 // Settings that must never be written to the public repo / static site

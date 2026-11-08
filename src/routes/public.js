@@ -2,7 +2,7 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const { db, getSettings } = require('../db');
 const seo = require('../lib/seo');
-const { md, plain, parseSpecs, parseList, fmtDate } = require('../lib/util');
+const { md, plain, parseSpecs, parseList, fmtDate, priceRange } = require('../lib/util');
 const { sameOrigin } = require('../lib/security');
 const { notifyInquiry } = require('../lib/mailer');
 const seoAuto = require('../lib/seo-auto');
@@ -162,6 +162,7 @@ router.get('/products/:cat/:slug', (req, res, next) => {
     p,
     cat,
     specs,
+    price: priceRange(p),
     gallery: [p.image, ...parseList(p.gallery)].filter(Boolean),
     related: cat ? q.related.all(cat.id, p.id) : [],
     crumbs,

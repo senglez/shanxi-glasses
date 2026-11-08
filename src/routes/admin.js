@@ -257,6 +257,8 @@ const RESOURCES = {
       { name: 'material', label: '材质', type: 'text' },
       { name: 'moq', label: '起订量 MOQ', type: 'text' },
       { name: 'lead_time', label: '交期', type: 'text' },
+      { name: 'price_min', label: '参考价格下限（美元/件，FOB）', type: 'text', help: '可选。只填数字，如 0.85。填写后产品页会显示参考价格区间，Google 也能识别（消除 Search Console 的产品摘要错误）。不填则不显示价格。' },
+      { name: 'price_max', label: '参考价格上限（美元/件，FOB）', type: 'text', help: '可选，如 1.60。只有一个价格时可以留空。' },
       { name: 'image', label: '主图', type: 'image', help: '建议 1200×1200 白底或场景图，上传后自动压缩为 WebP' },
       { name: 'gallery', label: '图集', type: 'gallery' },
       ...seoFields,
@@ -459,6 +461,15 @@ router.post('/c/:res/:id', resource, upload.any(), verifyCsrf, async (req, res, 
     }
     if (r.table === 'posts' && !data.published_at) data.published_at = new Date().toISOString().slice(0, 19).replace('T', ' ');
     if (r.table === 'redirects' && !String(data.from_path).startsWith('/')) errors.push('旧路径必须以 / 开头');
+    if (r.table === 'products') {
+      for (const k of ['price_min', 'price_max']) {
+        const v = String(data[k] || '').replace(/[$,\s]|USD/gi, '');
+        if (v && !(Number(v) > 0)) errors.push('参考价格只能填大于 0 的数字，例如 0.85');
+        data[k] = v && Number(v) > 0 ? String(Number(v)) : '';
+      }
+      if (data.price_min && data.price_max && Number(data.price_max) < Number(data.price_min)) errors.push('参考价格上限不能小于下限');
+      if (!data.price_min && data.price_max) (data.price_min = data.price_max), (data.price_max = '');
+    }
 
     if (errors.length) {
       return res.status(422).render('admin/form', { row: { ...old, ...data }, fields, isNew, errors, parseList });
