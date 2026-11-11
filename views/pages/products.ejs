@@ -13,7 +13,22 @@
   </nav>
 </section>
 <section class="wrap section-tight">
-  <% if (products.length) { %>
+  <% if (collections.length) { %>
+    <% collections.forEach(group => { %>
+      <section class="collection-list" id="<%= group.key %>">
+        <header class="collection-list-head">
+          <div>
+            <p class="eyebrow"><%= group.eyebrow %></p>
+            <h2><%= group.label %></h2>
+            <p class="muted"><%= group.description %></p>
+          </div>
+          <span class="collection-count"><%= group.products.length %> current item<%= group.products.length === 1 ? '' : 's' %></span>
+        </header>
+        <% if (group.confirmationNote) { %><p class="status-note"><%= group.confirmationNote %></p><% } %>
+        <div class="cards"><% group.products.forEach(p => { %><%- include('../partials/card', { p, collectionLabel: group.label }) %><% }) %></div>
+      </section>
+    <% }) %>
+  <% } else if (products.length) { %>
     <div class="cards"><% products.forEach(p => { %><%- include('../partials/card', { p }) %><% }) %></div>
   <% } else { %>
     <p class="muted">No products found. <a href="/contact">Send us your requirement</a> and we will source it for you.</p>

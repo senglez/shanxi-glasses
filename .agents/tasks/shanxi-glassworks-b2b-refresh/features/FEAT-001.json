@@ -1,0 +1,26 @@
+{
+  "id": "FEAT-001",
+  "type": "feat",
+  "description": "Add a display-only buyer collection layer over the existing 28-product catalog and reposition the homepage/catalog around core retail glassware, floral/gift glass, and seasonal programs without adding fictional products or SKUs.",
+  "status": "completed",
+  "steps": [
+    "Create /Users/macbook/Downloads/Projects/shanxi-glasses/src/lib/catalog.js with a stable mapping from existing product slugs to three display groups. Include only current slugs, a fallback for unmapped products, buyer-facing descriptions, and explicit notes that flower/butterfly forms and pumpkin/ghost/gingerbread products are absent from the current snapshot and need confirmation.",
+    "Update /Users/macbook/Downloads/Projects/shanxi-glasses/src/routes/public.js to compute collection groups from the existing published products for the home and unfiltered/search catalog renders while preserving category routes, category pills, search behavior, product URLs, and the current SQLite queries.",
+    "Update /Users/macbook/Downloads/Projects/shanxi-glasses/views/pages/home.ejs, views/pages/products.ejs, and views/partials/card.ejs to render the B2B collection pathways and group labels using existing images, product names, and category labels; do not introduce a download link because the repository has no catalog or line-sheet file.",
+    "Update /Users/macbook/Downloads/Projects/shanxi-glasses/public/css/site.css for collection sections, buyer-fit/status notes, and responsive behavior using the existing glass-panel/card design and reduced-motion conventions.",
+    "Update only the public tagline, home title, and home description in /Users/macbook/Downloads/Projects/shanxi-glasses/content/settings.json to describe the B2B retail focus; keep supplied company/contact/form values and factual source notes unchanged."
+  ],
+  "acceptance_criteria": [
+    "The homepage has a clear overseas B2B retail hero and links to /products and /contact.",
+    "The all-products view visibly organizes current products under Core retail glassware, Floral & gift glass, and Seasonal programs while retaining the existing category navigation and search.",
+    "Unconfirmed flower/butterfly and pumpkin/ghost/gingerbread availability is clearly labeled as requiring confirmation; no fictional product row, SKU, price, certification, capacity, or production claim is added.",
+    "Existing public product URLs and image paths continue to render, and no catalog/line-sheet download is presented without a real file."
+  ],
+  "verification": [
+    "Run SITE_URL=http://localhost:8080 npm run build:static and confirm every generated page and SEO file returns successfully.",
+    "Inspect generated dist/index.html and dist/products/index.html through a local static server or browser; confirm the B2B hero, three collection headings, existing product links, and confirmation notes are present.",
+    "Run npm start on an unused local port and request /, /products, and one existing product URL; confirm HTTP 200 responses."
+  ],
+  "blocked_reason": null,
+  "findings": "The current snapshot has 10 categories and 28 products, but no explicit mosaic/hand-painted geometric cup, flower/butterfly gift, pumpkin, ghost, or gingerbread product records. It has generated public images and one uploaded perfume image set, so the feature uses display grouping and confirmation-needed notes rather than inventing inventory or identifiers. Validation: `node -e ...buildCollections...` passed with 28 products grouped as Core retail glassware (11), Floral & gift glass (13), and Seasonal programs (4). `SITE_URL=http://localhost:8080 npm run build:static` passed: 54 pages and 5 SEO files generated, with the build's per-page HTTP checks successful. A transient local static server served `/` and `/products/` with HTTP 200; generated `dist/index.html` and `dist/products/index.html` contained the B2B hero, three collection headings, existing product links, and flower/butterfly plus pumpkin/ghost/gingerbread confirmation notes. `PORT=8091 npm start` smoke checks passed with HTTP 200 for `/`, `/products`, `/products/wine-glasses-stemware/hand-blown-lead-free-crystal-wine-glass-550-ml`, `/contact`, and `/thank-you`; the local invalid inquiry validation path returned HTTP 422. No automated test or lint script exists. External inquiry delivery was not tested, and no deployment, DNS, or production service was called."
+}

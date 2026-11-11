@@ -5,12 +5,12 @@
   <div class="hero-noise" aria-hidden="true"></div>
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <p class="eyebrow reveal"><span class="dot"></span> Direct from Qixian · China’s glassware capital</p>
+      <p class="eyebrow reveal"><span class="dot"></span> Built for overseas retail buyers · Shanxi, China</p>
       <h1 class="reveal">
-        Glassware <span class="shimmer">sourced at the furnace</span>,<br>delivered to your market.
+        Retail-ready glassware <span class="shimmer">for your next range.</span>
       </h1>
       <p class="lead reveal">
-        Hand-blown and machine-made glassware from vetted factories in Shanxi, China. We match your order to the right factory, manage samples, production, QC and export, so you deal with one English-speaking partner.
+        Explore current glassware and packaging records for supermarkets, homeware chains, gift retailers and importers. Share your target market, designs, colors and packaging needs for an OEM or private-label discussion.
       </p>
       <div class="hero-cta reveal">
         <a href="/contact" class="btn btn-glow btn-lg">Request a Quote</a>
@@ -55,6 +55,34 @@
     <% } %>
   </div>
 </div>
+
+<section class="section collection-pathways" id="collections">
+  <div class="wrap">
+    <header class="sec-head reveal">
+      <p class="eyebrow">Buyer pathways</p>
+      <h2>Build a retail glassware range around current products</h2>
+      <p class="muted">Start with the published product snapshot, then tell us which formats, colors, packaging and private-label details your market requires.</p>
+    </header>
+    <div class="collection-grid">
+      <% collections.forEach(group => { %>
+        <article class="collection-panel glass-panel reveal">
+          <div class="collection-heading">
+            <p class="eyebrow"><%= group.eyebrow %></p>
+            <h3><%= group.label %></h3>
+            <p class="muted"><%= group.description %></p>
+          </div>
+          <% if (group.confirmationNote) { %><p class="status-note"><%= group.confirmationNote %></p><% } %>
+          <ul class="collection-products">
+            <% group.products.slice(0, 3).forEach(p => { %>
+              <li><a href="<%= productUrl(p, catMap[p.category_id]) %>"><span><%= p.name %></span><small><%= catMap[p.category_id] ? catMap[p.category_id].name : 'Published product' %></small></a></li>
+            <% }) %>
+          </ul>
+          <a class="text-link" href="/products#<%= group.key %>">Explore this pathway →</a>
+        </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
 
 <section class="section" id="categories">
   <div class="wrap">

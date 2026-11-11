@@ -6,6 +6,7 @@ const { md, plain, parseSpecs, parseList, fmtDate, priceRange } = require('../li
 const { sameOrigin } = require('../lib/security');
 const { notifyInquiry } = require('../lib/mailer');
 const seoAuto = require('../lib/seo-auto');
+const { buildCollections } = require('../lib/catalog');
 const config = require('../config');
 
 const router = express.Router();
@@ -90,6 +91,7 @@ router.get('/', (req, res) => {
     featured: q.featured.all(),
     posts: q.latestPosts.all(),
     faqs,
+    collections: buildCollections(q.allProducts.all()),
     graph: seo.graph([...res.locals.baseGraph, seo.faqPage(faqs)]),
   });
 });
@@ -112,6 +114,7 @@ router.get('/products', (req, res) => {
     products,
     term,
     crumbs,
+    collections: buildCollections(products),
     graph: seo.graph([...res.locals.baseGraph, seo.breadcrumb(crumbs), seo.itemList(products, res.locals.navCats)]),
   });
 });
@@ -136,6 +139,7 @@ router.get('/products/:cat', (req, res, next) => {
     products,
     term: '',
     crumbs,
+    collections: [],
     graph: seo.graph([...res.locals.baseGraph, seo.breadcrumb(crumbs), seo.itemList(products, res.locals.navCats)]),
   });
 });
