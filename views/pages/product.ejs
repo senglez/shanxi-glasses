@@ -1,5 +1,8 @@
 <%- include('../partials/top') %>
 <%- include('../partials/crumbs') %>
+<%
+  const packaging = specs.find((sp) => /^packaging$/i.test(sp.k) && sp.v);
+%>
 <article class="wrap product">
   <div class="gallery">
     <div class="gallery-main glass-panel<%= isPhoto(gallery[0]) ? ' photo' : '' %>"><img id="gmain" src="<%= gallery[0] || '/img/glass/wine.webp' %>" alt="<%= p.name %>" width="800" height="800" fetchpriority="high"></div>
@@ -12,10 +15,11 @@
     <h1><%= p.name %></h1>
     <p class="lead"><%= p.summary %></p>
     <dl class="keyfacts glass-panel">
-      <% if (p.material) { %><div><dt>Material</dt><dd><%= p.material %></dd></div><% } %>
-      <% if (price) { %><div><dt>Reference price</dt><dd><%= price.text %> <small class="muted">FOB, depends on quantity &amp; customization</small></dd></div><% } %>
-      <% if (p.moq) { %><div><dt>MOQ</dt><dd><%= p.moq %></dd></div><% } %>
-      <% if (p.lead_time) { %><div><dt>Lead time</dt><dd><%= p.lead_time %></dd></div><% } %>
+      <div><dt>Material</dt><dd><%= p.material || 'Confirmation needed' %><% if (p.material) { %> <small class="muted">Published reference; confirm for your program</small><% } %></dd></div>
+      <div><dt>Reference price</dt><dd><% if (price) { %><%= price.text %><% } else { %>Quote-dependent<% } %> <small class="muted">Confirm final price for quantity and customization</small></dd></div>
+      <div><dt>MOQ</dt><dd><%= p.moq || 'Confirmation needed' %> <small class="muted">Confirm in the quotation for your design and color mix</small></dd></div>
+      <div><dt>Lead time</dt><dd><%= p.lead_time || 'Confirmation needed' %> <small class="muted">Confirm against the final specification and order plan</small></dd></div>
+      <div><dt>Packaging</dt><dd><%= packaging ? packaging.v : 'Confirmation needed' %> <small class="muted">Confirm carton and retail-pack requirements</small></dd></div>
       <div><dt>Origin</dt><dd>Shanxi, China</dd></div>
       <div><dt>Customization</dt><dd>Logo, color, size, packaging</dd></div>
     </dl>
@@ -47,7 +51,7 @@
     <div>
       <p class="eyebrow">Inquiry</p>
       <h2>Request a quote for <%= p.name %></h2>
-      <p class="muted">Include quantity, customization and destination. We’ll come back with price, MOQ, sample time and shipping options.</p>
+      <p class="muted">Share quantity by design or color, customization, packaging, destination and launch context. Final price, MOQ, lead time and shipping options depend on the confirmed specification and quotation.</p>
     </div>
     <%- include('../partials/inquiry-form', { product: p }) %>
   </div>

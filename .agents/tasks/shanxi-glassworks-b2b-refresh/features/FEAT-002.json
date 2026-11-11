@@ -1,0 +1,25 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "Improve product-detail trust signals and B2B inquiry guidance while preserving the configured local, Web3Forms, Google Apps Script, and mailto submission paths.",
+  "status": "completed",
+  "steps": [
+    "Update /Users/macbook/Downloads/Projects/shanxi-glasses/views/pages/product.ejs to keep the existing parsed specs, material, MOQ, and lead-time values, expose packaging when the current specs contain it, label absent information as confirmation-needed rather than inventing it, and make final price/MOQ/lead-time language quote-dependent. Do not add a buyer-facing synthetic SKU.",
+    "Update /Users/macbook/Downloads/Projects/shanxi-glasses/views/pages/contact.ejs for overseas importers, supermarket/homeware chains, gift retailers, and brands, retaining the configured project contact values and WhatsApp link and avoiding any new unconfigured channel or guaranteed response claim beyond the existing copy.",
+    "Update /Users/macbook/Downloads/Projects/shanxi-glasses/views/partials/inquiry-form.ejs labels and placeholders so buyers can provide company, market, quantity by design/color, packaging needs, destination, and launch context through the existing stored fields. Preserve the current /inquiry, Web3Forms, Google Apps Script, mailto fallback, honeypot, timestamp, attribution, and product_id/product_name behavior.",
+    "Run the repository static build and dynamic smoke checks after FEAT-001 is complete; record the commands and any external-service limitation in this FEAT's findings without changing the transport implementation."
+  ],
+  "acceptance_criteria": [
+    "Product pages retain real published fields and visibly distinguish reference data from terms that must be confirmed in a quotation.",
+    "Product and general inquiry forms render the currently configured action and retain the fields consumed by src/routes/public.js and integrations/google-apps-script/Code.gs.",
+    "A product-page submission still carries its existing product_id and product_name, and the local invalid/valid inquiry behavior remains intact.",
+    "No price, certification, capacity, MOQ, lead time, test result, email backend, catalog file, or company fact is fabricated."
+  ],
+  "verification": [
+    "Run SITE_URL=http://localhost:8080 npm run build:static and confirm the product/contact/thank-you pages generate without errors.",
+    "Run npm start on an unused local port and request /contact, /thank-you, and one product URL; confirm HTTP 200 responses and inspect the rendered form action/hidden product fields.",
+    "Submit a local form with missing requirements and confirm the existing validation response; submit a valid local test only if the configured local route is used and confirm the existing 303 redirect to /thank-you. Do not send a production inquiry to external services."
+  ],
+  "blocked_reason": null,
+  "findings": "The form transport is already implemented in views/partials/inquiry-form.ejs, public/js/site.js, src/routes/public.js, and integrations/google-apps-script/Code.gs. The public snapshot has no prices and no explicit SKU field; product structured data has a generated SGS identifier only when a price exists, so the refresh must not expose it as a claimed SKU. FEAT-002 implementation completed: product detail pages preserve parsed specifications, material, published MOQ and lead-time values, surface packaging when present, and label missing or quote-dependent commercial details for confirmation; contact and inquiry copy now guides overseas importers, supermarket/homeware chains, gift retailers and brands while preserving configured contact values and all existing field names and submission paths. Verification: `SITE_URL=http://localhost:8080 npm run build:static` passed, generating 54 pages and 5 SEO files. `PORT=8787 npm start` started the local server. Local HTTP smoke checks returned 200 for `/contact`, `/thank-you`, and `/products/glass-bottles-storage-jars/glass-water-bottle-with-sleeve-500-ml`; rendered product form action was `/inquiry` and retained hidden `product_id=14` and `product_name=Glass Water Bottle with Sleeve 500 ml`. A local POST with missing requirements returned 422, and a local valid test POST returned 303 with `Location: /thank-you`. No production inquiry or external delivery service was called; Web3Forms and Google Apps Script were verified only through configured static-build/rendered form values. No automated test or lint script exists in the repository."
+}
