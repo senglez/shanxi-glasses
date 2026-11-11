@@ -4,6 +4,8 @@ const COLLECTIONS = Object.freeze([
     label: 'Core retail glassware',
     eyebrow: 'Year-round range',
     description: 'Current tableware, drinkware, tea and home glass from the published catalog for everyday retail programs.',
+    confirmationNote:
+      'Colorful mosaic and hand-painted geometric glassware are not present in the current product snapshot. Please ask us to confirm availability before planning them as the year-round mainline.',
     slugs: Object.freeze([
       'hand-blown-lead-free-crystal-wine-glass-550-ml',
       'champagne-flute-with-gold-rim-200-ml',

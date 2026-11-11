@@ -33,6 +33,7 @@
   <% } else { %>
     <p class="muted">No products found. <a href="/contact">Send us your requirement</a> and we will source it for you.</p>
   <% } %>
+  <p class="muted search-empty" hidden role="status">No products matched this search. <a href="/contact">Send us your requirement</a> and we will source it for you.</p>
 </section>
 <% if (category && category.description) { %>
 <section class="wrap section-tight"><div class="prose glass-panel pad"><%- md(category.description) %></div></section>

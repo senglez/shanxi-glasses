@@ -70,15 +70,34 @@
   if (doc.dataset.static && searchForm && term) {
     var words = term.toLowerCase().split(/\s+/).filter(Boolean);
     var shown = 0;
-    document.querySelectorAll('.cards .card').forEach(function (c) {
-      var hay = (c.dataset.search || c.textContent).toLowerCase();
-      var hit = words.every(function (w) { return hay.indexOf(w) !== -1; });
-      c.hidden = !hit;
-      if (hit) shown++;
-    });
+    var groups = document.querySelectorAll('.collection-list');
+    if (groups.length) {
+      groups.forEach(function (group) {
+        var groupShown = 0;
+        group.querySelectorAll('.cards .card').forEach(function (c) {
+          var hay = (c.dataset.search || c.textContent).toLowerCase();
+          var hit = words.every(function (w) { return hay.indexOf(w) !== -1; });
+          c.hidden = !hit;
+          if (hit) groupShown++;
+        });
+        group.hidden = groupShown === 0;
+        shown += groupShown;
+        var count = group.querySelector('.collection-count');
+        if (count) count.textContent = groupShown + ' current item' + (groupShown === 1 ? '' : 's');
+      });
+    } else {
+      document.querySelectorAll('.cards .card').forEach(function (c) {
+        var hay = (c.dataset.search || c.textContent).toLowerCase();
+        var hit = words.every(function (w) { return hay.indexOf(w) !== -1; });
+        c.hidden = !hit;
+        if (hit) shown++;
+      });
+    }
     var h1 = document.querySelector('.page-head h1');
     if (h1) h1.textContent = 'Results for “' + term + '” (' + shown + ')';
     if (searchForm.elements.q) searchForm.elements.q.value = term;
+    var empty = document.querySelector('.search-empty');
+    if (empty) empty.hidden = shown !== 0;
   }
 
   /* Product gallery thumbnails */
