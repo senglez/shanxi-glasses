@@ -12,7 +12,7 @@
 <form class="inquiry glass-panel" method="post" action="https://api.web3forms.com/submit" data-inquiry data-w3f="1" data-record="<%= record || '' %>" data-thanks="/thank-you" data-fallback="<%= s.contact_email %>">
   <input type="hidden" name="access_key" value="<%= s.web3forms_key %>">
   <input type="hidden" name="from_name" value="<%= s.site_name %> website">
-  <input type="hidden" name="subject" value="[Inquiry] <%= prod ? prod.name : 'Website inquiry' %>">
+  <input type="hidden" name="subject" value="[Inquiry] <%= prod ? productLabel(prod) : 'Website inquiry' %>">
   <input type="hidden" name="redirect" value="<%= SITE_URL %>/thank-you">
   <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
 <% } else if (record) { %>
@@ -24,9 +24,9 @@
     <div class="alert" role="alert"><ul><% errs.forEach(e => { %><li><%= e %></li><% }) %></ul></div>
   <% } %>
   <% if (prod) { %>
-    <p class="inq-product">Inquiry for: <strong><%= prod.name %></strong></p>
+    <p class="inq-product">Inquiry for: <strong><%= productLabel(prod) %></strong></p>
     <input type="hidden" name="product_id" value="<%= prod.id %>">
-    <input type="hidden" name="product_name" value="<%= prod.name %>">
+    <input type="hidden" name="product_name" value="<%= productLabel(prod) %>">
   <% } %>
   <div class="grid-2">
     <label>Your name *<input name="name" required maxlength="100" autocomplete="name" value="<%= f.name || '' %>"></label>

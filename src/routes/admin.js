@@ -240,6 +240,7 @@ const RESOURCES = {
     url: (r) => productUrl(r, r.category_id ? db.prepare('SELECT slug FROM categories WHERE id=?').get(r.category_id) : null),
     list: [
       { name: 'image', label: '图', type: 'image' },
+      { name: 'sku', label: '编码' },
       { name: 'name', label: '名称' },
       { name: 'category_name', label: '分类' },
       { name: 'featured', label: '首页推荐', type: 'bool' },
@@ -249,6 +250,7 @@ const RESOURCES = {
     listSql: 'SELECT p.*, c.name category_name FROM products p LEFT JOIN categories c ON c.id = p.category_id ORDER BY p.sort, p.id DESC',
     fields: () => [
       { name: 'name', label: '产品名称（英文）', type: 'text', required: true, help: '写买家会搜索的词，例如 "Hand-Blown Crystal Wine Glass 450ml"' },
+      { name: 'sku', label: '产品编码 Item code', type: 'text', help: '格式：品类-设计-流水号，例如 TMB-MOS-001。显示在产品页、列表卡片和询盘中。' },
       { name: 'slug', label: 'URL 别名', type: 'text', help: '留空自动生成；修改后旧网址会自动 301 跳转' },
       { name: 'category_id', label: '分类', type: 'select', options: catOptions() },
       { name: 'summary', label: '一句话摘要', type: 'textarea', rows: 2, help: '显示在列表和 AI 摘要中。直接说清楚：是什么、材质、适用场景。' },

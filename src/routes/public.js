@@ -18,7 +18,7 @@ const q = {
   featured: db.prepare('SELECT * FROM products WHERE published = 1 AND featured = 1 ORDER BY sort, id DESC LIMIT 8'),
   allProducts: db.prepare('SELECT * FROM products WHERE published = 1 ORDER BY sort, id DESC'),
   search: db.prepare(
-    `SELECT * FROM products WHERE published = 1 AND (name LIKE @q OR summary LIKE @q OR description LIKE @q OR material LIKE @q)
+    `SELECT * FROM products WHERE published = 1 AND (name LIKE @q OR sku LIKE @q OR summary LIKE @q OR description LIKE @q OR material LIKE @q)
      ORDER BY sort, id DESC LIMIT 60`
   ),
   byCat: db.prepare('SELECT * FROM products WHERE published = 1 AND category_id = ? ORDER BY sort, id DESC'),
@@ -51,9 +51,14 @@ router.use((req, res, next) => {
   res.locals.catMap = Object.fromEntries(res.locals.navCats.map((c) => [c.id, c]));
   res.locals.baseGraph = [seo.organization(s), seo.website(s)];
   res.locals.waLink = (product) => whatsappLink(s, req.path, product);
+  res.locals.productLabel = productLabel;
   next();
 });
 
+// Product name with its item code, used in inquiries and WhatsApp messages so buyers and staff quote the same code.
+function productLabel(p) {
+  return p.sku ? `${p.name} (${p.sku})` : p.name;
+}
 // wa.me link with a pre-filled message, so the visitor only has to press send.
 function whatsappLink(s, pagePath, product) {
   if (!s.whatsapp) return '';
@@ -62,7 +67,7 @@ function whatsappLink(s, pagePath, product) {
   const tpl = (product ? s.whatsapp_product_message : s.whatsapp_message) || '';
   const text = tpl
     .replace(/\{site\}/g, s.site_name)
-    .replace(/\{product\}/g, product ? product.name : '')
+    .replace(/\{product\}/g, product ? productLabel(product) : '')
     .replace(/\{url\}/g, url)
     .replace(/\r\n/g, '\n')
     .trim();
@@ -91,7 +96,7 @@ router.get('/', (req, res) => {
     featured: q.featured.all(),
     posts: q.latestPosts.all(),
     faqs,
-    collections: buildCollections(q.allProducts.all()),
+    collections: buildCollections(q.allProducts.all(), { includeFallback: false }),
     graph: seo.graph([...res.locals.baseGraph, seo.faqPage(faqs)]),
   });
 });
@@ -327,7 +332,7 @@ router.post('/inquiry', inquiryLimiter, sameOrigin, express.urlencoded({ extende
     const row = {
       ...form,
       product_id: product ? product.id : null,
-      product_name: product ? product.name : clip(b.product_name, 200) || null,
+      product_name: product ? productLabel(product) : clip(b.product_name, 200) || null,
       source_page: clip(b.source_page, 300),
       referrer: clip(b.referrer, 300),
       utm_source: clip(b.utm_source, 100),

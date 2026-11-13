@@ -91,7 +91,7 @@ function product(p, cat, specs) {
     name: p.name,
     description: plain(p.description || p.summary, 500),
     image: images,
-    sku: 'SGS-' + String(p.id).padStart(4, '0'),
+    sku: p.sku || 'SGS-' + String(p.id).padStart(4, '0'),
     category: cat ? cat.name : undefined,
     material: p.material || undefined,
     brand: { '@type': 'Brand', name: 'OEM / Private Label' },

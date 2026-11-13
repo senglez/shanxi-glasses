@@ -1,85 +1,68 @@
+// Buyer-facing collections. Products are assigned by item code (sku); anything without a
+// listed code falls into FALLBACK, so new products never disappear from the catalog.
 const COLLECTIONS = Object.freeze([
   {
     key: 'core-retail-glassware',
     label: 'Core retail glassware',
     eyebrow: 'Year-round range',
-    description: 'Current tableware, drinkware, tea and home glass from the published catalog for everyday retail programs.',
-    confirmationNote:
-      'Colorful mosaic and hand-painted geometric glassware are not present in the current product snapshot. Please ask us to confirm availability before planning them as the year-round mainline.',
-    slugs: Object.freeze([
-      'hand-blown-lead-free-crystal-wine-glass-550-ml',
-      'champagne-flute-with-gold-rim-200-ml',
-      'vintage-colored-goblet-glass-set',
-      'heavy-base-whiskey-rocks-glass-300-ml',
-      'ribbed-highball-glass-400-ml',
-      'borosilicate-glass-teapot-with-infuser-1000-ml',
-      'double-wall-borosilicate-coffee-cup-250-ml',
-      'clear-glass-fish-bowl-terrarium',
-      'hand-blown-lead-free-crystal-wine-decanter-1500-ml',
-      'glass-storage-jar-with-bamboo-lid',
-      'glass-water-bottle-with-sleeve-500-ml',
+    description:
+      'Hand-painted mosaic, geometric and stripe drinkware for year-round tabletop shelves, including current trend designs.',
+    skus: Object.freeze([
+      'TMB-MOS-001', 'HBG-MOS-002', 'RCK-MOS-001', 'HBG-MOS-001', 'TMB-HPT-001', 'TMB-CNF-001', 'TMB-STR-001',
+      'HBG-DIA-001', 'HBG-MOS-003', 'TMB-STP-001', 'RCK-DIA-001', 'TMB-RNB-001', 'HBG-DSY-001',
     ]),
   },
   {
     key: 'floral-gift-glass',
     label: 'Floral & gift glass',
     eyebrow: 'Gift-led programs',
-    description: 'Existing vases and fragrance or skincare packaging that can support floral, gifting and display-led retail ranges.',
-    confirmationNote:
-      'Flower and butterfly gift forms are not present in the current product snapshot. Please ask us to confirm availability before planning a range around them.',
-    slugs: Object.freeze([
-      'hand-blown-ombre-glass-vase',
-      'clear-heavy-base-glass-perfume-bottle-100-ml',
-      'square-thick-base-perfume-bottle-50-ml',
-      'air-bubble-glass-perfume-bottle-90-ml',
-      'polished-faceted-glass-perfume-bottle-100-ml',
-      'hot-fused-decorative-perfume-bottle-80-ml',
-      'spray-coated-gradient-perfume-bottle-100-ml',
-      'hand-made-artisan-glass-perfume-bottle',
-      'frosted-glass-serum-dropper-bottle-30-ml',
-      'gradient-glass-lotion-pump-bottle-100-ml',
-      'thick-wall-glass-cream-jar-50-g',
-      'skincare-glass-packaging-set-toner-lotion-cream',
-      'heavy-base-perfume-bottle-with-gold-leaf-bubble',
+    description:
+      'Butterfly, tulip and illustrated designs for spring and gift displays, plus mosaic and gold plates and bowls that complete a tabletop range.',
+    skus: Object.freeze([
+      'TMB-BFL-001', 'CUP-BFL-001', 'VAS-TUL-001', 'TMB-HRT-001', 'TMB-DNT-001', 'TMB-FLW-004', 'TMB-FLW-005',
+      'BWL-MOS-001', 'PLT-MOS-001', 'PLT-GLD-001',
     ]),
   },
   {
     key: 'seasonal-programs',
     label: 'Seasonal programs',
     eyebrow: 'Seasonal complement',
-    description: 'Existing candle, votive and aroma-vessel records for seasonal and home-fragrance programs.',
-    confirmationNote:
-      'Pumpkin, ghost and gingerbread products are not present in the current product snapshot. Please ask us to confirm seasonal availability before planning those forms.',
-    slugs: Object.freeze([
-      'candle-jar-with-wooden-lid-10-oz',
-      'mercury-glass-votive-candle-holder',
-      'heavy-glass-reed-diffuser-bottle-150-ml',
-      'round-aroma-diffuser-bottle-100-ml',
+    description:
+      'Halloween, Christmas and Valentine’s designs for seasonal buying. US holiday orders are usually confirmed 6 to 9 months ahead.',
+    skus: Object.freeze(['TMB-PUM-001', 'TMB-GHO-001', 'TMB-GIN-001', 'TMB-CAN-001', 'VOT-HRT-001']),
+  },
+  {
+    key: 'bar-hospitality',
+    label: 'Bar, hospitality & dessert',
+    eyebrow: 'Hotels, bars & cafes',
+    description:
+      'Rocks glasses, goblets, mugs and dessert bowls for bars, restaurants, hotels and dessert chains, with decoration kept to the base on several designs.',
+    skus: Object.freeze([
+      'RCK-SWL-001', 'TMB-BAS-001', 'RCK-AMB-001', 'RCK-AMB-002', 'RCK-GRN-001', 'GBL-GRN-001', 'DSB-STR-001',
+      'DSB-RED-001', 'MUG-LEF-001',
     ]),
   },
 ]);
-
 const FALLBACK = Object.freeze({
   key: 'other-current-products',
-  label: 'Other current products',
+  label: 'More glassware & packaging',
   eyebrow: 'Published catalog',
-  description: 'Published products not yet assigned to a buyer-facing collection.',
-  slugs: Object.freeze([]),
+  description: 'Stemware, borosilicate, candle, storage and fragrance or cosmetic glass from the wider catalog.',
+  skus: Object.freeze([]),
 });
-
-const slugToKey = new Map(COLLECTIONS.flatMap((collection) => collection.slugs.map((slug) => [slug, collection.key])));
-
-function buildCollections(products = []) {
-  const groups = new Map(
-    [...COLLECTIONS, FALLBACK].map((collection) => [collection.key, { ...collection, products: [] }])
-  );
-
+const skuToKey = new Map(COLLECTIONS.flatMap((c) => c.skus.map((sku) => [sku, c.key])));
+const skuOrder = new Map(COLLECTIONS.flatMap((c) => c.skus.map((sku, i) => [sku, i])));
+// Groups products into collections, keeping the order listed above. Empty groups are dropped.
+// Pass { includeFallback: false } to show only the curated collections (home page).
+function buildCollections(products = [], { includeFallback = true } = {}) {
+  const groups = new Map([...COLLECTIONS, FALLBACK].map((c) => [c.key, { ...c, products: [] }]));
   products.forEach((product) => {
-    const key = slugToKey.get(product.slug) || FALLBACK.key;
+    const key = skuToKey.get(product.sku) || FALLBACK.key;
     groups.get(key).products.push(product);
   });
-
-  return [...groups.values()].filter((group) => group.products.length > 0);
+  for (const g of groups.values()) {
+    if (g.key !== FALLBACK.key) g.products.sort((a, b) => skuOrder.get(a.sku) - skuOrder.get(b.sku));
+  }
+  return [...groups.values()].filter((g) => g.products.length > 0 && (includeFallback || g.key !== FALLBACK.key));
 }
-
 module.exports = { COLLECTIONS, FALLBACK, buildCollections };

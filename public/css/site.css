@@ -129,11 +129,13 @@ p { margin: 0 0 1em; }
 .page-head { padding: 30px 0 20px; }
 
 /* Buyer collection pathways */
-.collection-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.collection-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
 .collection-panel { padding: 26px; display: flex; flex-direction: column; min-height: 100%; }
 .collection-panel .eyebrow, .collection-list-head .eyebrow { margin-bottom: .65em; }
 .collection-panel h3 { font-family: var(--display); font-size: 1.55rem; margin-bottom: .45em; }
 .collection-heading p { font-size: .95rem; }
+.item-code { margin: -.2em 0 .9em; color: var(--muted, #aab4c3); font-size: .95rem; letter-spacing: .02em; }
+.item-code b { color: var(--amber2); font-weight: 700; }
 .status-note { padding: 11px 13px; margin: 4px 0 16px; border-left: 3px solid var(--amber); background: rgba(255,158,61,.08); color: #d4dbe6; font-size: .86rem; }
 .collection-products { list-style: none; padding: 0; margin: auto 0 18px; display: grid; gap: 8px; }
 .collection-products li { border-top: 1px solid rgba(255,255,255,.1); }
