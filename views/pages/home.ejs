@@ -5,12 +5,12 @@
   <div class="hero-noise" aria-hidden="true"></div>
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <p class="eyebrow reveal"><span class="dot"></span> Built for overseas retail buyers · Shanxi, China</p>
+      <p class="eyebrow reveal"><span class="dot"></span> Hand-painted glassware supplier · Shanxi, China</p>
       <h1 class="reveal">
-        Retail-ready glassware <span class="shimmer">for your next range.</span>
+        Hand-painted glassware <span class="shimmer">wholesale for retail.</span>
       </h1>
       <p class="lead reveal">
-        Explore current glassware and packaging records for supermarkets, homeware chains, gift retailers and importers. Share your target market, designs, colors and packaging needs for an OEM or private-label discussion.
+        Colorful mosaic tumblers, highballs, rocks glasses, holiday glasses, vases, bowls and plates for supermarkets, homeware chains, gift retailers and importers. Tell us your target market, designs and packaging for an OEM or private-label quotation.
       </p>
       <div class="hero-cta reveal">
         <a href="/contact" class="btn btn-glow btn-lg">Request a Quote</a>
@@ -38,8 +38,8 @@
         <ellipse cx="200" cy="466" rx="96" ry="14" fill="url(#hg)" stroke="#fff" stroke-opacity=".7" stroke-width="2"/>
         <path d="M110 70 C105 160 120 210 150 240" stroke="#fff" stroke-opacity=".6" stroke-width="5" fill="none" stroke-linecap="round"/>
       </svg>
-      <div class="chip c1 glass-panel">Lead-free crystal</div>
-      <div class="chip c2 glass-panel">Borosilicate 3.3</div>
+      <div class="chip c1 glass-panel">Hand-painted mosaic</div>
+      <div class="chip c2 glass-panel">Holiday programs</div>
       <div class="chip c3 glass-panel">OEM · Your logo</div>
     </div>
   </div>
@@ -49,8 +49,8 @@
 <div class="marquee" aria-hidden="true">
   <div class="marquee-track">
     <% for (let k = 0; k < 2; k++) { %>
-      <span>Hand-blown stemware</span><i>✦</i><span>Lead-free crystal</span><i>✦</i><span>Borosilicate teaware</span><i>✦</i>
-      <span>Colored &amp; ombre glass</span><i>✦</i><span>Candle jars</span><i>✦</i><span>Decal &amp; laser logo</span><i>✦</i>
+      <span>Hand-painted mosaic glassware</span><i>✦</i><span>Colorful tumblers &amp; highballs</span><i>✦</i><span>Halloween &amp; Christmas glasses</span><i>✦</i>
+      <span>Butterfly &amp; floral gifts</span><i>✦</i><span>Glass bowls &amp; plates</span><i>✦</i><span>Private label</span><i>✦</i>
       <span>Gift box packaging</span><i>✦</i><span>AQL inspection</span><i>✦</i><span>FOB · CIF · DDP</span><i>✦</i>
     <% } %>
   </div>
@@ -60,8 +60,8 @@
   <div class="wrap">
     <header class="sec-head reveal">
       <p class="eyebrow">Buyer pathways</p>
-      <h2>Build a retail glassware range around current products</h2>
-      <p class="muted">Start with the published product snapshot, then tell us which formats, colors, packaging and private-label details your market requires.</p>
+      <h2>Colorful glassware collections for retail and hospitality</h2>
+      <p class="muted">Start with a collection, then tell us which designs, colors, packaging and private-label details your market requires.</p>
     </header>
     <div class="collection-grid">
       <% collections.forEach(group => { %>
@@ -77,7 +77,7 @@
               <li><a href="<%= productUrl(p, catMap[p.category_id]) %>"><span><%= p.name %></span><small><%= catMap[p.category_id] ? catMap[p.category_id].name : 'Published product' %></small></a></li>
             <% }) %>
           </ul>
-          <a class="text-link" href="/products#<%= group.key %>">Explore this pathway →</a>
+          <a class="text-link" href="<%= group.url || '/products#' + group.key %>">Explore the <%= group.label.toLowerCase() %> collection →</a>
         </article>
       <% }) %>
     </div>
@@ -89,7 +89,7 @@
     <header class="sec-head reveal">
       <p class="eyebrow">Product range</p>
       <h2>What we source from Shanxi</h2>
-      <p class="muted">From stemware to perfume bottles: <%= navCats.length %> product categories, thousands of existing molds, and custom development when you need something new.</p>
+      <p class="muted">From hand-painted tumblers to stemware and perfume bottles: <%= navCats.length %> product categories, thousands of existing molds, and custom development when you need something new.</p>
     </header>
     <div class="bento">
       <%
@@ -155,7 +155,7 @@
 <section class="section">
   <div class="wrap">
     <header class="sec-head row reveal">
-      <div><p class="eyebrow">Featured</p><h2>Best-selling glassware</h2></div>
+      <div><p class="eyebrow">Featured</p><h2>Featured hand-painted glassware</h2></div>
       <a href="/products" class="btn btn-ghost">View all products →</a>
     </header>
     <div class="cards">

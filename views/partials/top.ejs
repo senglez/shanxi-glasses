@@ -36,7 +36,7 @@
     <button class="menu-btn" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span><span></span></button>
     <nav id="menu" aria-label="Main">
       <div class="has-sub">
-        <a href="/products" class="<%= path.startsWith('/products') ? 'active' : '' %>">Products</a>
+        <a href="/products" class="<%= path.startsWith('/products') || path.startsWith('/collections') ? 'active' : '' %>">Products</a>
         <div class="sub">
           <% navCats.forEach(c => { %><a href="/products/<%= c.slug %>"><%= c.name %></a><% }) %>
         </div>

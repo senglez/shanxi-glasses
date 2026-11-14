@@ -4,6 +4,7 @@ const { db, getSettings } = require('../db');
 const { productUrl } = require('../lib/seo');
 const { isoDate, xmlEscape, plain, parseSpecs, priceRange } = require('../lib/util');
 
+const { COLLECTIONS, collectionPath } = require('../lib/catalog');
 const router = express.Router();
 
 const all = {
@@ -48,6 +49,7 @@ router.get('/sitemap.xml', (req, res) => {
     { loc: '/blog', lastmod: now, pri: '0.7' },
     { loc: '/contact', pri: '0.8' },
     { loc: '/privacy-policy', pri: '0.2' },
+    ...COLLECTIONS.map((c) => ({ loc: collectionPath(c), lastmod: now, pri: '0.8' })),
     ...cats.map((c) => ({ loc: '/products/' + c.slug, lastmod: isoDate(c.updated_at), pri: '0.8' })),
     ...all.products().map((p) => ({
       loc: productUrl(p, byId[p.category_id]),

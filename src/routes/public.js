@@ -6,7 +6,7 @@ const { md, plain, parseSpecs, parseList, fmtDate, priceRange } = require('../li
 const { sameOrigin } = require('../lib/security');
 const { notifyInquiry } = require('../lib/mailer');
 const seoAuto = require('../lib/seo-auto');
-const { buildCollections } = require('../lib/catalog');
+const { buildCollections, findCollection } = require('../lib/catalog');
 const config = require('../config');
 
 const router = express.Router();
@@ -107,13 +107,13 @@ router.get('/products', (req, res) => {
   const crumbs = [{ name: 'Home', url: '/' }, { name: 'Products', url: '/products' }];
   res.render('pages/products', {
     meta: meta(req, {
-      title: term ? `Search: ${term} | ${res.locals.s.site_name}` : `Glassware Products Catalog | Wholesale & OEM | ${res.locals.s.site_name}`,
+      title: term ? `Search: ${term} | ${res.locals.s.site_name}` : `Wholesale Glassware Catalog: Hand-Painted & Colorful | ${res.locals.s.site_name}`,
       description:
-        "Wholesale glassware and glass packaging from Shanxi factories: stemware, tumblers, vases, candle jars, perfume and skincare bottles. OEM logo and packaging.",
+        'Wholesale hand-painted and colorful glassware from Shanxi, China: mosaic tumblers, highballs, rocks glasses, holiday glasses, vases, bowls and plates. OEM and private label.',
       canonical: '/products',
       noindex: !!term,
     }),
-    heading: term ? `Results for “${term}”` : 'Glassware Product Catalog',
+    heading: term ? `Results for “${term}”` : 'Wholesale Glassware Catalog',
     intro: term ? `${products.length} product(s) found.` : null,
     category: null,
     products,
@@ -124,6 +124,26 @@ router.get('/products', (req, res) => {
   });
 });
 
+router.get('/collections/:slug', (req, res, next) => {
+  const c = findCollection(req.params.slug, q.allProducts.all());
+  if (!c) return next();
+  const crumbs = [
+    { name: 'Home', url: '/' },
+    { name: 'Products', url: '/products' },
+    { name: c.heading, url: c.url },
+  ];
+  res.render('pages/collection', {
+    meta: meta(req, {
+      title: c.seoTitle,
+      description: c.seoDescription,
+      canonical: c.url,
+      image: c.products[0] && c.products[0].image,
+    }),
+    c,
+    crumbs,
+    graph: seo.graph([...res.locals.baseGraph, seo.breadcrumb(crumbs), seo.itemList(c.products, res.locals.navCats)]),
+  });
+});
 router.get('/products/:cat', (req, res, next) => {
   const cat = q.catBySlug.get(req.params.cat);
   if (!cat) return next();

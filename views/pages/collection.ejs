@@ -1,0 +1,28 @@
+<%- include('../partials/top') %>
+<%- include('../partials/crumbs') %>
+<section class="page-head wrap">
+  <p class="eyebrow"><%= c.eyebrow %></p>
+  <h1><%= c.heading %></h1>
+  <p class="lead muted"><%= c.description %></p>
+  <div class="hero-cta">
+    <a href="/contact" class="btn btn-glow btn-lg">Request a Quote</a>
+    <a href="/products" class="btn btn-ghost btn-lg">Full catalog →</a>
+  </div>
+</section>
+<section class="wrap section-tight">
+  <header class="collection-list-head">
+    <div><h2><%= c.label %></h2></div>
+    <span class="collection-count"><%= c.products.length %> current item<%= c.products.length === 1 ? '' : 's' %></span>
+  </header>
+  <div class="cards"><% c.products.forEach(p => { %><%- include('../partials/card', { p }) %><% }) %></div>
+</section>
+<section class="wrap section-tight">
+  <div class="prose glass-panel pad"><%- md(c.body) %></div>
+</section>
+<section class="wrap section-tight">
+  <div class="banner glass-panel">
+    <div><h2>Plan a range from this collection</h2><p class="muted">Send your target market, quantity per design and packaging needs. We confirm MOQ, lead time and price in the quotation.</p></div>
+    <a href="/contact" class="btn btn-glow btn-lg">Send an Inquiry</a>
+  </div>
+</section>
+<%- include('../partials/bottom') %>

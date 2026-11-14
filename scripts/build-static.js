@@ -90,6 +90,7 @@ async function main() {
   const byId = Object.fromEntries(cats.map((c) => [c.id, c]));
   const pages = [
     '/', '/products', '/oem-custom-glassware', '/about', '/faq', '/blog', '/contact', '/thank-you', '/privacy-policy',
+    ...require('../src/lib/catalog').COLLECTIONS.map((c) => '/collections/' + c.slug),
     ...cats.map((c) => '/products/' + c.slug),
     ...db.prepare('SELECT * FROM products WHERE published = 1').all().map((p) => productUrl(p, byId[p.category_id])),
     ...db.prepare('SELECT slug FROM posts WHERE published = 1').all().map((p) => '/blog/' + p.slug),
