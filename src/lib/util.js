@@ -13,8 +13,16 @@ function slugify(str) {
 }
 
 // Markdown is authored only by logged-in admins, so it is treated as trusted.
+// Item codes such as TMB-MOS-001 must stay exact when visitors use browser translation.
+const SKU_RE = /\b[A-Z]{3}-[A-Z]{3}-\d{3}\b/g;
+// Plain text for HTML output with item codes kept out of browser translation. Use with <%- %>.
+function protectCodes(text) {
+  const esc = String(text || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  return esc.replace(SKU_RE, '<span translate="no">$&</span>');
+}
 function md(text) {
-  return marked.parse(String(text || ''));
+  // Only touch text between tags, never attributes or URLs
+  return marked.parse(String(text || '')).replace(/>([^<]+)</g, (all, t) => '>' + t.replace(SKU_RE, '<span translate="no">$&</span>') + '<');
 }
 
 function stripHtml(html) {
@@ -74,4 +82,4 @@ function priceRange(p) {
   return { low: lo, high: max, text: 'USD ' + f(lo) + (max > lo ? '–' + f(max) : '') + ' / pc' };
 }
 
-module.exports = { priceRange, slugify, md, stripHtml, plain, parseSpecs, parseList, isoDate, fmtDate, xmlEscape };
+module.exports = { priceRange, slugify, md, protectCodes, stripHtml, plain, parseSpecs, parseList, isoDate, fmtDate, xmlEscape };

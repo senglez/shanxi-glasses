@@ -11,9 +11,9 @@
       <li>Quantity by design or color, destination and launch timing</li>
     </ul>
     <div class="glass-panel pad contact-box">
-      <p><strong>Email</strong><br><a href="mailto:<%= s.contact_email %>"><%= s.contact_email %></a></p>
-      <p><strong>Phone</strong><br><%= s.phone %></p>
-      <% if (s.whatsapp) { %><p><strong>WhatsApp</strong><br><a href="<%= waLink() %>" target="_blank" rel="noopener">+<%= s.whatsapp %></a></p><% } %>
+      <p><strong>Email</strong><br><a href="mailto:<%= s.contact_email %>" translate="no"><%= s.contact_email %></a></p>
+      <p><strong>Phone</strong><br><span translate="no"><%= s.phone %></span></p>
+      <% if (s.whatsapp) { %><p><strong>WhatsApp</strong><br><a href="<%= waLink() %>" target="_blank" rel="noopener" translate="no">+<%= s.whatsapp %></a></p><% } %>
       <p><strong>Office</strong><br><%= s.address %></p>
     </div>
   </div>

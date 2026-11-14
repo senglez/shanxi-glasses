@@ -13,8 +13,8 @@
   <div class="p-info">
     <% if (cat) { %><a class="tag" href="/products/<%= cat.slug %>"><%= cat.name %></a><% } %>
     <h1><%= p.name %></h1>
-    <% if (p.sku) { %><p class="item-code">Item code <b><%= p.sku %></b></p><% } %>
-    <p class="lead"><%= p.summary %></p>
+    <% if (p.sku) { %><p class="item-code">Item code <b translate="no"><%= p.sku %></b></p><% } %>
+    <p class="lead"><%- protectCodes(p.summary) %></p>
     <dl class="keyfacts glass-panel">
       <div><dt>Material</dt><dd><%= p.material || 'Confirmation needed' %><% if (p.material) { %> <small class="muted">Published reference; confirm for your program</small><% } %></dd></div>
       <div><dt>Reference price</dt><dd><% if (price) { %><%= price.text %><% } else { %>Quote-dependent<% } %> <small class="muted">Confirm final price for quantity and customization</small></dd></div>

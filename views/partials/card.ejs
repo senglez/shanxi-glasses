@@ -7,9 +7,9 @@
       <% if (typeof collectionLabel !== 'undefined' && collectionLabel) { %><span class="tag collection-tag"><%= collectionLabel %></span><% } %>
       <% if (catMap[p.category_id]) { %><span class="tag"><%= catMap[p.category_id].name %></span><% } %>
       <h3><%= p.name %></h3>
-      <p><%= p.summary %></p>
+      <p><%- protectCodes(p.summary) %></p>
       <dl class="mini">
-        <% if (p.sku) { %><div><dt>Item code</dt><dd><%= p.sku %></dd></div><% } %>
+        <% if (p.sku) { %><div><dt>Item code</dt><dd translate="no"><%= p.sku %></dd></div><% } %>
         <% if (p.moq) { %><div><dt>MOQ</dt><dd><%= p.moq %></dd></div><% } %>
         <% if (p.material) { %><div><dt>Material</dt><dd><%= p.material %></dd></div><% } %>
       </dl>

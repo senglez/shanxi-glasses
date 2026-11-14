@@ -2,7 +2,7 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const { db, getSettings } = require('../db');
 const seo = require('../lib/seo');
-const { md, plain, parseSpecs, parseList, fmtDate, priceRange } = require('../lib/util');
+const { protectCodes, md, plain, parseSpecs, parseList, fmtDate, priceRange } = require('../lib/util');
 const { sameOrigin } = require('../lib/security');
 const { notifyInquiry } = require('../lib/mailer');
 const seoAuto = require('../lib/seo-auto');
@@ -52,6 +52,7 @@ router.use((req, res, next) => {
   res.locals.baseGraph = [seo.organization(s), seo.website(s)];
   res.locals.waLink = (product) => whatsappLink(s, req.path, product);
   res.locals.productLabel = productLabel;
+  res.locals.protectCodes = protectCodes;
   next();
 });
 

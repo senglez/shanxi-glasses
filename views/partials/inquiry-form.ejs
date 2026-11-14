@@ -24,7 +24,7 @@
     <div class="alert" role="alert"><ul><% errs.forEach(e => { %><li><%= e %></li><% }) %></ul></div>
   <% } %>
   <% if (prod) { %>
-    <p class="inq-product">Inquiry for: <strong><%= productLabel(prod) %></strong></p>
+    <p class="inq-product">Inquiry for: <strong><%= prod.name %><% if (prod.sku) { %> (<span translate="no"><%= prod.sku %></span>)<% } %></strong></p>
     <input type="hidden" name="product_id" value="<%= prod.id %>">
     <input type="hidden" name="product_name" value="<%= productLabel(prod) %>">
   <% } %>
