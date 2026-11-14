@@ -613,7 +613,7 @@ const SETTING_FIELDS = [
       ['sync_proxy', '同步代理地址（在中国大陆需要填写，例如 Clash：http://127.0.0.1:7890，V2RayN：http://127.0.0.1:10809；不会发布到网站）'],
     ],
   },
-  { group: '统计与站长工具', items: [['ga4_id', 'Google Analytics 4 衡量 ID（G-XXXX）'], ['google_verification', 'Google Search Console 验证码（content 值）'], ['bing_verification', 'Bing Webmaster 验证码（content 值）']] },
+  { group: '统计与站长工具', items: [['ga4_id', 'Google Analytics 4 衡量 ID（G-XXXX）'], ['google_verification', 'Google Search Console 验证码（content 值）'], ['bing_verification', 'Bing Webmaster 验证码（content 值）'], ['pinterest_verification', 'Pinterest 网站认领验证码（content 值）']] },
 ];
 
 router.get('/settings', (req, res) => res.render('admin/settings', { s: getSettings(), groups: SETTING_FIELDS }));
@@ -625,7 +625,7 @@ router.post('/settings', upload.single('og_upload'), verifyCsrf, async (req, res
     if (out.ga4_id && !/^G-[A-Z0-9]+$/i.test(out.ga4_id)) out.ga4_id = '';
     out.whatsapp = (out.whatsapp || '').replace(/\D/g, '');
     // Accept the whole <meta ... content="CODE"> tag as pasted from Google/Bing; keep only the code.
-    for (const k of ['google_verification', 'bing_verification']) {
+    for (const k of ['google_verification', 'bing_verification', 'pinterest_verification']) {
       if (!(k in out)) continue;
       const m = out[k].match(/content\s*=\s*["']([^"']+)["']/i);
       out[k] = (m ? m[1] : out[k]).replace(/[^A-Za-z0-9_\-]/g, '');
