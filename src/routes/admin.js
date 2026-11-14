@@ -613,7 +613,7 @@ const SETTING_FIELDS = [
       ['sync_proxy', '同步代理地址（在中国大陆需要填写，例如 Clash：http://127.0.0.1:7890，V2RayN：http://127.0.0.1:10809；不会发布到网站）'],
     ],
   },
-  { group: '统计与站长工具', items: [['ga4_id', 'Google Analytics 4 衡量 ID（G-XXXX）'], ['google_verification', 'Google Search Console 验证码（content 值）'], ['bing_verification', 'Bing Webmaster 验证码（content 值）'], ['pinterest_verification', 'Pinterest 网站认领验证码（content 值）']] },
+  { group: '统计与站长工具', items: [['ga4_id', 'Google Analytics 4 衡量 ID（G-XXXX）'], ['google_verification', 'Google Search Console 验证码（content 值）'], ['bing_verification', 'Bing Webmaster 验证码（content 值）'], ['pinterest_verification', 'Pinterest 网站认领验证码（content 值）'], ['pinterest_tag_id', 'Pinterest Tag ID（纯数字；访客同意 Cookie 后才加载）']] },
 ];
 
 router.get('/settings', (req, res) => res.render('admin/settings', { s: getSettings(), groups: SETTING_FIELDS }));
@@ -623,6 +623,7 @@ router.post('/settings', upload.single('og_upload'), verifyCsrf, async (req, res
     const out = {};
     for (const key of Object.keys(DEFAULT_SETTINGS)) if (key in req.body) out[key] = String(req.body[key]).trim().slice(0, 2000);
     if (out.ga4_id && !/^G-[A-Z0-9]+$/i.test(out.ga4_id)) out.ga4_id = '';
+    if ('pinterest_tag_id' in out) out.pinterest_tag_id = out.pinterest_tag_id.replace(/\D/g, '');
     out.whatsapp = (out.whatsapp || '').replace(/\D/g, '');
     // Accept the whole <meta ... content="CODE"> tag as pasted from Google/Bing; keep only the code.
     for (const k of ['google_verification', 'bing_verification', 'pinterest_verification']) {

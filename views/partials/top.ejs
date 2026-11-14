@@ -25,6 +25,7 @@
 <link rel="stylesheet" href="/css/site.css">
 <script type="application/ld+json"><%- graph %></script>
 <% if (s.ga4_id) { %><meta name="ga4-id" content="<%= s.ga4_id %>"><% } %>
+<% if (s.pinterest_tag_id) { %><meta name="pinterest-tag-id" content="<%= s.pinterest_tag_id %>"><% } %>
 </head>
 <body class="<%= typeof bodyClass !== 'undefined' ? bodyClass : '' %>">
 <a class="skip" href="#main">Skip to content</a>

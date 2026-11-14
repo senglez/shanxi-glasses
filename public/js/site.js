@@ -106,9 +106,10 @@
     b.addEventListener('click', function () { if (gmain) gmain.src = b.dataset.src; });
   });
 
-  /* Cookie consent. Nothing optional is stored and GA4 is not loaded until the visitor accepts.
-     Only the choice itself is remembered (strictly necessary). */
-  var CONSENT_KEY = 'sgs_consent';
+  /* Cookie consent. Nothing optional is stored and GA4 / the Pinterest Tag are not loaded until the
+     visitor accepts. Only the choice itself is remembered (strictly necessary).
+     v2: the Pinterest Tag was added, so earlier answers are asked again. */
+  var CONSENT_KEY = 'sgs_consent_v2';
   var getConsent = function () { try { return localStorage.getItem(CONSENT_KEY); } catch (e) { return null; } };
   var consent = getConsent();
 
@@ -148,16 +149,35 @@
     s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(meta.content);
     document.head.appendChild(s);
   }
+  var pinLoaded = false;
+  function loadPinterest() {
+    var meta = document.querySelector('meta[name="pinterest-tag-id"]');
+    if (pinLoaded || !meta || !/^\d+$/.test(meta.content)) return;
+    pinLoaded = true;
+    // Pinterest base code: queue calls until core.js has loaded
+    window.pintrk = function () { window.pintrk.queue.push(Array.prototype.slice.call(arguments)); };
+    window.pintrk.queue = [];
+    window.pintrk.version = '3.0';
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://s.pinimg.com/ct/core.js';
+    document.head.appendChild(s);
+    pintrk('load', meta.content);
+    pintrk('page');
+    pintrk('track', 'pagevisit');
+    if (document.querySelector('[data-generate-lead]')) pintrk('track', 'lead', { lead_type: 'inquiry' });
+  }
+  function loadTracking() { loadAnalytics(); loadPinterest(); }
 
   function clearOptional() {
     try { localStorage.removeItem('sgs_attr'); } catch (e) {}
-    // Remove Google Analytics cookies (_ga, _ga_XXXX) on this host and the parent domain
+    // Remove Google Analytics (_ga, _ga_XXXX) and Pinterest (_pin_unauth, _epik) cookies on this host and the parent domain
     var host = location.hostname, parts = host.split('.');
     var domains = ['', host, '.' + host];
     if (parts.length > 2) domains.push('.' + parts.slice(-2).join('.'));
     document.cookie.split(';').forEach(function (c) {
       var name = c.split('=')[0].trim();
-      if (!/^_ga/.test(name)) return;
+      if (!/^(_ga|_pin|_derived_epik|_epik)/.test(name)) return;
       domains.forEach(function (d) {
         document.cookie = name + '=; Max-Age=0; path=/' + (d ? '; domain=' + d : '');
       });
@@ -175,8 +195,8 @@
     var wasGranted = consent === 'granted';
     consent = value;
     showBar(false);
-    if (value === 'granted') { persistAttribution(); loadAnalytics(); }
-    else { clearOptional(); if (wasGranted && gaLoaded) location.reload(); } // stop the already-running GA script
+    if (value === 'granted') { persistAttribution(); loadTracking(); }
+    else { clearOptional(); if (wasGranted && (gaLoaded || pinLoaded)) location.reload(); } // stop already-running tags
   }
   if (bar) bar.addEventListener('click', function (e) {
     var b = e.target.closest('[data-consent]');
@@ -186,7 +206,7 @@
     if (e.target.closest('[data-cookie-settings]')) showBar(true);
   });
 
-  if (consent === 'granted') { persistAttribution(); loadAnalytics(); }
+  if (consent === 'granted') { persistAttribution(); loadTracking(); }
   else if (consent !== 'denied') showBar(true);
 
   document.querySelectorAll('form[data-inquiry]').forEach(function (f) {

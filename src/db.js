@@ -189,6 +189,7 @@ const DEFAULT_SETTINGS = {
   google_verification: '',
   bing_verification: '',
   pinterest_verification: '',
+  pinterest_tag_id: '',
   og_image: '/img/og-default.png',
   // Static site inquiry endpoint (Google Apps Script web app URL) and its private sync token
   web3forms_key: '', // public by design: it is embedded in the form HTML
