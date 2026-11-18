@@ -49,12 +49,13 @@ MOQ, lead time, packaging and price are confirmed in each quotation. Send us you
       'Butterfly, tulip and illustrated designs for spring and gift displays, plus mosaic and gold plates and bowls that complete a tabletop range.',
     body: `## Gift-led glassware for spring and home displays
 
-Floral and butterfly designs give shoppers an easy reason to buy a gift. This collection covers hand-painted butterfly tumblers and cups, a hand-painted tulip vase, a set of four illustrated stemless cups, and decorated bowls and plates for the table.
+Floral and butterfly designs give shoppers an easy reason to buy a gift. This collection covers hand-painted butterfly tumblers and cups, bird and floral wine glasses, a hand-painted tulip vase, a set of four illustrated stemless cups, and decorated bowls and plates for the table.
 
 ## Designs and how retailers use them
 - **Butterfly series:** the [Butterfly Pattern Tumbler (TMB-BFL-001)](/products/tumblers-drinking-glasses/butterfly-pattern-tumbler) and [Butterfly Glass Cup (CUP-BFL-001)](/products/tumblers-drinking-glasses/butterfly-glass-cup) work together on spring and Mother’s Day displays.
 - **Tulip vase:** the [Hand-Painted Tulip Vase (VAS-TUL-001)](/products/glass-vases-home-decor/hand-painted-tulip-vase) suits homeware chains, florists and Northern European spring ranges.
 - **Illustrated cups:** four stemless borosilicate designs, the [Heart](/products/tumblers-drinking-glasses/heart-glass-cup), [Donut](/products/tumblers-drinking-glasses/donut-glass-cup), [Purple Flower](/products/tumblers-drinking-glasses/purple-flower-glass-cup) and [Orange Flower](/products/tumblers-drinking-glasses/orange-flower-glass-cup) cups, are made for 4-piece gift boxes, supermarket promotions and cafe co-branding. The wording on each cup can be changed for your program.
+- **Bird and floral wine glasses:** the [Blue Bird Wine Glass (WIN-BRD-001)](/products/wine-glasses-stemware/blue-bird-wine-glass) and its yellow, pink and green versions have a small glass bird inside the bowl, with rose versions such as the [Pink Bird Rose Wine Glass (WIN-BRR-003)](/products/wine-glasses-stemware/pink-bird-rose-wine-glass). The [Bird Floral Stem Wine Glass (WIN-FLS-001)](/products/wine-glasses-stemware/bird-floral-stem-wine-glass) carries the decoration on the stem.
 - **Plates and bowls:** the [Gold Geometric Glass Plate (PLT-GLD-001)](/products/glass-bowls-plates/gold-geometric-glass-plate) suits Ramadan, Eid, weddings and Christmas tables. The mosaic bowl and plate match the mosaic drinkware.
 
 ## Planning a gift program
@@ -64,6 +65,8 @@ Spring and Mother’s Day ranges are normally bought several months ahead. Our [
     skus: Object.freeze([
       'TMB-BFL-001', 'CUP-BFL-001', 'VAS-TUL-001', 'TMB-HRT-001', 'TMB-DNT-001', 'TMB-FLW-004', 'TMB-FLW-005',
       'BWL-MOS-001', 'PLT-MOS-001', 'PLT-GLD-001',
+      'WIN-BRD-001', 'WIN-BRD-002', 'WIN-BRD-003', 'WIN-BRD-004', 'WIN-BRR-001', 'WIN-BRR-002', 'WIN-BRR-003', 'WIN-BRR-004',
+      'WIN-FLS-001', 'WIN-FLS-002',
     ]),
   },
   {
@@ -107,11 +110,12 @@ Tell us your season, quantity per design and in-store date, and we will confirm 
       'Rocks glasses, goblets, mugs and dessert bowls for bars, restaurants, hotels and dessert chains, with decoration kept to the base on several designs.',
     body: `## Glassware for bars, restaurants, hotels and cafes
 
-Hospitality buyers need glassware that looks distinctive, survives daily service and can be reordered to the same specification. This collection brings together rocks and whiskey glasses, a vintage green goblet, a glass tea mug and footed dessert bowls.
+Hospitality buyers need glassware that looks distinctive, survives daily service and can be reordered to the same specification. This collection brings together rocks and whiskey glasses, martini glasses, fruit wine glasses, a vintage green goblet, a glass tea mug and footed dessert bowls.
 
 ## Designs for daily service
 - **Decoration kept away from the rim:** the [Colorful Swirl Base Rocks Glass (RCK-SWL-001)](/products/tumblers-drinking-glasses/colorful-swirl-base-rocks-glass), [Multicolor Base Tumbler (TMB-BAS-001)](/products/tumblers-drinking-glasses/multicolor-base-tumbler) and [Green Faceted Rocks Glass (RCK-GRN-001)](/products/tumblers-drinking-glasses/green-faceted-rocks-glass) keep the color on the lower part of the glass.
 - **Whiskey and cocktail service:** the [Amber Twist Whiskey Glass (RCK-AMB-001)](/products/tumblers-drinking-glasses/amber-twist-whiskey-glass) and [Amber Swirl Rocks Glass (RCK-AMB-002)](/products/tumblers-drinking-glasses/amber-swirl-rocks-glass).
+- **Cocktails and wine:** the [Twisted Stem Martini Glass (MAR-TWS-001)](/products/wine-glasses-stemware/twisted-stem-martini-glass), the [Beaded Stem Martini Glass (MAR-BED-001)](/products/wine-glasses-stemware/beaded-stem-martini-glass), and fruit wine glasses such as the [Lemon Wine Glass (WIN-FRT-001)](/products/wine-glasses-stemware/lemon-wine-glass) for spritz and summer menus.
 - **Banquets and events:** the [Green Stem Goblet (GBL-GRN-001)](/products/wine-glasses-stemware/green-stem-goblet) for weddings, banquets and holiday tables.
 - **Desserts and tea:** the [Stemmed Dessert Bowl (DSB-STR-001)](/products/glass-bowls-plates/stemmed-dessert-bowl), [Red Stem Dessert Bowl (DSB-RED-001)](/products/glass-bowls-plates/red-stem-dessert-bowl) and [Leaf Motif Glass Mug (MUG-LEF-001)](/products/tumblers-drinking-glasses/leaf-motif-glass-mug).
 
@@ -121,7 +125,7 @@ Commercial dishwashers run hotter and use stronger detergents than home machines
 Also confirm carton size, replacement stock and whether a design stacks. We quote by carton quantity and can plan repeat orders on the same approved specification.`,
     skus: Object.freeze([
       'RCK-SWL-001', 'TMB-BAS-001', 'RCK-AMB-001', 'RCK-AMB-002', 'RCK-GRN-001', 'GBL-GRN-001', 'DSB-STR-001',
-      'DSB-RED-001', 'MUG-LEF-001',
+      'DSB-RED-001', 'MUG-LEF-001', 'MAR-TWS-001', 'MAR-BED-001', 'WIN-FRT-001', 'WIN-FRT-002', 'WIN-FRT-003', 'WIN-FRT-004',
     ]),
   },
 ]);
