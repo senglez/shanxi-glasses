@@ -30,7 +30,7 @@ Each piece is painted by hand, so small differences in line and color between pi
 
 For decorated drinkware, ask which test reports are available for your market, such as lip-and-rim lead and cadmium testing for the US. Our guides explain [whether soda-lime glass is lead-free](/blog/is-soda-lime-glass-lead-free) and [whether hand-painted glasses are dishwasher safe](/blog/are-hand-painted-glasses-dishwasher-safe). For sampling, MOQ and packaging, read the [hand-painted glassware buyer’s guide](/blog/hand-painted-glassware-wholesale-buyers-guide).
 
-MOQ, lead time, packaging and price are confirmed in each quotation. Send us your target market, quantity per design and packaging needs to get started.`,
+MOQ is 20,000 pieces per design, and colors and designs can be mixed. Lead time, packaging and price are confirmed in each quotation. Send us your target market, quantity per design and packaging needs to get started.`,
     skus: Object.freeze([
       'TMB-MOS-001', 'HBG-MOS-002', 'RCK-MOS-001', 'HBG-MOS-001', 'TMB-HPT-001', 'TMB-CNF-001', 'TMB-STR-001',
       'HBG-DIA-001', 'HBG-MOS-003', 'TMB-STP-001', 'RCK-DIA-001', 'TMB-RNB-001', 'HBG-DSY-001',
@@ -94,7 +94,7 @@ Other designs also fit seasonal displays. The [Red Blue Mosaic Highball](/produc
 ## Order early
 US retailers usually confirm Halloween and Christmas orders 6 to 9 months before the holiday. Production in China also pauses around Chinese New Year, so samples should be approved before the factory break. Our [holiday glassware sourcing calendar](/blog/holiday-glassware-sourcing-calendar) sets out a month-by-month plan.
 
-Tell us your season, quantity per design and in-store date, and we will confirm MOQ, lead time and packaging in the quotation.`,
+The 3D appliqué tumblers start from 500 pieces per design and are rated for household and commercial dishwashers. Tell us your season, quantity per design and in-store date, and we will confirm lead time and packaging in the quotation.`,
     skus: Object.freeze(['TMB-PUM-001', 'TMB-GHO-001', 'TMB-GIN-001', 'TMB-CAN-001', 'VOT-HRT-001']),
   },
   {
@@ -113,14 +113,14 @@ Tell us your season, quantity per design and in-store date, and we will confirm 
 Hospitality buyers need glassware that looks distinctive, survives daily service and can be reordered to the same specification. This collection brings together rocks and whiskey glasses, martini glasses, fruit wine glasses, a vintage green goblet, a glass tea mug and footed dessert bowls.
 
 ## Designs for daily service
-- **Decoration kept away from the rim:** the [Colorful Swirl Base Rocks Glass (RCK-SWL-001)](/products/tumblers-drinking-glasses/colorful-swirl-base-rocks-glass), [Multicolor Base Tumbler (TMB-BAS-001)](/products/tumblers-drinking-glasses/multicolor-base-tumbler) and [Green Faceted Rocks Glass (RCK-GRN-001)](/products/tumblers-drinking-glasses/green-faceted-rocks-glass) keep the color on the lower part of the glass.
-- **Whiskey and cocktail service:** the [Amber Twist Whiskey Glass (RCK-AMB-001)](/products/tumblers-drinking-glasses/amber-twist-whiskey-glass) and [Amber Swirl Rocks Glass (RCK-AMB-002)](/products/tumblers-drinking-glasses/amber-swirl-rocks-glass).
+- **Decoration kept away from the rim:** the [Colorful Swirl Base Rocks Glass (RCK-SWL-001)](/products/tumblers-drinking-glasses/colorful-swirl-base-rocks-glass) and [Multicolor Base Tumbler (TMB-BAS-001)](/products/tumblers-drinking-glasses/multicolor-base-tumbler) keep the painted decoration more than 20 mm below the rim.
+- **Whiskey and cocktail service:** the [Amber Twist Whiskey Glass (RCK-AMB-001)](/products/tumblers-drinking-glasses/amber-twist-whiskey-glass), [Amber Swirl Rocks Glass (RCK-AMB-002)](/products/tumblers-drinking-glasses/amber-swirl-rocks-glass) and [Green Faceted Rocks Glass (RCK-GRN-001)](/products/tumblers-drinking-glasses/green-faceted-rocks-glass).
 - **Cocktails and wine:** the [Twisted Stem Martini Glass (MAR-TWS-001)](/products/wine-glasses-stemware/twisted-stem-martini-glass), the [Beaded Stem Martini Glass (MAR-BED-001)](/products/wine-glasses-stemware/beaded-stem-martini-glass), and fruit wine glasses such as the [Lemon Wine Glass (WIN-FRT-001)](/products/wine-glasses-stemware/lemon-wine-glass) for spritz and summer menus.
 - **Banquets and events:** the [Green Stem Goblet (GBL-GRN-001)](/products/wine-glasses-stemware/green-stem-goblet) for weddings, banquets and holiday tables.
 - **Desserts and tea:** the [Stemmed Dessert Bowl (DSB-STR-001)](/products/glass-bowls-plates/stemmed-dessert-bowl), [Red Stem Dessert Bowl (DSB-RED-001)](/products/glass-bowls-plates/red-stem-dessert-bowl) and [Leaf Motif Glass Mug (MUG-LEF-001)](/products/tumblers-drinking-glasses/leaf-motif-glass-mug).
 
 ## Before you standardize on a design
-Commercial dishwashers run hotter and use stronger detergents than home machines, so ask for dishwasher resistance results before choosing decorated glassware for daily service. Our guide on [whether hand-painted glasses are dishwasher safe](/blog/are-hand-painted-glasses-dishwasher-safe) explains what to ask for.
+The hand-painted soda-lime designs in this collection are hand wash only and have not been tested in commercial dishwashers, so they suit venues that wash glassware by hand, or feature and seasonal menus. Our guide on [whether hand-painted glasses are dishwasher safe](/blog/are-hand-painted-glasses-dishwasher-safe) explains what to ask for.
 
 Also confirm carton size, replacement stock and whether a design stacks. We quote by carton quantity and can plan repeat orders on the same approved specification.`,
     skus: Object.freeze([
