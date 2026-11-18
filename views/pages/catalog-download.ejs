@@ -1,0 +1,11 @@
+<%- include('../partials/top') %>
+<section class="wrap section center-box">
+  <div class="glass-panel pad">
+    <h1>Your catalog is ready.</h1>
+    <p class="lead muted">Thank you. Download the PDF below. When you have chosen designs, send us the item codes and quantities for a quotation.</p>
+    <p><a class="btn btn-glow btn-lg" href="/downloads/shanxi-glassworks-catalog.pdf" download>Download Catalog (PDF<%= sizeMb ? ', ' + sizeMb + ' MB' : '' %>)</a></p>
+    <p><a class="btn btn-ghost" href="/contact">Request a Quote</a> <a class="btn btn-ghost" href="/products">Browse products</a></p>
+  </div>
+</section>
+<div hidden data-generate-lead="catalog"></div>
+<%- include('../partials/bottom') %>

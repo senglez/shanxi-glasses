@@ -3,6 +3,7 @@
 <section class="page-head wrap">
   <h1><%= heading %></h1>
   <% if (intro) { %><p class="lead muted"><%= intro %></p><% } %>
+  <p class="catalog-link"><a class="text-link" href="/catalog">Download the wholesale catalog (PDF) →</a></p>
   <form class="search" action="/products" method="get" role="search">
     <input type="search" name="q" value="<%= term %>" placeholder="Search glassware, e.g. borosilicate, decanter…" aria-label="Search products" maxlength="80">
     <button class="btn btn-glow" type="submit">Search</button>

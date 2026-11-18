@@ -6,7 +6,10 @@ const { protectCodes, md, plain, parseSpecs, parseList, fmtDate, priceRange } = 
 const { sameOrigin } = require('../lib/security');
 const { notifyInquiry } = require('../lib/mailer');
 const seoAuto = require('../lib/seo-auto');
-const { buildCollections, findCollection } = require('../lib/catalog');
+const { buildCollections, findCollection, COLLECTIONS } = require('../lib/catalog');
+const fs = require('fs');
+const path = require('path');
+const CATALOG_PDF = path.join(__dirname, '../../public/downloads/shanxi-glassworks-catalog.pdf');
 const config = require('../config');
 
 const router = express.Router();
@@ -89,15 +92,20 @@ function meta(req, o) {
   };
 }
 
+// Real product photos shown in the home page hero (resized copies in /img/hero/).
+const HERO_SKUS = ['TMB-MOS-001', 'CUP-BFL-001', 'TMB-PUM-001', 'TMB-RNB-001'];
 router.get('/', (req, res) => {
   const s = res.locals.s;
   const faqs = q.faqs.all().slice(0, 6);
+  const all = q.allProducts.all();
+  const heroProducts = HERO_SKUS.map((sku) => all.find((p) => p.sku === sku)).filter(Boolean);
   res.render('pages/home', {
+    heroProducts,
     meta: meta(req, { title: s.home_title, description: s.home_description, canonical: '/' }),
     featured: q.featured.all(),
     posts: q.latestPosts.all(),
     faqs,
-    collections: buildCollections(q.allProducts.all(), { includeFallback: false }),
+    collections: buildCollections(all, { includeFallback: false }),
     graph: seo.graph([...res.locals.baseGraph, seo.faqPage(faqs)]),
   });
 });
@@ -301,6 +309,43 @@ router.get('/contact', (req, res) => {
   });
 });
 
+// Email-gated catalog PDF (built by `npm run catalog:pdf`).
+router.get('/catalog', (req, res) => {
+  const items = q.allProducts.all().filter((p) => p.sku);
+  const used = new Set();
+  const sections = COLLECTIONS.map((c) => {
+    const n = c.skus.filter((sku) => items.some((p) => p.sku === sku));
+    n.forEach((sku) => used.add(sku));
+    return { title: c.heading, count: n.length };
+  });
+  const rest = {};
+  items.filter((p) => !used.has(p.sku)).forEach((p) => {
+    const name = res.locals.catMap[p.category_id] ? res.locals.catMap[p.category_id].name : 'More glassware';
+    rest[name] = (rest[name] || 0) + 1;
+  });
+  Object.entries(rest).forEach(([title, count]) => sections.push({ title, count }));
+  const crumbs = [{ name: 'Home', url: '/' }, { name: 'Catalog', url: '/catalog' }];
+  res.render('pages/catalog', {
+    meta: meta(req, {
+      title: `Wholesale Glassware Catalog PDF | ${res.locals.s.site_name}`,
+      description: `Download our wholesale glassware catalog: ${items.length} hand-painted, seasonal, wine and storage designs with item codes, sizes, capacity, dishwasher rating and MOQ.`,
+      canonical: '/catalog',
+    }),
+    count: items.length,
+    sections: sections.filter((x) => x.count > 0),
+    crumbs,
+    graph: seo.graph([...res.locals.baseGraph, seo.breadcrumb(crumbs)]),
+  });
+});
+router.get('/catalog-download', (req, res) => {
+  let sizeMb = '';
+  try { sizeMb = (fs.statSync(CATALOG_PDF).size / 1048576).toFixed(1); } catch (e) { /* PDF not built yet */ }
+  res.render('pages/catalog-download', {
+    meta: meta(req, { title: 'Your catalog is ready', description: 'Catalog download.', noindex: true }),
+    sizeMb,
+    graph: seo.graph(res.locals.baseGraph),
+  });
+});
 router.get('/thank-you', (req, res) => {
   res.render('pages/thanks', { meta: meta(req, { title: 'Thank you', description: 'Inquiry received.', noindex: true }), graph: seo.graph(res.locals.baseGraph) });
 });
@@ -321,7 +366,7 @@ router.post('/inquiry', inquiryLimiter, sameOrigin, express.urlencoded({ extende
     const b = req.body || {};
     // Honeypot and time trap: bots fill hidden fields and submit instantly.
     const elapsed = Date.now() - Number(b.ts || 0);
-    if (b.website || !b.ts || elapsed < 3000) return res.redirect(303, '/thank-you');
+    if (b.website || !b.ts || elapsed < 3000) return res.redirect(303, b.catalog === '1' ? '/catalog-download' : '/thank-you');
 
     const form = {
       name: clip(b.name, 100),
@@ -329,11 +374,11 @@ router.post('/inquiry', inquiryLimiter, sameOrigin, express.urlencoded({ extende
       company: clip(b.company, 160),
       country: clip(b.country, 80),
       phone: clip(b.phone, 60),
-      quantity: clip(b.quantity, 80),
+      quantity: clip(b.quantity, 160),
       message: clip(b.message, 5000),
     };
     const errors = [];
-    if (form.name.length < 2) errors.push('Please enter your name.');
+    if (form.name && form.name.length < 2) errors.push('Please enter your full name, or leave it blank.');
     if (!EMAIL_RE.test(form.email)) errors.push('Please enter a valid email address.');
     if (form.message.length < 10) errors.push('Please describe your requirement (at least 10 characters).');
 
@@ -366,7 +411,7 @@ router.post('/inquiry', inquiryLimiter, sameOrigin, express.urlencoded({ extende
     notifyInquiry({ id: info.lastInsertRowid, ...row }, res.locals.s).catch((e) =>
       console.error('[mail] inquiry notification failed:', e.message)
     );
-    res.redirect(303, '/thank-you');
+    res.redirect(303, b.catalog === '1' ? '/catalog-download' : '/thank-you');
   } catch (e) {
     next(e);
   }

@@ -1,0 +1,20 @@
+<%- include('../partials/top') %>
+<%- include('../partials/crumbs') %>
+<section class="page-head wrap">
+  <h1>Wholesale Glassware Catalog (PDF)</h1>
+  <p class="lead muted">Download our current catalog: <%= count %> designs with item codes, sizes, capacity, material, dishwasher rating and MOQ, ready to share with your buying team.</p>
+</section>
+<section class="wrap section cta-grid catalog-body">
+  <div class="prose">
+    <h2>What is in the catalog</h2>
+    <ul>
+      <% sections.forEach(x => { %><li><strong><%= x.title %></strong> (<%= x.count %> designs)</li><% }) %>
+    </ul>
+    <p>Each design has an item code, such as <span translate="no">TMB-PUM-001</span>, that links to its product page with full specifications. Prices are not printed, because they depend on quantity, decoration and packaging. Send us the item codes you like and we will quote them.</p>
+    <p>Prefer to browse online? See <a href="/products">all products</a> or start with a <a href="/collections/hand-painted-glassware">collection</a>.</p>
+  </div>
+  <div>
+    <%- include('../partials/catalog-form') %>
+  </div>
+</section>
+<%- include('../partials/bottom') %>

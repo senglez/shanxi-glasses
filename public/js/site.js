@@ -143,7 +143,8 @@
     window.gtag = function () { window.dataLayer.push(arguments); };
     gtag('js', new Date());
     gtag('config', meta.content);
-    if (document.querySelector('[data-generate-lead]')) gtag('event', 'generate_lead');
+    var leadEl = document.querySelector('[data-generate-lead]');
+    if (leadEl) gtag('event', 'generate_lead', { lead_type: leadEl.getAttribute('data-generate-lead') || 'inquiry' });
     var s = document.createElement('script');
     s.async = true;
     s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(meta.content);
@@ -165,7 +166,8 @@
     pintrk('load', meta.content);
     pintrk('page');
     pintrk('track', 'pagevisit');
-    if (document.querySelector('[data-generate-lead]')) pintrk('track', 'lead', { lead_type: 'inquiry' });
+    var pinLead = document.querySelector('[data-generate-lead]');
+    if (pinLead) pintrk('track', 'lead', { lead_type: pinLead.getAttribute('data-generate-lead') || 'inquiry' });
   }
   function loadTracking() { loadAnalytics(); loadPinterest(); }
 
@@ -218,6 +220,7 @@
     set('utm_medium', stored && stored.utm_medium);
     set('utm_campaign', stored && stored.utm_campaign);
     var b = f.querySelector('button[type=submit]');
+    var label = b ? b.textContent : '';
     f.addEventListener('submit', function (e) {
       if (b) { b.disabled = true; b.textContent = 'Sending…'; }
       // Static hosting: Web3Forms emails the inquiry, Google Apps Script stores the record.
@@ -235,11 +238,13 @@
       if (f.dataset.record) {
         var rec = new URLSearchParams();
         data.forEach(function (v, k) { if (['access_key', 'botcheck', 'redirect', 'from_name', 'subject'].indexOf(k) === -1) rec.append(k, v); });
+        // Name is optional on the form; the record script expects one.
+        if (!String(rec.get('name') || '').trim()) rec.set('name', 'Not provided');
         jobs.push(fetch(f.dataset.record, { method: 'POST', mode: 'no-cors', body: rec }));
       }
       Promise.allSettled(jobs).then(function (res) {
         if (res.some(function (r) { return r.status === 'fulfilled'; })) { location.href = f.dataset.thanks; return; }
-        if (b) { b.disabled = false; b.textContent = 'Send Inquiry'; }
+        if (b) { b.disabled = false; b.textContent = label; }
         alert('Sorry, the form could not be sent. Please email us at ' + f.dataset.fallback);
       });
     });

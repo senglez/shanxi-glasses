@@ -7,40 +7,35 @@
     <div class="hero-copy">
       <p class="eyebrow reveal"><span class="dot"></span> Direct from Qixian, Shanxi · China’s glassware capital</p>
       <h1 class="reveal">
-        Hand-painted glassware from Shanxi, <span class="shimmer">sourced at the furnace.</span>
+        Wholesale hand-painted glassware from Shanxi, <span class="shimmer">sourced at the furnace.</span>
       </h1>
       <p class="lead reveal">
         Hand-painted, hand-blown and machine-made glassware from vetted factories in Qixian, Shanxi, for supermarkets, homeware chains, gift retailers and importers. We match your order to the right factory and manage samples, production, QC and export, so you deal with one English-speaking partner.
       </p>
       <div class="hero-cta reveal">
         <a href="/contact" class="btn btn-glow btn-lg">Request a Quote</a>
-        <a href="/products" class="btn btn-ghost btn-lg">Browse Catalog →</a>
+        <a href="/catalog" class="btn btn-ghost btn-lg">Download Catalog (PDF)</a>
       </div>
+      <ul class="hero-facts reveal" aria-label="How we work with buyers">
+        <li>Wholesale &amp; private label</li>
+        <li>Mixed designs per order</li>
+        <li>Samples before production</li>
+        <li>FOB · CIF · DDP</li>
+      </ul>
       <ul class="hero-stats reveal" aria-label="Qixian glassware cluster in numbers">
         <li><b data-count="60" data-suffix="%+">60%+</b><span>of China’s hand-blown glassware made in Qixian*</span></li>
         <li><b data-count="80" data-suffix="+">80+</b><span>countries buy Qixian glass*</span></li>
         <li><b data-count="62">62</b><span>local glassware manufacturers*</span></li>
       </ul>
     </div>
-    <div class="hero-art" aria-hidden="true">
-      <div class="orb"></div>
-      <svg class="hero-glass" viewBox="0 0 400 520">
-        <defs>
-          <linearGradient id="hg" x1="0" x2="1"><stop offset="0" stop-color="#bff6ff" stop-opacity=".35"/><stop offset=".4" stop-color="#fff" stop-opacity=".05"/><stop offset="1" stop-color="#ffd8a8" stop-opacity=".35"/></linearGradient>
-          <linearGradient id="wine" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7a59"/><stop offset="1" stop-color="#9b1030"/></linearGradient>
-          <clipPath id="bowl"><path d="M90 40 C80 200 120 270 200 290 C280 270 320 200 310 40 Z"/></clipPath>
-        </defs>
-        <g clip-path="url(#bowl)">
-          <path class="wave" d="M0 170 Q 50 155 100 170 T 200 170 T 300 170 T 400 170 T 500 170 T 600 170 V 400 H 0 Z" fill="url(#wine)"/>
-        </g>
-        <path d="M90 40 C80 200 120 270 200 290 C280 270 320 200 310 40 Z" fill="url(#hg)" stroke="#fff" stroke-opacity=".8" stroke-width="2"/>
-        <rect x="194" y="288" width="12" height="170" rx="5" fill="url(#hg)" stroke="#fff" stroke-opacity=".7" stroke-width="2"/>
-        <ellipse cx="200" cy="466" rx="96" ry="14" fill="url(#hg)" stroke="#fff" stroke-opacity=".7" stroke-width="2"/>
-        <path d="M110 70 C105 160 120 210 150 240" stroke="#fff" stroke-opacity=".6" stroke-width="5" fill="none" stroke-linecap="round"/>
-      </svg>
-      <div class="chip c1 glass-panel">Hand-painted mosaic</div>
-      <div class="chip c2 glass-panel">Holiday programs</div>
-      <div class="chip c3 glass-panel">OEM · Your logo</div>
+    <div class="hero-photos reveal">
+      <% heroProducts.forEach((p, i) => { %>
+        <a class="hero-tile" href="<%= productUrl(p, catMap[p.category_id]) %>">
+          <img src="/img/hero/<%= p.sku.toLowerCase() %>.webp" alt="<%= p.name %>" width="560" height="560"<%- i < 2 ? ' fetchpriority="high"' : ' loading="lazy"' %> decoding="async">
+          <span class="hero-tile-cap"><%= p.name %> <b translate="no"><%= p.sku %></b></span>
+        </a>
+      <% }) %>
+      <p class="hero-photos-note">Real product photos. <a href="/products">See all designs →</a></p>
     </div>
   </div>
   <a href="#categories" class="scroll-hint" aria-label="Scroll to product categories"><span></span></a>

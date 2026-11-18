@@ -1,0 +1,39 @@
+<%
+  // Email-gated catalog download. Same delivery as the inquiry form: Web3Forms emails us,
+  // Google Apps Script keeps the record; the visitor lands on /catalog-download.
+  const w3f = isStatic && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(s.web3forms_key || '') && s.web3forms_key;
+  const record = isStatic && /^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(s.form_endpoint || '') && s.form_endpoint;
+%>
+<% if (!isStatic) { %>
+<form class="inquiry glass-panel" method="post" action="/inquiry" data-inquiry>
+<% } else if (w3f) { %>
+<form class="inquiry glass-panel" method="post" action="https://api.web3forms.com/submit" data-inquiry data-w3f="1" data-record="<%= record || '' %>" data-thanks="/catalog-download" data-fallback="<%= s.contact_email %>">
+  <input type="hidden" name="access_key" value="<%= s.web3forms_key %>">
+  <input type="hidden" name="from_name" value="<%= s.site_name %> website">
+  <input type="hidden" name="subject" value="[Catalog request] Wholesale catalog PDF">
+  <input type="hidden" name="redirect" value="<%= SITE_URL %>/catalog-download">
+  <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+<% } else if (record) { %>
+<form class="inquiry glass-panel" method="post" action="<%= record %>" data-inquiry data-record="<%= record %>" data-thanks="/catalog-download" data-fallback="<%= s.contact_email %>">
+<% } else { %>
+<form class="inquiry glass-panel" method="post" action="mailto:<%= s.contact_email %>?subject=Catalog%20request" enctype="text/plain" data-inquiry>
+<% } %>
+  <label>Business email *<input name="email" type="email" required maxlength="160" autocomplete="email"></label>
+  <div class="grid-2">
+    <label>Company<input name="company" maxlength="160" autocomplete="organization"></label>
+    <label>Target market / country<input name="country" maxlength="80" autocomplete="country-name" placeholder="e.g. United States"></label>
+  </div>
+  <input type="hidden" name="product_name" value="Catalog PDF download">
+  <input type="hidden" name="message" value="Catalog PDF download request from the website.">
+  <input type="hidden" name="catalog" value="1">
+  <div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+  <input type="hidden" name="ts" value="">
+  <input type="hidden" name="source_page" value="">
+  <input type="hidden" name="referrer" value="">
+  <input type="hidden" name="utm_source" value="">
+  <input type="hidden" name="utm_medium" value="">
+  <input type="hidden" name="utm_campaign" value="">
+  <% if (isStatic) { %><input type="hidden" name="user_agent" value=""><% } %>
+  <button class="btn btn-glow btn-lg" type="submit">Get the Catalog (PDF)</button>
+  <p class="form-note">We use your email to follow up on your request. No newsletters. <a href="/privacy-policy">Privacy policy</a>.</p>
+</form>

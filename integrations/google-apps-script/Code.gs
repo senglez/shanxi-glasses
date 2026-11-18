@@ -15,7 +15,7 @@ var SHEET_NAME = 'Inquiries';
 var FIELDS = ['id', 'created_at', 'name', 'email', 'company', 'country', 'phone', 'product_id', 'product_name',
   'quantity', 'message', 'source_page', 'referrer', 'utm_source', 'utm_medium', 'utm_campaign', 'user_agent'];
 var LIMITS = { name: 100, email: 160, company: 160, country: 80, phone: 60, product_id: 12, product_name: 200,
-  quantity: 80, message: 5000, source_page: 300, referrer: 300, utm_source: 100, utm_medium: 100, utm_campaign: 100, user_agent: 300 };
+  quantity: 160, message: 5000, source_page: 300, referrer: 300, utm_source: 100, utm_medium: 100, utm_campaign: 100, user_agent: 300 };
 
 function props() { return PropertiesService.getScriptProperties(); }
 
@@ -54,7 +54,7 @@ function doPost(e) {
   if (p.website || !ts || Date.now() - ts < 3000) return reply(true);
 
   var email = String(p.email || '').trim().toLowerCase();
-  var ok = String(p.name || '').trim().length >= 2 &&
+  var ok = String(p.name || '').trim().length !== 1 &&
     /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) &&
     String(p.message || '').trim().length >= 10;
   if (!ok) return reply(false);
@@ -130,7 +130,7 @@ function reply(success) {
   var site = props().getProperty('SITE_URL') || '';
   var msg = success
     ? '<h1>Thank you, your inquiry has been sent.</h1><p>We reply within 24 hours on business days.</p>'
-    : '<h1>Please go back and complete the required fields.</h1><p>Name, a valid email and your requirements are required.</p>';
+    : '<h1>Please go back and complete the required fields.</h1><p>A valid email and your requirements are required.</p>';
   var link = site ? '<p><a href="' + site.replace(/"/g, '') + '/" target="_top">Back to the website</a></p>' : '';
   return HtmlService.createHtmlOutput('<div style="font-family:sans-serif;max-width:560px;margin:60px auto">' + msg + link + '</div>');
 }

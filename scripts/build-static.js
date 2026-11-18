@@ -89,7 +89,7 @@ async function main() {
   const cats = db.prepare('SELECT * FROM categories WHERE published = 1').all();
   const byId = Object.fromEntries(cats.map((c) => [c.id, c]));
   const pages = [
-    '/', '/products', '/oem-custom-glassware', '/about', '/faq', '/blog', '/contact', '/thank-you', '/privacy-policy',
+    '/', '/products', '/oem-custom-glassware', '/about', '/faq', '/blog', '/contact', '/thank-you', '/catalog', '/catalog-download', '/privacy-policy',
     ...require('../src/lib/catalog').COLLECTIONS.map((c) => '/collections/' + c.slug),
     ...cats.map((c) => '/products/' + c.slug),
     ...db.prepare('SELECT * FROM products WHERE published = 1').all().map((p) => productUrl(p, byId[p.category_id])),

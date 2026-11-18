@@ -28,7 +28,7 @@ Most designs come in two heights, so a retailer can build a matching shelf. For 
 ## What to know before you order
 Each piece is painted by hand, so small differences in line and color between pieces are normal. We agree an approved sample with you before production and inspect against it.
 
-For decorated drinkware, ask which test reports are available for your market, such as lip-and-rim lead and cadmium testing for the US. Our guides explain [whether soda-lime glass is lead-free](/blog/is-soda-lime-glass-lead-free) and [whether hand-painted glasses are dishwasher safe](/blog/are-hand-painted-glasses-dishwasher-safe). For sampling, MOQ and packaging, read the [hand-painted glassware buyer’s guide](/blog/hand-painted-glassware-wholesale-buyers-guide).
+For decorated drinkware, ask which test reports are available for your market, such as lip-and-rim lead and cadmium testing for the US. Our [FDA and Prop 65 guide](/blog/hand-painted-glassware-fda-prop-65-compliance) explains what US buyers test for. Our guides explain [whether soda-lime glass is lead-free](/blog/is-soda-lime-glass-lead-free) and [whether hand-painted glasses are dishwasher safe](/blog/are-hand-painted-glasses-dishwasher-safe). For sampling, MOQ and packaging, read the [hand-painted glassware buyer’s guide](/blog/hand-painted-glassware-wholesale-buyers-guide).
 
 MOQ is 20,000 pieces per design, and colors and designs can be mixed. Lead time, packaging and price are confirmed in each quotation. Send us your target market, quantity per design and packaging needs to get started.`,
     skus: Object.freeze([

@@ -18,7 +18,7 @@
     <dl class="keyfacts glass-panel">
       <div><dt>Material</dt><dd><%= p.material || 'Confirmation needed' %><% if (p.material) { %> <small class="muted">Published reference; confirm for your program</small><% } %></dd></div>
       <div><dt>Reference price</dt><dd><% if (price) { %><%= price.text %><% } else { %>Quote-dependent<% } %> <small class="muted">Confirm final price for quantity and customization</small></dd></div>
-      <div><dt>MOQ</dt><dd><%= p.moq || 'Confirmation needed' %> <small class="muted">Confirm in the quotation for your design and color mix</small></dd></div>
+      <div><dt>MOQ</dt><dd><%= p.moq || 'Confirmation needed' %> <small class="muted"><%= /^Mixed colors and designs: Yes/m.test(p.specs || '') ? 'Colors and designs can be mixed in one order' : 'Confirm in the quotation for your design and color mix' %></small></dd></div>
       <div><dt>Lead time</dt><dd><%= p.lead_time || 'Confirmation needed' %> <small class="muted">Confirm against the final specification and order plan</small></dd></div>
       <div><dt>Packaging</dt><dd><%= packaging ? packaging.v : 'Confirmation needed' %> <small class="muted">Confirm carton and retail-pack requirements</small></dd></div>
       <div><dt>Origin</dt><dd>Shanxi, China</dd></div>
@@ -28,6 +28,7 @@
       <a href="#inquiry" class="btn btn-glow btn-lg">Get a Quote for This Item</a>
       <% if (s.whatsapp) { %><a class="btn btn-ghost btn-lg" href="<%= waLink(p) %>" target="_blank" rel="noopener">WhatsApp</a><% } %>
     </div>
+    <p class="catalog-link"><a class="text-link" href="/catalog">Download the full catalog (PDF) with all item codes →</a></p>
   </div>
 </article>
 
