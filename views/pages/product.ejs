@@ -21,7 +21,8 @@
       <div><dt>MOQ</dt><dd><%= p.moq || 'Confirmation needed' %> <small class="muted"><%= /^Mixed colors and designs: Yes/m.test(p.specs || '') ? 'Colors and designs can be mixed in one order' : 'Confirm in the quotation for your design and color mix' %></small></dd></div>
       <div><dt>Lead time</dt><dd><%= p.lead_time || 'Confirmation needed' %> <small class="muted">Confirm against the final specification and order plan</small></dd></div>
       <div><dt>Packaging</dt><dd><%= packaging ? packaging.v : 'Confirmation needed' %> <small class="muted">Confirm carton and retail-pack requirements</small></dd></div>
-      <div><dt>Origin</dt><dd>Shanxi, China</dd></div>
+      <% const madeBy = ((p.specs || '').match(/^Made by:\s*(.+)$/m) || [])[1]; %>
+      <div><dt>Origin</dt><dd><% if (madeBy) { %>Qixian, Shanxi, China <small class="muted">Made by our <a href="/about#partner-factory">partner factory</a>, <span translate="no">Shanxi Qiansheng Glassware</span></small><% } else { %>Shanxi, China<% } %></dd></div>
       <div><dt>Customization</dt><dd>Logo, color, size, packaging</dd></div>
     </dl>
     <div class="hero-cta">

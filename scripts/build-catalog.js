@@ -124,7 +124,7 @@ dt { color: #7a8496; } dd { margin: 0; }
 <section class="page cover">
   <div><div class="eyebrow">Wholesale catalog \u00b7 ${esc(date)}</div>
   <h1>${esc(s.site_name || 'Shanxi Glassworks')}<br>Glassware from Shanxi, China</h1>
-  <p>${total} current designs: hand-painted tumblers and highballs, seasonal and gift glassware, wine and martini glasses, bowls, plates, vases and borosilicate storage jars. Wholesale and private label, with mixed designs per order.</p></div>
+  <p>${total} current designs: hand-painted tumblers and highballs, seasonal and gift glassware, wine and martini glasses, bowls, plates, vases and borosilicate storage jars. Wholesale and private label, with mixed designs per order.</p><p>Made by our partner factory, Shanxi Qiansheng Glassware Co., Ltd. (Durian Cat brand), in Qixian, Shanxi.</p></div>
   <div class="hero">${['TMB-MOS-001', 'CUP-BFL-001', 'TMB-PUM-001', 'TMB-RNB-001'].map((k) => imgs.get(k) ? `<img src="${imgs.get(k)}" alt="">` : '').join('')}</div>
   <div class="contact">${contact}</div>
 </section>
@@ -151,8 +151,10 @@ ${pages.join('\n')}
   const tmp = path.join(os.tmpdir(), 'sgw-catalog.html');
   fs.writeFileSync(tmp, html);
   fs.mkdirSync(path.dirname(OUT), { recursive: true });
-  // A separate profile keeps headless Chrome from attaching to a running browser.
-  execFileSync(CHROME, ['--headless=new', '--disable-gpu', '--no-pdf-header-footer', `--user-data-dir=${path.join(os.tmpdir(), 'sgw-chrome-pdf')}`, `--print-to-pdf=${OUT}`, 'file://' + tmp], { stdio: 'ignore', timeout: 120000 });
+  // A fresh profile per run keeps headless Chrome from attaching to a running or stale browser.
+  const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'sgw-chrome-pdf-'));
+  execFileSync(CHROME, ['--headless=new', '--disable-gpu', '--no-pdf-header-footer', `--user-data-dir=${profile}`, `--print-to-pdf=${OUT}`, 'file://' + tmp], { stdio: 'ignore', timeout: 120000 });
   fs.unlinkSync(tmp);
+  fs.rmSync(profile, { recursive: true, force: true });
   console.log(`Catalog PDF: ${total} products, ${pages.length + 2} pages -> ${path.relative(ROOT, OUT)} (${(fs.statSync(OUT).size / 1048576).toFixed(1)} MB)`);
 })();
